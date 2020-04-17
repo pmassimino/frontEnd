@@ -1,0 +1,57 @@
+<app-layout>
+<h3>Create Articulo</h3>
+<div [hidden]="submitted" style="width: 400px;">
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Codigo</label>
+      <input type="text" class="form-control" id="codigo" required [(ngModel)]="articulo.codigo" name="codigo">
+    </div>
+    <div class="form-group">
+      <label for="name">Nombre</label>
+      <input type="text" class="form-control" id="nombre" required [(ngModel)]="articulo.nombre" name="nombre">
+    </div>
+    <div class="form-group">
+      <label for="name">Familia</label>
+    <select [(ngModel)]="articulo.familia" required name="familia">
+      <option *ngFor="let item of familia" [ngValue]="item">{{item.nombre}}</option>
+    </select>
+    </div>
+    <div class="form-group">
+      <label for="name">Cond. Iva</label>
+      <select [(ngModel)]="articulo.condIva" required name="condIva">
+        <option *ngFor="let item of condIvaOp" [ngValue]="item">{{item.nombre}}</option>
+      </select>
+      </div>
+    <div class="form-group">
+      <label for="name">Costo Venta</label>
+      <input type="number" class="form-control" id="costoVenta" required [(ngModel)]="articulo.costoVenta" name="costoVenta">
+    </div>
+    <div class="form-group">
+      <label for="name">Impuesto Venta</label>
+      <input type="number" class="form-control" id="impuestoVenta" required [(ngModel)]="articulo.impuestoVenta" name="impuestoVenta">
+    </div>
+    <div class="form-group">
+      <label for="name">Alicuota Iva</label>
+      <input type="number" class="form-control" id="alicuotaIva" required [(ngModel)]="articulo.alicuotaIva" name="alicuotaIva">
+    </div>
+    <div class="form-group">
+      <label for="name">Margen Venta</label>
+      <input type="number" class="form-control" id="margenVenta" required [(ngModel)]="articulo.margenVenta" name="margenVenta">
+    </div>
+    <div class="form-group">
+      <label for="name">Precio Venta</label>
+      <input type="number" class="form-control" id="precioVenta" required [(ngModel)]="articulo.precioVenta" name="precioVenta">
+    </div>
+    <div class="form-group">
+      <label for="name">Precio Venta Final</label>
+      <input type="number" class="form-control" id="precioVentaFinal" required [(ngModel)]="articulo.precioVentaFinal" name="precioVentaFinal">
+    </div>
+    <button type="submit" class="btn btn-success">Submit</button>
+  </form>
+</div>
+
+<div [hidden]="!submitted">
+  <h4>You submitted successfully!</h4>
+  <!-- <button class="btn btn-success" (click)="newEmployee()">Add</button> -->
+</div>
+</app-layout>

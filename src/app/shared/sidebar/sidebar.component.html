@@ -1,0 +1,19 @@
+<div id="accordion1">
+  <div class="bg-light border-right" id="sidebar-wrapper">
+    <div class="sidebar-heading bg-dark"><a href="#" class="navbar-brand" >GADM</a></div>
+    <div *ngFor="let menuItem of menuItems" class="list-group list-group-flush">
+        <div  class="card">
+         <div   class="nav-title" id="head{{menuItem.title}}">
+                 <a class="nav-link nav-dropdown-toggle" data-toggle="collapse" href="#{{menuItem.title}}">
+                  {{menuItem.title}}
+                 </a>
+         </div>
+         <div id="{{menuItem.title}}" class="collapse">
+             <div *ngFor="let item of menuItem.Routes" class="card card-body">
+                     <a class = "nav-link" href="{{item.path}}">{{item.title}}</a>
+             </div>
+         </div>
+      </div>
+  </div>
+  </div>
+  </div>
