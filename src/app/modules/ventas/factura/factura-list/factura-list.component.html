@@ -1,0 +1,38 @@
+<app-layout>
+    <div toolbar >
+      <app-toolbar (addNew)="addNew()" (exportToExcel)="exportToExcel()" (findByName)="findByName($event)"></app-toolbar>
+    </div>
+      <table class="table table-hover table-responsive-sm">
+          <thead>
+            <tr>
+              <th class="th-sm">Fecha</th>
+              <th class="th-sm">Tipo</th>
+              <th>Numero</th>            
+              <th>Cliente</th>
+              <th>Total</th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of data">
+              <td>{{item.fecha | date:'dd-MM-yyyy'}}</td>
+              <td><span *ngIf="item.tipo=='1'">FACTURA</span><span *ngIf="item.tipo=='2'">NOTA DE CREDITO</span></td>
+              <td>{{item.pe.toString().padStart(4 ,"0")}}-{{item.numero.toString().padStart(8 ,"0")  }}</td>
+              <td>{{item.sujeto.nombre}}</td>
+              <td>{{item.total}}</td>            
+              <td>
+                <a [routerLink]="['/ventas/factura', item.id]">
+                  <i class="material-icons">mode_edit</i>
+                </a>
+              </td>
+              <td><a (click)="print(item.id)"><i class="material-icons btn">print</i></a></td>
+              <td> <a (click)="delete(item)" >
+                <i class="material-icons btn">delete</i>
+              </a></td>
+            </tr>
+          </tbody>
+        </table>
+   </app-layout>
+  

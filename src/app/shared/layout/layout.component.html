@@ -1,12 +1,19 @@
-<app-navbar></app-navbar>
+<div class="d-flex" id="wrapper" [ngClass]="{'toggled': toggled}" >
+<app-sidebar ></app-sidebar>
+<div id="page-content-wrapper">
+<app-navbar (ToggleClick)="onToggle()"></app-navbar>
 <div class="container-fluid">
   <div class="row">
-    <app-sidebar></app-sidebar>
-    <div  class="content">
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-           <div class="chartjs-size-monitor"><ng-content></ng-content></div>
-        </main>
-    </div>
+    <div class="col-12 p-0">   
+    <ng-content select="[toolbar]"></ng-content>
+   </div>
+  </div>
+  <div class="row">    
+    <main role="main" class="col-12">
+        <ng-content></ng-content>
+    </main>   
   </div>
   <app-footer></app-footer>
+</div>
+</div>
 </div>

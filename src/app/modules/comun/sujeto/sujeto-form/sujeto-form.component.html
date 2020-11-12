@@ -1,0 +1,83 @@
+<app-layout>
+    <h3>Sujeto</h3>
+    <div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group row">
+          <div class="col-xs-1 col-lg-2">
+          <label for="name">Codigo</label>
+          <input type="text" class="form-control" id="id" formControlName = "id"  name="codigo" [(ngModel)]="entity.id" [readonly]="mode=='edit'">
+          <div *ngIf="id.invalid && (id.dirty || id.touched)" class="alert alert-danger">
+               <div *ngIf="id.errors.required">Codigo Requerido.</div>
+               <div *ngIf="id.errors?.serverError">{{id.errors.serverError}}</div>               
+           </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-xs-6 col-lg-6">
+               <label for="name">Nombre</label>
+               <input type="text" class="form-control" id="nombre" formControlName = "nombre" required name="nombre" [(ngModel)]="entity.nombre">
+          </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-xs-6 col-lg-6">
+                 <label for="name">Nombre Comercial</label>
+                 <input type="text" class="form-control" id="nombreComercial" formControlName = "nombreComercial" required name="nombreComercial" [(ngModel)]="entity.nombreComercial">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-xs-6 col-lg-6">
+                 <label for="name">Domicilio</label>
+                 <input type="text" class="form-control" id="domicilio" formControlName = "domicilio" required name="domicilio" [(ngModel)]="entity.domicilio">
+            </div>
+            <div class="col-xs-2 col-lg-2">
+                <label for="name">Altura</label>
+                <input type="number" class="form-control" id="altura" formControlName = "altura" required name="altura" [(ngModel)]="entity.altura">
+           </div>
+        </div>          
+        <div class="form-group row"> 
+          <div class="col-md-3">
+            <label for="idCondicionIva">Cond. Iva</label>
+            <select class="form-control" formControlName = "IdCondicionIva" name="IdCondicionIva" [(ngModel)]="entity.idCondicionIva">
+               <option *ngFor="let item of condIva" [ngValue]="item.id" [selected]="entity.idCondicionIva === item.id">{{item.nombre}} </option>
+             </select>   
+           </div>         
+          <div class="col-md-2">
+          <label for="name">Tipo Documento</label>
+          <select class="form-control" formControlName = "IdTipoDoc" name="IdTipoDoc" [(ngModel)]="entity.idTipoDoc">
+             <option *ngFor="let item of tipoDocumento" [ngValue]="item.id" [selected]="entity.idTipoDoc === item.id">{{item.nombre}} </option>
+           </select>
+           <div *ngIf="f.IdTipoDoc.errors?.serverError">{{f.IdTipoDoc.errors.serverError}}</div>         
+           
+          </div>
+           <div class="col-xs-2 col-lg-2">
+            <label for="name">Numero</label>
+            <input type="number" class="form-control" id="NumeroDocumento" formControlName = "NumeroDocumento" required name="NumeroDocumento" [(ngModel)]="entity.numeroDocumento">
+            <div *ngIf="f.NumeroDocumento.errors?.serverError">{{f.NumeroDocumento.errors.serverError}}</div>
+          </div>
+        </div>
+        <div class="form-group row">
+        <div class="col-xs-4 col-lg-4">
+        <mat-form-field appearance="legacy">
+          <mat-label>Email</mat-label>
+          <input matInput [formControl]="f.email1" [errorStateMatcher]="matcher"
+                 placeholder="Ex. sunombre@example.com">
+          <mat-hint>Errors appear instantly!</mat-hint>
+          <mat-error *ngIf="form.hasError('email1') && !form.hasError('required')">
+            Por favor ingrese una mail válido
+          </mat-error>          
+        </mat-form-field>
+        </div>
+        </div>        
+        <div class="row">
+          <div class="col-md-1">   
+            <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Aceptar</button>    
+          </div> 
+          <div class="col-md-1">
+            <button class="btn btn-primary" (click)="goBack()">Cancelar</button>
+          </div>  
+         </div>    
+      </form> 
+    </div>
+    </app-layout>
+    
+

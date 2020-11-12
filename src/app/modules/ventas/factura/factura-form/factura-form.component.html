@@ -1,0 +1,135 @@
+<app-layout>
+  <div toolbar >
+    <app-toolbar-form (print)="print()" [mode]="mode"> </app-toolbar-form>
+  </div>
+    <h3>Factura</h3>
+    <div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div>
+          <input type="hidden" formControlName="id" [(ngModel)]="entity.id">
+          <input type="hidden" formControlName="idEmpresa" [(ngModel)]="entity.idEmpresa">
+          <input type="hidden" formControlName="IdSucursal" [(ngModel)]="entity.idSucursal">
+          <input type="hidden" formControlName="IdArea" [(ngModel)]="entity.idArea">
+          <input type="hidden" formControlName="IdSeccion" [(ngModel)]="entity.idSeccion">
+          <input type="hidden" formControlName="IdTransaccion" [(ngModel)]="entity.idTransaccion">
+          <input type="hidden" formControlName="TotalNeto" [(ngModel)]="entity.totalNeto">
+          <input type="hidden" formControlName="TotalDescuento" [(ngModel)]="entity.totalDescuento">
+          <input type="hidden" formControlName="TotalGravado" [(ngModel)]="entity.totalGravado">
+          <input type="hidden" formControlName="TotalNoGravado" [(ngModel)]="entity.totalNoGravado">
+          <input type="hidden" formControlName="TotalExento" [(ngModel)]="entity.totalExento">
+          <input type="hidden" formControlName="TotalIva" [(ngModel)]="entity.totalIva">
+          <input type="hidden" formControlName="TotalOTributos" [(ngModel)]="entity.totalOTributos">
+          
+        </div>
+        <div class="form-group row">
+            <div class="col-xs-2 col-lg-2">
+                <label for="tipo">Tipo</label>
+                <select class="form-control" formControlName = "Tipo" name="IdCuenta" [(ngModel)]="entity.tipo">
+                  <option *ngFor="let item of tipoFactura" [ngValue]="item.id" [selected]="entity.tipo === item.id">{{item.nombre}} </option>
+                </select>   
+           </div>     
+                <div class="col-xs-1 col-lg-1">
+                <label for="fechaVenc">Letra</label>
+                <input type="text" class="form-control" id="Letra" formControlName = "Letra" required name="Letra" [(ngModel)]="entity.letra">
+             </div>
+             <div class="col-xs-1 col-md-1">
+                <label for="Pe">Numero</label>
+                <input type="number" class="form-control" id="Pe" formControlName = "Pe" required name="Fecha" [(ngModel)]="entity.pe">
+           </div>
+           <div class="col-xs-2 col-md-2"> 
+               <label>_</label>               
+               <input type="number" class="form-control" id="Numero" formControlName = "Numero" required name="Numero" [(ngModel)]="entity.numero">
+          </div>
+          </div>
+        <div class="form-group row">
+          <div class="col-xs-2 col-lg-2">
+               <label for="fecha">Fecha</label>
+               <input type="date" class="form-control" id="Fecha" formControlName = "Fecha" required name="Fecha" [ngModel]="entity.fecha | date:'yyyy-MM-dd'">
+          </div>
+          <div class="col-xs-2 col-lg-2">
+            <label for="fechaVenc">Fecha Venc</label>
+            <input type="date" class="form-control" id="FechaVencimiento" formControlName = "FechaVencimiento" required name="Fecha" [ngModel]="entity.fechaVencimiento | date:'yyyy-MM-dd'">
+       </div>
+        </div>        
+        <div class="form-group row">
+            <div class="col-xs-5 col-lg-5">
+                <label for="idCuenta">Cuenta</label>
+                <select class="form-control" formControlName = "IdCuenta" name="IdCuenta" [(ngModel)]="entity.idCuenta">
+                   <option *ngFor="let item of sujetos" [ngValue]="item.id" [selected]="entity.idCuenta === item.id">{{item.nombre}} </option>
+                 </select>                
+               </div>  
+        </div>
+        <div class="form-group row">
+          <div class="col-md-3">
+          <table formArrayName="MedioPago" class="table">            
+            <tr>
+              <th colspan="3">Medio de Pago<a class="btn" (click)="addMedioPago()" ><span class="material-icons">add</span></a></th>
+            </tr>            
+            <tr>                
+                <th>Nombre</th>
+                <th>Importe</th>                
+                <th></th>
+            </tr>               
+            <tr *ngFor="let item of mediopago.controls; let i=index"  [formGroupName]="i">                
+                <td><input type="hidden" formControlName="Id"/>
+                    <select class="form-control" formControlName = "IdCuentaMayor" name="IdCuentaMayor" [(ngModel)]="entity.medioPago[i].idCuentaMayor">
+                       <option *ngFor="let item of mediosPagos" [ngValue]="item.id" [selected]="entity.medioPago[i].idCuentaMayor === item.id">{{item.nombre}} </option>
+                    </select>
+                    <input type="hidden" class="form-control" formControlName = "Concepto" required  ></td>
+                <td><input type="text" class="form-control" formControlName = "Importe" required  ></td>
+                <td><a *ngIf="mediopago.controls.length > 1" (click)="removeDetalle(i)"><i class="material-icons btn">delete</i></a></td>            
+            </tr>           
+        </table> 
+         </div>
+      </div>
+        <div class="form-group row">
+            <div class="col-md-1">   
+                <a class="btn" (click)="addDetalle()" ><span class="material-icons">add</span></a>    
+              </div> 
+        </div>
+        <div class="form-group row">
+        <table formArrayName="Detalle" class="table">            
+            <tr>
+                <th>Codigo</th>
+                <th>Cantidad</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Bon.</th>
+                <th>Total</th>
+                <th></th>
+            </tr>               
+            <tr *ngFor="let item of detalle.controls; let i=index"  [formGroupName]="i">          
+                <td><input type="text" class="form-control" formControlName = "IdArticulo" required  [(ngModel)]="entity.detalle[i].idArticulo"></td>
+                <td><input type="number" class="form-control" formControlName = "Cantidad" required  [(ngModel)]="entity.detalle[i].cantidad"></td>
+                <td><input type="text" class="form-control" formControlName = "Concepto" required  [(ngModel)]="entity.detalle[i].concepto"></td>
+                <td><input type="number" class="form-control" formControlName = "Precio" required  [(ngModel)]="entity.detalle[i].precio"></td>
+                <td></td>
+                <td><input type="number" class="form-control" id="Total" formControlName = "Total" [readonly]="true" [(ngModel)]="entity.detalle[i].total"></td>
+                <td><a (click)="removeDetalle(i)"><i class="material-icons btn">delete</i></a></td>            
+            </tr>
+            <tr>
+               <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><div [formGroup]="form"><input  class="form-control" formControlName="Total" [readonly]="true" [(ngModel)]="entity.total"></div></td>
+             </tr>
+        </table> 
+        
+        </div>
+        <div class="row">
+          <div class="col-md-1">   
+            <button type="submit" class="btn btn-primary">Aceptar</button>    
+          </div> 
+          <div class="col-md-1">
+            <button type="menu" class="btn" (click)="goBack()">Cancelar</button>
+          </div>  
+         </div>    
+      </form> 
+    </div>
+    </app-layout>
+    
+
+
+

@@ -18,8 +18,8 @@ export class LoginComponent {
     this.auth.login(this.username, this.password)
       .pipe(first())
       .subscribe(
-        result => this.router.navigate(['articulo']),
-        err => this.error = 'Could not authenticate'
+        result => this.router.navigate(['almacen/articulo/list']),
+        err => this.error = err.error.Nombre
       );
   }
 }

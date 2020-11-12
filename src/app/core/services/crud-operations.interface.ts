@@ -2,7 +2,8 @@ import { Observable } from 'rxjs';
 
 
 export interface CrudOperations<T, ID> {
-	save(t: T): Observable<T>;
+	add(t: T): Observable<T>;
+	newDefault(): Observable<T>;
 	update(id: ID, t: T): Observable<T>;
 	findOne(id: ID): Observable<T>;
 	findAll(): Observable<T[]>;

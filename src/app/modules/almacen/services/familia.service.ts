@@ -10,7 +10,7 @@ import { CrudService } from '../../../core/services/crud.service';
 export class FamiliaService extends CrudService<Familia, number> {
 
   constructor(protected http: HttpClient, protected config: ConfigService) {
-    super(http, config.data.apiUrl + '/almacen/familias/');
+    super(http, config.data.apiUrl + '/almacen/familia/');
   }
 
 }

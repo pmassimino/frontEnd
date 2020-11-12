@@ -1,0 +1,31 @@
+<app-layout>
+  <div toolbar >
+  <app-toolbar (addNew)="addNew()" (exportToExcel)="exportToExcel()" (findByName)="findByName($event)"></app-toolbar> </div>
+    <table class="table table-hover table-responsive-sm">
+        <thead>
+          <tr>
+            <th class="th-sm">Codigo</th>
+            <th class="th-sm">Nombre                      </th>
+            <th class="th-sm">Precio</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of articuloData">
+            <td>{{item.id}}</td>
+            <td>{{item.nombre}}</td>
+            <td>{{item.precioVentaFinal}}</td>
+            <td>
+              <a [routerLink]="['/almacen/articulo', item.id]">
+                <i class="material-icons">mode_edit</i>
+              </a>
+            </td>
+            <td> <a (click)="delete(item)" >
+              <i class="material-icons btn">delete</i>
+            </a></td>
+          </tr>
+        </tbody>
+      </table>
+ </app-layout>
+    

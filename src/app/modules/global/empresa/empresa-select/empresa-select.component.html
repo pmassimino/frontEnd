@@ -1,0 +1,30 @@
+<app-layout>
+<ng-template  #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Selecciona una empresa para operar!</h4>      
+    </div>
+    <div class="modal-body">
+      <table class="table table-hover table-responsive-sm">
+        <thead>
+          <tr>            
+            <th class="th-sm">Empresa                      </th>           
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of entityData">         
+            <td><a  [routerLink]=""  class="btn" (click)="select(item)" >
+              {{item.nombre}}              
+            </a>
+          </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark">Seleccionar</button>
+    </div>
+  </ng-template>
+   
+</app-layout>

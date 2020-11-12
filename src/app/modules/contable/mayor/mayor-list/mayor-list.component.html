@@ -1,0 +1,32 @@
+<app-layout>
+    <div toolbar >
+      <app-toolbar (addNew)="addNew()" (exportToExcel)="exportToExcel()" (findByName)="findByName($event)"></app-toolbar>
+    </div>
+      <table class="table table-hover table-responsive-sm">
+        <thead>
+            <tr>
+               <td>Fecha</td>
+               <td>Numero</td>
+               <td>Cuenta</td>
+               <td>Concepto</td>
+               <td>Debe</td>
+               <td>Haber</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+          <ng-container *ngFor="let item of data">            
+            <tr *ngFor="let itemD of item.detalle">
+              <td>{{item.fecha | date:'dd-MM-yyyy'}}</td>
+              <td>{{item.pe.toString().padStart(4 ,"0")}}-{{item.numero.toString().padStart(8 ,"0")  }}</td>
+              <td>{{itemD.idCuentaMayor}}</td>
+              <td>{{itemD.concepto}}</td>           
+              <td><span *ngIf="itemD.idTipo=='1'">{{itemD.importe}}</span></td> 
+              <td><span *ngIf="itemD.idTipo=='2'">{{itemD.importe}}</span></td>
+              <td></td>
+            </tr>
+          </ng-container>
+          </tbody>
+        </table>
+   </app-layout>
+

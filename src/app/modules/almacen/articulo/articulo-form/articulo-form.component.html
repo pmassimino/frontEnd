@@ -1,0 +1,87 @@
+<app-layout>
+<h3>Create Articulo</h3>
+<div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+      <div class="col-xs-1 col-lg-2">
+      <label for="name">Codigo</label>
+      <input type="text" class="form-control" id="id" formControlName = "id"  name="codigo" [(ngModel)]="articulo.id" [readonly]="mode=='edit'">
+      <div *ngIf="id.invalid && (id.dirty || id.touched)" class="alert alert-danger">
+           <div *ngIf="id.errors.required">Codigo Requerido.</div>
+           <div *ngIf="id.errors?.serverError">{{id.errors.serverError}}</div>               
+       </div>
+      </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-xs-6 col-lg-6">
+           <label for="name">Nombre</label>
+           <input type="text" class="form-control" id="nombre" formControlName = "nombre" required name="nombre" [(ngModel)]="articulo.nombre">
+    </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-6">
+      <label for="name">Familia</label>
+    <select class="form-control" formControlName = "idFamilia" name="idFamilia" [(value)]="articulo.idFamilia">
+      <option *ngFor="let item of familia" [ngValue]="item.id" [selected]="articulo.idFamilia === item.id">{{item.nombre}} </option>
+    </select>   
+    </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-6">
+      <label for="name">Unidad Medida</label>
+    <select class="form-control" formControlName = "idUnidad" name="idUnidad" [(ngModel)]="articulo.idUnidad">
+      <option *ngFor="let item of unidadMedida" [ngValue]="item.id" [selected]="articulo.idUnidad === item.id">{{item.nombre}} </option>
+    </select>   
+    </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-2">
+      <label for="name">Costo Venta</label>
+      <input type="number" class="form-control" id="costoVenta" formControlName = "costoVenta"  name="costoVenta" [(ngModel)]="articulo.costoVenta"  mask="0*.000">
+    </div>
+  </div>
+    <div class="form-group row">
+      <div class="col-md-2">
+      <label for="name">Impuesto Venta</label>
+      <input type="number" class="form-control" id="impuestoVenta" formControlName = "impuestoVenta" name="impuestoVenta" [(ngModel)]="articulo.impuestoVenta" >
+    </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-6">
+      <label for="name">Cond. Iva</label>
+    <select class="form-control" formControlName = "condIva" name="condIva" [(ngModel)]="articulo.condIva" (change)="condIvaChange($event)">
+      <option *ngFor="let item of condIva" [ngValue]="item.id" [selected]="articulo.condIva === item.id">{{item.nombre}} </option>
+    </select> 
+    <input type="hidden" class="form-control" id="alicuotaIva" formControlName = "alicuotaIva"  name="alicuotaIva" [(ngModel)]="articulo.alicuotaIva">  
+    </div>
+    </div>
+    <div class="form-group row">
+    <div class="col-md-2">
+      <label for="name">Margen Venta</label>
+      <input type="number" class="form-control" id="margenVenta" formControlName = "margenVenta"  name="margenVenta" [(ngModel)]="articulo.margenVenta">
+    </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-2">
+      <label for="name">Precio Venta</label>
+      <input type="number" class="form-control" id="precioVenta" formControlName = "precioVenta" name="precioVenta" [(ngModel)]="articulo.precioVenta">
+    </div>
+    </div>
+    <div class="form-group row">
+      <div class="col-md-2">
+      <label for="name">Precio Venta Final</label>
+      <input type="number" class="form-control" id="precioVentaFinal" formControlName = "precioVentaFinal" name="precioVentaFinal" [(ngModel)]="articulo.precioVentaFinal" step="0.01">
+    </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-1 col-lg-1">   
+        <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Aceptar</button>    
+      </div> 
+      <div class="col-xs-1 col-lg-1">
+        <button class="btn btn-primary" (click)="goBack()">Cancelar</button>
+      </div>  
+    </div>
+
+  </form> 
+</div>
+</app-layout>

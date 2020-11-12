@@ -8,12 +8,18 @@ import { LoginComponent } from '../modules/login/login.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
 import { AppModule } from '../app.module';
+import { ToolbarComponent } from './toolbar/toolbar/toolbar.component';
+import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { MatExpansionModule } from '@angular/material/expansion';
+import {MatListModule} from '@angular/material/list';
+import { ToolbarFormComponent } from './toolbar-form/toolbar-form.component';
 
 
 
 @NgModule({
-  declarations: [LayoutComponent, NavbarComponent, FooterComponent, HeaderComponent,SidebarComponent],
-  imports: [CommonModule, RouterModule],
-  exports:[LayoutComponent]
+  declarations: [LayoutComponent, NavbarComponent, FooterComponent, HeaderComponent,SidebarComponent, ToolbarComponent, ToolbarFormComponent],
+  imports: [CommonModule, RouterModule, MatIconModule, FormsModule ,MatExpansionModule,MatListModule],
+  exports:[LayoutComponent,ToolbarComponent,ToolbarFormComponent]
 })
 export class SharedModule { }
