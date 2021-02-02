@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output } from '
 import { ROUTES } from '../sidebar/sidebar.component';
 import { Router } from '@angular/router';
 import { Location} from '@angular/common';
+import { Empresa } from '../../modules/global/models/models/model';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class NavbarComponent implements OnInit{
   @Output() ToggleClick = new EventEmitter<string>();
 
   public isCollapsed = true;
+  empresaSelected:Empresa;
   @ViewChild("navbar-cmp", {static: false}) button;
 
   constructor(location:Location, private element : ElementRef, private router: Router) {
@@ -28,7 +30,8 @@ export class NavbarComponent implements OnInit{
 
   ngOnInit(){
       this.listTitles = ROUTES.filter(listTitle => listTitle);
-      var navbar : HTMLElement = this.element.nativeElement;     
+      var navbar : HTMLElement = this.element.nativeElement; 
+      this.empresaSelected = JSON.parse(localStorage.getItem("empresaSelected"));    
   }
   getTitle(){
     var titlee = this.location.prepareExternalUrl(this.location.path());

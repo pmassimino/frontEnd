@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ToolbarFormComponent } from './toolbar-form.component';
 
@@ -6,7 +6,7 @@ describe('ToolbarFormComponent', () => {
   let component: ToolbarFormComponent;
   let fixture: ComponentFixture<ToolbarFormComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ToolbarFormComponent ]
     })

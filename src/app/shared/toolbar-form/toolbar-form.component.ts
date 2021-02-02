@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, TemplateRef } from '@angular/core';
 
 @Component({
   selector: 'app-toolbar-form',
@@ -7,6 +7,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 })
 export class ToolbarFormComponent implements OnInit {
   @Input() mode:string=""
+  @Input() toolbarTemplate: TemplateRef<any>
   //Events
   @Output()
   print = new EventEmitter();
@@ -27,7 +28,6 @@ export class ToolbarFormComponent implements OnInit {
   onPrint()
   {
     this.print.emit();
-
   }
 
 }

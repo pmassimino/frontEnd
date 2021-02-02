@@ -13,6 +13,10 @@ import { CuentaMayor } from '../../../contable/models/model';
 import { CuentaMayorService } from '../../../contable/services/cuenta-mayor.service';
 import { identifierModuleUrl } from '@angular/compiler';
 import { DatePipe } from '@angular/common';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ArticuloSelectComponent } from '../../../almacen/articulo/articulo-select/articulo-select.component';
+import { CarritoCompraService } from '../../../almacen/services/carrito-compra.service';
+import { FacturaAFIPComponent } from '../factura-afip/factura-afip.component';
 
 const resolvedPromise = Promise.resolve(null);
 
@@ -34,12 +38,12 @@ export class FacturaFormComponent implements OnInit {
   sujetos:Sujeto[] = [];  
   tipoFactura:TipoFactura[] = [];  
   mediosPagos:CuentaMayor[] = [];  
-  
+  letras:String[]=[];
   get f() { return this.form.controls; }
   
   constructor(private entityService: FacturaService,private sujetoService : SujetoService,private articuloService:ArticuloService,
     private tipoFacturaService:TipoFacturaService,private cuentaMayorService:CuentaMayorService,private router: Router,private route: ActivatedRoute,
-              private formBuilder: FormBuilder)            
+              private formBuilder: FormBuilder,private dialog: MatDialog,private carritoService: CarritoCompraService)            
               {                      
               }
     
@@ -88,7 +92,7 @@ export class FacturaFormComponent implements OnInit {
         TotalOTributos: new FormControl(this.entity.totalOTributos),
         Total: new FormControl(this.entity.total),
         Obs: new FormControl(this.entity.obs),
-        Detalle:this.formBuilder.array([]),
+        Detalle:this.formBuilder.array([],Validators.required),
         MedioPago:this.formBuilder.array([])
       });
     }
@@ -102,8 +106,13 @@ export class FacturaFormComponent implements OnInit {
    
     addDetalle()
     {
-      let detalleFactura = new DetalleFactura();
-      let item = this.createItem(detalleFactura);           
+      //let detalleFactura = new DetalleFactura();
+      let itemDetalle = new DetalleFactura();    
+      itemDetalle.cantidad = 1;
+      itemDetalle.precio = 0;
+      itemDetalle.total = 0;
+      this.entity.detalle.push(itemDetalle);
+      let item = this.createItem(itemDetalle);           
     }
     addMedioPago()
     {
@@ -119,12 +128,9 @@ export class FacturaFormComponent implements OnInit {
       this.detalle.removeAt(i);
       this.entity.detalle.splice(i,1);
     }
-    createItem(detalleFactura : DetalleFactura):FormGroup {
-      let itemDetalle = new DetalleFactura();    
-      itemDetalle.cantidad = 1;
-      itemDetalle.precio = 0;
-      itemDetalle.total = 0;
-      this.entity.detalle.push(itemDetalle);
+    createItem(itemDetalle : DetalleFactura):FormGroup {
+    
+      
       let item = this.entity.detalle.length;    
       let itemGrp =  this.formBuilder.group({
         Id: this.entity.id,
@@ -186,11 +192,16 @@ export class FacturaFormComponent implements OnInit {
       this.articuloService.findAll().subscribe(res => { this.articulos = res; }, err => {console.log(err); });
       this.tipoFacturaService.findAll().subscribe(res => { this.tipoFactura = res; }, err => {console.log(err); });
       this.cuentaMayorService.findMediosPagos().subscribe(res=>{this.mediosPagos=res},err => {console.log(err); })
+      this.popupLetras();
     }
     popupEntity(entity:Factura):void
     {
       entity.medioPago.forEach(item=>this.createMedioPago(item));
       entity.detalle.forEach(item=>this.createItem(item));
+    }
+    popupLetras(idCondIva:string="")
+    {
+      this.entityService.letrasDisponible(idCondIva).subscribe(res=>this.letras=res);
     }
     
     setDefaultValues():void
@@ -264,6 +275,49 @@ export class FacturaFormComponent implements OnInit {
     {
       this.router.navigate(['ventas/factura/',id]);
     }
+
+    openDialog() {
+
+      const dialogConfig = new MatDialogConfig();
+
+      dialogConfig.disableClose = false;
+      dialogConfig.autoFocus = true;
+      dialogConfig.panelClass="dialog-responsive";
+
+      this.dialog.open(ArticuloSelectComponent, dialogConfig).afterClosed()
+      .subscribe(response => {
+        this.descargaCarrito();
+      });
+  }
+  openDialogAfip() {
+
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass="dialog-responsive";
+
+    this.dialog.open(FacturaAFIPComponent,{data:{id:this.entity.id}}).afterClosed()
+    .subscribe(response => {
+      //alguna Accion
+    });
+}
+
+  descargaCarrito()
+  {
+    var articulos = this.carritoService.getAll();
+    articulos.forEach(element => 
+      {
+        let itemDetalle = new DetalleFactura();
+        itemDetalle.idArticulo = element.articulo.id;
+        itemDetalle.concepto = element.articulo.nombre;
+        itemDetalle.cantidad = element.cantidad;
+        itemDetalle.precio = element.articulo.precioVenta;
+        this.entity.detalle.push(itemDetalle);       
+        let item = this.createItem(itemDetalle);
+    });
+    this.carritoService.deleteAll();
+  }
        
     setControlsError(validationErrors)
     {    

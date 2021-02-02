@@ -1,0 +1,42 @@
+<p>factura-afip works!</p>
+<div class="form-group row">
+    <div class="col-xs-2 col-lg-2">
+        <label for="tipo">Tipo</label>          
+   </div>     
+        <div class="col-xs-1 col-lg-1">
+        <label for="fechaVenc">Letra</label>
+        <input type="text" class="form-control" id="letra"  required name="letra" [(ngModel)]="entity.pe">
+      </div>
+     <div class="col-xs-1 col-md-1">
+        <label for="Pe">Numero</label>
+        <input type="number" class="form-control" id="Pe"  required name="Pe" [(ngModel)]="entity.pe">
+   </div>
+   <div class="col-xs-2 col-md-2"> 
+       <label>_</label>               
+       <input type="number" class="form-control" id="Numero"  required name="Numero" [(ngModel)]="entity.numero">
+  </div>
+  </div>
+<div class="form-group row">
+  <div class="col-xs-2 col-lg-2">
+       <label for="fecha">Fecha</label>
+       <input type="date" class="form-control" id="Fecha" formControlName = "Fecha" required name="Fecha" [ngModel]="entity.fecha | date:'yyyy-MM-dd'">
+  </div>
+  <div class="col-xs-2 col-lg-2">
+    <label for="fechaVenc">Fecha Venc</label>
+    <input type="date" class="form-control" id="FechaVencimiento" formControlName = "FechaVencimiento" required name="Fecha" [ngModel]="entity.fechaVencimiento | date:'yyyy-MM-dd'">
+</div>
+</div>        
+<div class="form-group row">
+    <div class="col-xs-5 col-lg-5">
+        <label for="idCuenta">Cuenta</label>
+        <label for="fechaVenc">entity.sujeto.nombre</label>              
+       </div>  
+</div>
+<div class="row">
+    <div class="col-1">   
+      <button type="submit" class="btn btn-primary">Aceptar</button>    
+    </div> 
+    <div class="col-md-1">
+      <button type="menu" class="btn" (click)="goBack()">Cancelar</button>
+    </div>  
+</div>    

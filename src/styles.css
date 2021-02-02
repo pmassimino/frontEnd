@@ -4,6 +4,12 @@
  * Copyright 2013-2019 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-simple-sidebar/blob/master/LICENSE)
  */
+ @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+ 
+html {
+  font-size: .8rem;
+}
+
  body {
     overflow-x: hidden;
   }
@@ -48,3 +54,28 @@
       margin-left: -15rem;
     }
   }
+
+  .dialog-responsive {
+    width: 40%;
+}
+
+@media only screen and (max-width: 760px) {
+    .dialog-responsive {
+        width: 100%;
+    }
+}
+/*Ocultar Spinner*/
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+  padding: .0rem .0rem
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+   padding: .0rem .0rem
+}
+

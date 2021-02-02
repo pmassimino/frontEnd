@@ -16,7 +16,9 @@ export class EmpresaService extends CrudService<Empresa, string> {
   }
   select(id:string): void
   {
-    localStorage.setItem('empresaSelected', id);  
+    localStorage.setItem('idEmpresaSelected', id);
+    this.findOne(id)
+        .subscribe(data=>{localStorage.setItem('empresaSelected', JSON.stringify(data));})  
   }
   
   handleError(error: HttpErrorResponse) {

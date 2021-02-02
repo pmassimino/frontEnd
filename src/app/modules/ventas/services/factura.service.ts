@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CrudService } from '../../../core/services/crud.service';
 import { Factura } from '../models/model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ConfigService } from '../../../core/services/config.service';
 import { Observable } from 'rxjs';
 
@@ -16,5 +16,11 @@ export class FacturaService extends CrudService<Factura,string> {
   print(id: string): Observable<any>
    {    
     return this.http.get(this.base + id + "/print",{ responseType: "blob" });
+   }
+   letrasDisponible(idCondIva:string): Observable<any>
+   {
+     let params = new HttpParams();
+     params = params.append('idCondIva', idCondIva);    
+     return this.http.get(this.base  + "letrasdisponibles",{params:params});
    }
 }

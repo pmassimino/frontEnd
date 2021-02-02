@@ -3,6 +3,7 @@ import { ModalDismissReasons, NgbModal, NgbModalConfig, NgbModalRef } from '@ng-
 import { ViewChild } from '@angular/core';
 import { EmpresaService } from '../../services/empresa.service';
 import { Empresa } from '../../models/models/model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-empresa-select',
@@ -16,7 +17,7 @@ export class EmpresaSelectComponent implements OnInit {
   entityData: Empresa[] = [];
   modalReference: NgbModalRef;
   
-  constructor(config: NgbModalConfig, private modalService: NgbModal,private service : EmpresaService) {
+  constructor(config: NgbModalConfig, private modalService: NgbModal,private router: Router,private service : EmpresaService) {
     // customize default values of modals used by this component tree
     config.backdrop = 'static';
     config.keyboard = false;    
@@ -54,12 +55,13 @@ export class EmpresaSelectComponent implements OnInit {
   select(entity:Empresa)
   {
     this.service.select(entity.id);
-    this.closeDialog();
+    this.closeDialog();    
 
   }
   
-  closeDialog(){
+  closeDialog(){    
     this.modalReference.close();
+    this.router.navigate(['']);
   }
 
   private getDismissReason(reason: any): string {

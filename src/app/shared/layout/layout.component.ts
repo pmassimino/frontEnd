@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationService } from '../services';
 import { Subscription } from 'rxjs';
+import { Empresa } from '../../modules/global/models/models/model';
 
 @Component({
   selector: 'app-layout',
@@ -10,6 +11,7 @@ import { Subscription } from 'rxjs';
 export class LayoutComponent implements OnInit {
   toggled = false;
   subscription: Subscription = new Subscription();
+ 
 
   constructor(public navigationService: NavigationService) { }
 
@@ -19,6 +21,7 @@ export class LayoutComponent implements OnInit {
           this.toggled= !isVisible;          
       })
   );
+ 
   }
 
   

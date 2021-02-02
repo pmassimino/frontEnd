@@ -36,6 +36,10 @@ import { UnidadMedida } from '../../global/models/models/model';
         familia?: Familia;
         unidadMedida?: UnidadMedida;
     }
+    export class ItemCarrito {
+        articulo: Articulo;
+        cantidad: number;        
+    }
 
     
     
