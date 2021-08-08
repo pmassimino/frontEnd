@@ -1,9 +1,9 @@
-import { UnidadMedida } from '../../global/models/models/model';
+import { CondIvaOperacion, UnidadMedida } from '../../global/models/models/model';
 
     export class Familia {
-        id: number;
-        nombre: string;
-        idFamilia: string;
+        Id: number;
+        Nombre: string;
+        IdFamilia: string;
     }
 
         export class Articulo {
@@ -13,32 +13,32 @@ import { UnidadMedida } from '../../global/models/models/model';
             public _nombre?: string
         )
         {
-            this.id=_id;
-            this.nombre=_nombre;
+            this.Id=_id;
+            this.Nombre=_nombre;
         }
-        id: string;
-        nombre: string;
-        idFamilia?: string;
-        idUnidad?: string;
-        estado?: string;
-        costoVenta: number = 0;
-        impuestoVenta: number = 0;
-        precioVenta: number = 0;
-        alicuotaIva: number = 0;
-        condIva?: string;
-        precioVentaFinal: number = 0;
-        margenVenta: number = 0;
-        stockMinimo: number = 0;
-        stockActual: number = 0;
-        stockReposicion: number = 0;
-        stockMaximo: number = 0;
-        observacion?: string;
-        familia?: Familia;
-        unidadMedida?: UnidadMedida;
+        Id: string;
+        Nombre: string;
+        IdFamilia?: string;
+        IdUnidad?: string;
+        Estado?: string;
+        CostoVenta: number = 0;
+        ImpuestoVenta: number = 0;
+        PrecioVenta: number = 0;
+        AlicuotaIva: number = 0;
+        CondIva?: string;
+        PrecioVentaFinal: number = 0;
+        MargenVenta: number = 0;
+        StockMinimo: number = 0;
+        StockActual: number = 0;
+        StockReposicion: number = 0;
+        StockMaximo: number = 0;
+        Observacion?: string;
+        Familia?: Familia;
+        UnidadMedida?: UnidadMedida;        
     }
     export class ItemCarrito {
-        articulo: Articulo;
-        cantidad: number;        
+        Articulo: Articulo;
+        Cantidad: number;        
     }
 
     

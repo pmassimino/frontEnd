@@ -14,17 +14,17 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of data">
-              <td>{{item.id}}</td>
-              <td>{{item.nombre}}</td>
+              <td>{{item.Id}}</td>
+              <td>{{item.Nombre}}</td>
               <td>
-                <div *ngIf="item.idUso=='1'" >
-                <a   [routerLink]="['/contable/cuentamayor/add/']" [queryParams]="{idSuperior:item.id}">
+                <div *ngIf="item.IdUso=='1'" >
+                <a   [routerLink]="['/contable/cuentamayor/add/']" [queryParams]="{IdSuperior:item.Id}">
                   <mat-icon class="align-middle">add_circle</mat-icon>
                 </a>
                  </div>
               </td>
               <td>
-                <a [routerLink]="['/contable/cuentamayor', item.id]">
+                <a [routerLink]="['/contable/cuentamayor', item.Id]">
                   <i class="material-icons">mode_edit</i>
                 </a>
               </td>

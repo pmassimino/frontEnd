@@ -2,85 +2,85 @@ import { Articulo } from '../../almacen/models/model';
 import { Sujeto } from '../../comun/models/model';
 
 export class Factura {
-    id: string;
-    idEmpresa: string;
-    idSucursal: string;
-    idArea: string;
-    idSeccion: string;
-    idTransaccion: string;
-    tipo: string;
-    letra: string;
-    pe: number;
-    numero: number;
-    fecha: string;
-    fechaComp: string;
-    fechaVencimiento: string;
-    idMoneda: string;
-    cotizacionMoneda: number;
-    idCuenta: string;
-    cae: number;
-    idConceptoAfip: number;
-    totalNeto: number;
-    porDescuento: number;
-    totalDescuento: number;
-    total: number;
-    totalExento: number;
-    totalGravado: number;
-    totalNoGravado: number;
-    totalIva: number;
-    totalOTributos: number;
-    obs: string;
-    detalle: DetalleFactura[]=[];
-    iva: DetalleIva[]=[];
-    tributos: DetalleTributos[]=[];
-    medioPago: MedioPago[]=[];
-    sujeto: Sujeto;
+    Id: string;
+    IdEmpresa: string;
+    IdSucursal: string;
+    IdArea: string;
+    IdSeccion: string;
+    IdTransaccion: string;
+    Tipo: string;
+    Letra: string;
+    Pe: number;
+    Numero: number;
+    Fecha: string;
+    FechaComp: string;
+    FechaVencimiento: string;
+    IdMoneda: string;
+    CotizacionMoneda: number;
+    IdCuenta: string;
+    Cae: number;
+    IdConceptoAfip: number;
+    TotalNeto: number;
+    PorDescuento: number=0;
+    TotalDescuento: number;    
+    TotalExento: number;
+    TotalGravado: number;
+    TotalNoGravado: number;
+    TotalIva: number;
+    TotalOTributos: number;
+    Total: number;    
+    Obs: string;
+    Detalle: DetalleFactura[]=[];
+    Iva: DetalleIva[]=[];
+    Tributos: DetalleTributos[]=[];
+    MedioPago: MedioPago[]=[];
+    Sujeto: Sujeto;
 }
 
 export class DetalleFactura {
-    id: string;
-    item: number;
-    idArticulo: string;
-    idUnidadMedida: string;
-    cantidad: number;
-    concepto: string;
-    precio: number;
-    porBonificacion: number;
-    bonificacion: number;
-    gravado: number;
-    condIva: string;
-    iva: number;
-    noGravado: number;
-    exento: number;
-    total: number;
-    lote: string;
-    serie: string;
-    articulo: Articulo;
+    Id: string;
+    Item: number;
+    IdArticulo: string;
+    IdUnidadMedida: string;
+    Cantidad: number;
+    Concepto: string;
+    CondIva: string="";
+    Precio: number;
+    PorBonificacion: number=0;
+    Bonificacion: number=0;
+    Gravado: number=0;    
+    Iva: number=0;
+    NoGravado: number=0;
+    Exento: number=0;
+    Total: number=0;
+    Lote: string;
+    Serie: string;
+    Articulo: Articulo;
 }
 
 export class DetalleIva {
-    id: string;
-    item: number;
-    condIva: string;
-    baseImponible: number;
-    importe: number;
+    Id: string;
+    Item: number;
+    CondIva: string;
+    BaseImponible: number;
+    Importe: number;
 }
 
 export class DetalleTributos {
-    id: string;
-    item: number;
-    idTributo: string;
-    nombre: string;
-    baseImponible: number;
-    tarifa: number;
-    importe: number;
+    Id: string;
+    Item: number;
+    IdTributo: string;
+    Nombre: string;
+    BaseImponible: number;
+    Tarifa: number;
+    Importe: number;
 }
 
 export class MedioPago {
-    id: string;
-    item: number;
-    idCuentaMayor: string;
-    concepto: string;
-    importe: number;
-    fechaVenc: string;
+    Id: string;
+    Item: number;
+    IdCuentaMayor: string;
+    Concepto: string;
+    Importe: number;
+    FechaVenc: string;
 }

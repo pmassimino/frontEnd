@@ -16,13 +16,13 @@
           </thead>
           <tbody>
           <ng-container *ngFor="let item of data">            
-            <tr *ngFor="let itemD of item.detalle">
-              <td>{{item.fecha | date:'dd-MM-yyyy'}}</td>
-              <td>{{item.pe.toString().padStart(4 ,"0")}}-{{item.numero.toString().padStart(8 ,"0")  }}</td>
-              <td>{{itemD.idCuentaMayor}}</td>
-              <td>{{itemD.concepto}}</td>           
-              <td><span *ngIf="itemD.idTipo=='1'">{{itemD.importe}}</span></td> 
-              <td><span *ngIf="itemD.idTipo=='2'">{{itemD.importe}}</span></td>
+            <tr *ngFor="let itemD of item.Detalle">
+              <td>{{item.Fecha | date:'dd-MM-yyyy'}}</td>
+              <td>{{item.Pe.toString().padStart(4 ,"0")}}-{{item.Numero.toString().padStart(8 ,"0")  }}</td>
+              <td>{{itemD.IdCuentaMayor}}</td>
+              <td>{{itemD.Concepto}}</td>           
+              <td><span *ngIf="itemD.IdTipo=='1'">{{itemD.Importe}}</span></td> 
+              <td><span *ngIf="itemD.IdTipo=='2'">{{itemD.Importe}}</span></td>
               <td></td>
             </tr>
           </ng-container>

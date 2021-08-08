@@ -54,7 +54,7 @@ export class EmpresaSelectComponent implements OnInit {
   }
   select(entity:Empresa)
   {
-    this.service.select(entity.id);
+    this.service.select(entity.Id);
     this.closeDialog();    
 
   }

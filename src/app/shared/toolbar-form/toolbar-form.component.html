@@ -5,8 +5,8 @@
       </button> 
       <div class="navbar-collapse collapse" id="navbarsMenuForm">           
         <ul class="navbar-nav">
-              <li class="nav-item"><button [disabled]="mode!='edit'"(click)="onPrint()"  class="navbar-brand btn"><mat-icon class="align-middle">print</mat-icon></button></li>
-          </ul>
+            <li class="nav-item"><button  (click)="onPrint()"  class="navbar-brand btn"><mat-icon class="align-middle">print</mat-icon></button></li>
+        </ul>
         <ng-container *ngTemplateOutlet="toolbarTemplate">
         </ng-container>
           <ul class="navbar-nav">

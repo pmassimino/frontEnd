@@ -37,19 +37,14 @@ constructor(private entityService: FamiliaService,
     else //set default values
     {
       this.setDefaultValues();
-    }
-    
-
-    this.createForm();
-    this.calculateOnInit();
+    }   
     }
 
   createForm():void
     {
-      this.form = this.formBuilder.group({
-      id: new FormControl(this.entity.id,Validators.required),
-      nombre: new FormControl(this.entity.nombre,Validators.required)});
-      
+      this.form = new FormGroup({
+      Id: new FormControl(this.entity.Id,Validators.required),
+      Nombre: new FormControl(this.entity.Nombre,Validators.required)});      
   }
 
   popupData():void
@@ -57,12 +52,11 @@ constructor(private entityService: FamiliaService,
   }
   setDefaultValues():void
   {
-    this.entityService.newDefault().subscribe(res=>this.entity=res,err => {console.log(err);});
-
+    this.entityService.newDefault().subscribe(res=>{this.entity=res;this.createForm();},err => {console.log(err);});
   }
   getById(id):void
   {
-    this.entityService.findOne(id).subscribe(res=>this.entity = res);
+    this.entityService.findOne(id).subscribe(res=>{this.entity = res,this.createForm();});
   }
  new(): void
   {
@@ -82,7 +76,7 @@ constructor(private entityService: FamiliaService,
      }
      else //Edit
      {
-      this.entityService.update(this.entity.id,this.form.value)
+      this.entityService.update(this.entity.Id,this.form.value)
       .subscribe(data => {console.log(data);
                  this.goBack();this.submitted = true; }, error => {
                  console.log(error);                 
@@ -92,10 +86,9 @@ constructor(private entityService: FamiliaService,
      }
   }
   
-  calculateOnInit():void{         
   
-}
-  onSubmit() {
+  onSubmit() 
+  {
      this.save();
   }
 
@@ -115,7 +108,7 @@ constructor(private entityService: FamiliaService,
                    }
        });    
   }
-  get id() { return this.form.get('id'); }
+  get id() { return this.form.get('Id'); }
 
 
 }

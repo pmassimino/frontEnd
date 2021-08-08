@@ -1,92 +1,92 @@
 export class Sujeto {
-    id: string;
-    nombre: string;
-    nombreComercial: string;
-    idTipoDoc: string;
-    numeroDocumento: number;
-    idLocalidad: string;
-    domicilio: string;
-    altura: number;
-    piso: number;
-    oficina: number;
-    telefono1: string;
-    telefono2: string;
-    telefono3: string;
-    movil1: string;
-    movil2: string;
-    movil3: string;
-    fax1: string;
-    fax2: string;
-    fax3: string;
-    email1: string;
-    email2: string;
-    email3: string;
-    idCondicionIva: string;
-    idCondicionGanancia: string;
-    idCondicionIB: string;
-    numeroIB: number;
-    idCondicionProductor: string;
-    estado: string;
-    domicilios: Domicilio[];
-    rolSujeto: RolSujeto[]=[];
-    vehiculos: Vehiculo[];
-    contactos: Contacto[];
+    Id: string;
+    Nombre: string;
+    NombreComercial: string;
+    IdTipoDoc: string;
+    NumeroDocumento: number;
+    IdLocalidad: string;
+    Domicilio: string;
+    Altura: number;
+    Piso: number;
+    Oficina: number;
+    Telefono1: string;
+    Telefono2: string;
+    Telefono3: string;
+    Movil1: string;
+    Movil2: string;
+    Movil3: string;
+    Fax1: string;
+    Fax2: string;
+    Fax3: string;
+    Email1: string;
+    Email2: string;
+    Email3: string;
+    IdCondicionIva: string;
+    IdCondicionGanancia: string;
+    IdCondicionIB: string;
+    NumeroIB: number;
+    IdCondicionProductor: string;
+    Estado: string;
+    Domicilios: Domicilio[];
+    RolSujeto: RolSujeto[]=[];
+    Vehiculos: Vehiculo[];
+    Contactos: Contacto[];
 }
 
 export class Domicilio {
-    id: string;
-    idSujeto: string;
-    nombre: string;
-    idLocalidad: string;
-    direccion: string;
-    altura: number | null;
-    codigoPostal: string;
-    codigoPlanta: number | null;
-    sujeto: Sujeto;
+    Id: string;
+    IdSujeto: string;
+    Nombre: string;
+    IdLocalidad: string;
+    Direccion: string;
+    Altura: number | null;
+    CodigoPostal: string;
+    CodigoPlanta: number | null;
+    Sujeto: Sujeto;
 }
 export class Vehiculo {
-    id: string;
-    idSujeto: string;
-    nombre: string;
-    nombreChofer: string;
-    numeroDocumento: number;
-    patenteChasis: string;
-    patenteAcoplado: string;
-    sujeto: Sujeto;
+    Id: string;
+    IdSujeto: string;
+    Nombre: string;
+    NombreChofer: string;
+    NumeroDocumento: number;
+    PatenteChasis: string;
+    PatenteAcoplado: string;
+    Sujeto: Sujeto;
 }
 
 export class Contacto {
-    id: string;
-    idSujeto: string;
-    nombre: string;
-    cargo: string;
-    telefono1: string;
-    telefono2: string;
-    telefono3: string;
-    movil1: string;
-    movil2: string;
-    movil3: string;
-    email1: string;
-    email2: string;
-    email3: string;
-    sujeto: Sujeto;
+    Id: string;
+    IdSujeto: string;
+    Nombre: string;
+    Cargo: string;
+    Telefono1: string;
+    Telefono2: string;
+    Telefono3: string;
+    Movil1: string;
+    Movil2: string;
+    Movil3: string;
+    Email1: string;
+    Email2: string;
+    Email3: string;
+    Sujeto: Sujeto;
 }
 
 export class RolSujeto {
 
     constructor(idRol:string,idSujeto:string) {
-        this.idRol=idRol;
-        this.idSujeto = idSujeto;
+        this.IdRol=idRol;
+        this.IdSujeto = idSujeto;
     }
-    idSujeto: string;
-    idRol: string;
-    dateAdd: string | null;
-    rol: Rol;
-    sujeto: Sujeto;
+    IdSujeto: string;
+    IdRol: string;
+    DateAdd: string | null;
+    Rol: Rol;
+    Sujeto: Sujeto;
 }
 
 export class Rol {
-    id: string;
-    nombre: string;
+    Id: string;
+    Nombre: string;
 }
 

@@ -17,18 +17,18 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of data">
-              <td>{{item.fecha | date:'dd-MM-yyyy'}}</td>
-              <td><span *ngIf="item.tipo=='1'">FACTURA</span><span *ngIf="item.tipo=='2'">NOTA DE CREDITO</span></td>
-              <td>{{item.pe.toString().padStart(4 ,"0")}}-{{item.numero.toString().padStart(8 ,"0")  }}</td>
-              <td>{{item.sujeto.nombre}}</td>
-              <td>{{item.total}}</td>            
+              <td>{{item.Fecha | date:'dd-MM-yyyy'}}</td>
+              <td><span *ngIf="item.Tipo=='1'">FACTURA</span><span *ngIf="item.Tipo=='2'">NOTA DE CREDITO</span></td>
+              <td>{{item.Pe.toString().padStart(4 ,"0")}}-{{item.Numero.toString().padStart(8 ,"0")  }}</td>
+              <td>{{item.Sujeto.Nombre}}</td>
+              <td>{{item.Total}}</td>            
               <td>
-                <a [routerLink]="['/ventas/factura', item.id]">
+                <a [routerLink]="['/ventas/factura', item.Id]">
                   <i class="material-icons">mode_edit</i>
                 </a>
               </td>
-              <td><a (click)="print(item.id)"><i class="material-icons btn">print</i></a></td>
-              <td> <a (click)="delete(item)" >
+              <td><a (click)="print(item.Id)"><i class="material-icons btn">print</i></a></td>
+              <td> <a *ngIf="item.Cae == 0" (click)="delete(item)" >
                 <i class="material-icons btn">delete</i>
               </a></td>
             </tr>

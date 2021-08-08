@@ -3,7 +3,7 @@ import { ArticuloService } from '../../services/articulo.service';
 import { Articulo, Familia } from '../../models/model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FamiliaService } from '../../services/familia.service';
-import { FormControl, FormGroup, Validators, FormBuilder , ReactiveFormsModule} from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormBuilder} from '@angular/forms';
 import { CondIvaOperacion, UnidadMedida } from '../../../global/models/models/model';
 import { CondIvaOperacionService } from '../../../global/services/cond-iva-operacion.service';
 import { UnidadMedidaService } from '../../../global/services/unidad-medida.service';
@@ -14,8 +14,8 @@ import { UnidadMedidaService } from '../../../global/services/unidad-medida.serv
   styleUrls: ['./articulo-form.component.css']
 })
 export class ArticuloFormComponent implements OnInit {
-form :  FormGroup;
-articulo: Articulo = new Articulo();
+myForm :  FormGroup;
+entity: Articulo = new Articulo();
 condIva: CondIvaOperacion[] = [];
 familia: Familia[] = [];
 unidadMedida:UnidadMedida[]=[]
@@ -35,6 +35,7 @@ constructor(private articuloService: ArticuloService, private condIvaOpService: 
   ngOnInit(): void {
     this.popupData();    
     this._id = this.route.snapshot.params['id'];
+    this.createForm();
     //editar
     if(this._id)
     { 
@@ -45,26 +46,23 @@ constructor(private articuloService: ArticuloService, private condIvaOpService: 
     {
       this.setDefaultValues();
     }
-    
-
-    this.createForm();
-    this.calculateOnInit();
     }
 
   createForm():void
     {
-      this.form = this.formBuilder.group({
-      id: new FormControl(this.articulo.id,Validators.required),
-      nombre: new FormControl(this.articulo.nombre,Validators.required),
-      idFamilia: new FormControl(this.articulo.idFamilia),
-      idUnidad: new FormControl(this.articulo.idUnidad),
-      costoVenta: new FormControl(this.articulo.costoVenta),
-      impuestoVenta: new FormControl(this.articulo.impuestoVenta),
-      condIva:new FormControl(this.articulo.condIva),
-      alicuotaIva: new FormControl(this.articulo.alicuotaIva),
-      margenVenta: new FormControl(this.articulo.margenVenta),
-      precioVenta: new FormControl(this.articulo.precioVenta),
-      precioVentaFinal: new FormControl(this.articulo.precioVentaFinal)});
+      this.myForm = new FormGroup({
+      Id: new FormControl(this.entity.Id,Validators.required),
+      Nombre: new FormControl(this.entity.Nombre,Validators.required),
+      IdFamilia: new FormControl(this.entity.IdFamilia),
+      IdUnidad: new FormControl(this.entity.IdUnidad),
+      CostoVenta: new FormControl(this.entity.CostoVenta),
+      ImpuestoVenta: new FormControl(this.entity.ImpuestoVenta),
+      CondIva:new FormControl(this.entity.CondIva),
+      AlicuotaIva: new FormControl(this.entity.AlicuotaIva),
+      MargenVenta: new FormControl(this.entity.MargenVenta),
+      PrecioVenta: new FormControl(this.entity.PrecioVenta),
+      PrecioVentaFinal: new FormControl(this.entity.PrecioVentaFinal)});
+      this.calculate();      
   }
 
   popupData():void
@@ -77,12 +75,12 @@ constructor(private articuloService: ArticuloService, private condIvaOpService: 
   }
   setDefaultValues():void
   {
-    this.articuloService.newDefault().subscribe(articulo=>this.articulo=articulo,err => {console.log(err);});
+    this.articuloService.newDefault().subscribe(res=>{this.entity=res;this.createForm();},err => {console.log(err);});
 
   }
   getById(id):void
   {
-    this.articuloService.findOne(id).subscribe(res=>this.articulo = res);
+    this.articuloService.findOne(id).subscribe(res=>{this.entity = res;this.createForm();});
   }
  new(): void
   {
@@ -90,12 +88,13 @@ constructor(private articuloService: ArticuloService, private condIvaOpService: 
   }
   condIvaChange(args)
   { 
-    this.articulo.alicuotaIva = this.condIva.find(x=>x. id ===this.articulo.condIva).alicuota; 
+    let alicuotaIva = this.condIva.find(x=>x. Id ===this.myForm.get("CondIva").value).Alicuota;    
+    this.myForm.get("AlicuotaIva").patchValue(alicuotaIva); 
    } 
   save() 
   {
     if( this.mode=="new"){  //new
-    this.articuloService.add(this.form.value)
+    this.articuloService.add(this.myForm.value)
     .subscribe(data => {console.log(data);
                this.goBack();this.submitted = true; }, 
                error => {console.log(error);               
@@ -105,7 +104,7 @@ constructor(private articuloService: ArticuloService, private condIvaOpService: 
      }
      else //Edit
      {
-      this.articuloService.update(this.articulo.id,this.form.value)
+      this.articuloService.update(this.entity.Id,this.myForm.value)
       .subscribe(data => {console.log(data);
                  this.goBack();this.submitted = true; }, error => {
                  console.log(error);                 
@@ -115,12 +114,12 @@ constructor(private articuloService: ArticuloService, private condIvaOpService: 
      }
   }
   
-  calculateOnInit():void{
-      this.form.valueChanges.subscribe(val =>{
-      const newPrecioVenta =((val.costoVenta * val.margenVenta/ 100) + val.impuestoVenta + val.costoVenta);
-      const newPrecioVentaFinal = (((newPrecioVenta - val.impuestoVenta) * val.alicuotaIva/ 100) + newPrecioVenta);
-      this.form.controls.precioVenta.patchValue(newPrecioVenta, {emitEvent: false});
-      this.form.controls.precioVentaFinal.patchValue(newPrecioVentaFinal, {emitEvent: false});        
+  calculate():void{
+    this.myForm.valueChanges.subscribe(val =>{
+      const newPrecioVenta =((val.CostoVenta * val.MargenVenta/ 100) + val.ImpuestoVenta + val.CostoVenta);
+      const newPrecioVentaFinal = (((newPrecioVenta - val.ImpuestoVenta) * val.AlicuotaIva/ 100) + newPrecioVenta);
+      this.myForm.controls.PrecioVenta.patchValue(newPrecioVenta, {emitEvent: false});
+      this.myForm.controls.PrecioVentaFinal.patchValue(newPrecioVentaFinal, {emitEvent: false});        
   });
 }
   onSubmit() {
@@ -135,7 +134,7 @@ constructor(private articuloService: ArticuloService, private condIvaOpService: 
   {    
     Object.keys(validationErrors).forEach(prop=>
       {
-        const formControl = this.form.get(prop);
+        const formControl = this.myForm.get(prop);
         if (formControl)
            {
             formControl.setErrors({serverError: validationErrors[prop]});
@@ -143,7 +142,5 @@ constructor(private articuloService: ArticuloService, private condIvaOpService: 
                    }
        });    
   }
-  get id() { return this.form.get('id'); }
-
 
 }

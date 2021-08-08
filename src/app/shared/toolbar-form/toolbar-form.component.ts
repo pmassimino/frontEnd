@@ -6,8 +6,10 @@ import { Component, OnInit, Input, EventEmitter, Output, TemplateRef } from '@an
   styleUrls: ['./toolbar-form.component.css']
 })
 export class ToolbarFormComponent implements OnInit {
-  @Input() mode:string=""
-  @Input() toolbarTemplate: TemplateRef<any>
+  @Input() 
+  mode:string="";
+  @Input() 
+  toolbarTemplate: TemplateRef<any>;
   //Events
   @Output()
   print = new EventEmitter();
@@ -17,7 +19,7 @@ export class ToolbarFormComponent implements OnInit {
   findByName = new EventEmitter<string>();
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
   
   onExportToExcel()

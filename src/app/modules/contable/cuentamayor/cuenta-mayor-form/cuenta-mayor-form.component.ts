@@ -34,8 +34,8 @@ export class CuentaMayorFormComponent implements OnInit {
     
     ngOnInit(): void {
       this.popupData();    
-      this._id = this.route.snapshot.params['id'];
-      this._idSuperior = this.route.snapshot.queryParamMap.get('idSuperior');
+      this._id = this.route.snapshot.params['Id'];
+      this._idSuperior = this.route.snapshot.queryParamMap.get('IdSuperior');
       //editar
       if(this._id)
       { 
@@ -48,18 +48,18 @@ export class CuentaMayorFormComponent implements OnInit {
       }
       
   
-      this.createForm();
+      //this.createForm();
       this.calculateOnInit();
       }
   
     createForm():void
       {
         this.form = this.formBuilder.group({
-        id: new FormControl(this.entity.id,Validators.required),
-        idSuperior: new FormControl(this.entity.idSuperior),
-        nombre: new FormControl(this.entity.nombre,Validators.required),
-        IdTipo: new FormControl(this.entity.idTipo,Validators.required),
-        IdUso: new FormControl(this.entity.idUso,{ validators: Validators.required})               
+        Id: new FormControl(this.entity.Id,Validators.required),
+        IdSuperior: new FormControl(this.entity.IdSuperior),
+        Nombre: new FormControl(this.entity.Nombre,Validators.required),
+        IdTipo: new FormControl(this.entity.IdTipo,Validators.required),
+        IdUso: new FormControl(this.entity.IdUso,{ validators: Validators.required})               
       });
     }
   
@@ -70,13 +70,13 @@ export class CuentaMayorFormComponent implements OnInit {
     }
     setDefaultValues():void
     {
-      this.entityService.newDefault().subscribe(res=>{this.entity=res;this.entity.idSuperior=this._idSuperior;},err => {console.log(err);});
+      this.entityService.newDefault().subscribe(res=>{this.entity=res;this.entity.IdSuperior=this._idSuperior;this.createForm();},err => {console.log(err);});
       
     }
        
     getById(id):void
     {
-      this.entityService.findOne(id).subscribe(res=>this.entity = res);
+      this.entityService.findOne(id).subscribe(res=>{this.entity = res;this.createForm()});
     }
    new(): void
     {
@@ -94,7 +94,7 @@ export class CuentaMayorFormComponent implements OnInit {
        }
        else //Edit
        {
-        this.entityService.update(this.entity.id,this.form.value)
+        this.entityService.update(this.entity.Id,this.form.value)
         .subscribe(data => {this.goBack();}, error => {
                    console.log(error);                 
                    this.setControlsError(error.error);               
@@ -103,7 +103,8 @@ export class CuentaMayorFormComponent implements OnInit {
        }
     }
     
-  calculateOnInit():void{         
+  calculateOnInit():void
+  {         
    
   }
     onSubmit() {
@@ -126,5 +127,5 @@ export class CuentaMayorFormComponent implements OnInit {
                      }
          });    
     }
-    get id() { return this.form.get('id'); }
+    get id() { return this.form.get('Id'); }
 }

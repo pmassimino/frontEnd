@@ -23,4 +23,11 @@ export class FacturaService extends CrudService<Factura,string> {
      params = params.append('idCondIva', idCondIva);    
      return this.http.get(this.base  + "letrasdisponibles",{params:params});
    }
+   autorizar(id:string): Observable<any>
+   {
+     let params = new HttpParams();
+     params = params.append('id', id);    
+     return this.http.get(this.base + id  + "/autorizar");
+   }
+
 }

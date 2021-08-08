@@ -55,6 +55,7 @@ constructor(private entityService: SujetoService,rolService : RolService, coreSe
     this.popupData();    
     this._id = this.route.snapshot.params['id'];
     this._idSuperior = this.route.snapshot.params['idSuperior'];
+    this.createForm();
     //editar
     if(this._id)
     { 
@@ -66,25 +67,24 @@ constructor(private entityService: SujetoService,rolService : RolService, coreSe
       this.setDefaultValues();
     }
     
-
-    this.createForm();
+    
     this.calculateOnInit();
     }
 
   createForm():void
     {
-      this.form = this.formBuilder.group({
-      id: new FormControl(this.entity.id,Validators.required),
-      nombre: new FormControl(this.entity.nombre,Validators.required),
-      nombreComercial: new FormControl(this.entity.nombreComercial,Validators.required),
-      domicilio: new FormControl(this.entity.domicilio),
-      altura: new FormControl(this.entity.altura),
-      idLocalidad: new FormControl(this.entity.idLocalidad),
-      IdCondicionIva: new FormControl(this.entity.idCondicionIva),
-      IdTipoDoc: new FormControl(this.entity.idTipoDoc,{ validators: Validators.required}),
-      NumeroDocumento:new FormControl(this.entity.numeroDocumento, { validators: Validators.required, asyncValidators: [this.numeroDocumentoValidator.bind(this)], updateOn: 'blur' }),
-      email1: new FormControl(this.entity.domicilio,Validators.email),
-      rolSujeto:new FormArray([this.createItem()])        
+      this.form = new FormGroup({
+      Id: new FormControl(this.entity.Id,Validators.required),
+      Nombre: new FormControl(this.entity.Nombre,Validators.required),
+      NombreComercial: new FormControl(this.entity.NombreComercial,Validators.required),
+      Domicilio: new FormControl(this.entity.Domicilio),
+      Altura: new FormControl(this.entity.Altura),
+      IdLocalidad: new FormControl(this.entity.IdLocalidad),
+      IdCondicionIva: new FormControl(this.entity.IdCondicionIva),
+      IdTipoDoc: new FormControl(this.entity.IdTipoDoc,{ validators: Validators.required}),
+      NumeroDocumento:new FormControl(this.entity.NumeroDocumento, { validators: Validators.required, updateOn: 'blur' }),
+      Email1: new FormControl(this.entity.Domicilio,Validators.email),
+      RolSujeto:new FormArray([this.createItem()])        
     });
   }
 
@@ -95,21 +95,21 @@ constructor(private entityService: SujetoService,rolService : RolService, coreSe
   }
   setDefaultValues():void
   {
-    this.entityService.newDefault().subscribe(res=>this.entity=res,err => {console.log(err);});
+    this.entityService.newDefault().subscribe(res=>{this.entity=res;this.createForm();},err => {console.log(err);});
     //this.addRolSujeto();
   }
   
   createItem(): FormGroup {
-    let rol = new RolSujeto("1",this.entity.id);    
-    this.entity.rolSujeto.push(rol);    
+    let rol = new RolSujeto("1",this.entity.Id);    
+    this.entity.RolSujeto.push(rol);    
     return this.formBuilder.group({
-      idRol: rol.idRol,
-      idSujeto: this.entity.id
+      idRol: rol.IdRol,
+      idSujeto: this.entity.Id
     });
   }
   getById(id):void
   {
-    this.entityService.findOne(id).subscribe(res=>this.entity = res);
+    this.entityService.findOne(id).subscribe(res=>{this.entity = res,this.createForm();});
   }
  new(): void
   {
@@ -119,8 +119,8 @@ constructor(private entityService: SujetoService,rolService : RolService, coreSe
   save() 
   {
     //Update Items
-    for (var item of this.form.value.rolSujeto) {
-        item.idSujeto = this.entity.id;
+    for (var item of this.form.value.RolSujeto) {
+        item.idSujeto = this.entity.Id;
     }
     if( this.mode=="new"){  //new
     this.entityService.add(this.form.value)
@@ -130,7 +130,7 @@ constructor(private entityService: SujetoService,rolService : RolService, coreSe
      }
      else //Edit
      {
-      this.entityService.update(this.entity.id,this.form.value)
+      this.entityService.update(this.entity.Id,this.form.value)
       .subscribe(data => {this.goBack();}, error => {
                  console.log(error);                 
                  this.setControlsError(error.error);               
@@ -171,7 +171,7 @@ constructor(private entityService: SujetoService,rolService : RolService, coreSe
                    }
        });    
   }
-  get id() { return this.form.get('id'); }
+  get id() { return this.form.get('Id'); }
 
 
 }

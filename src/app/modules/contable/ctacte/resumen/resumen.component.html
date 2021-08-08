@@ -1,0 +1,33 @@
+<app-layout>
+    <div toolbar >
+      <app-toolbar  [addNewVisible]="false" [printVisible]="true" (findByName)="findByName($event)" (print)="onPrint()" ></app-toolbar>
+    </div>
+    <div><input type="text" class="form-control"  [readonly]></div>
+      <table class="table table-hover table-responsive-sm">
+          <thead>
+            <tr>
+              <th class="th-sm">Fecha</th>
+              <th class="th-sm">Numero</th>
+              <th class="th-sm">Concepto                     </th> 
+              <th>Debe</th>     
+              <th>Haber</th>           
+              <th>Saldo</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of entity">
+              <td>{{item.MovCtaCte.Fecha | date:'dd-MM-yyyy'}}</td>
+              <td>{{item.MovCtaCte.Pe.toString().padStart(4 ,"0")}}-{{item.MovCtaCte.Numero.toString().padStart(8 ,"0")  }}</td>  
+              <td>{{item.MovCtaCte.Concepto}}</td>          
+              <td>{{item.Debe}}</td>            
+              <td>{{item.Haber}}</td>
+              <td>{{item.Saldo}}</td>                        
+              <td></td>
+              <td>
+                   </td>
+            </tr>
+          </tbody>
+        </table>
+   </app-layout>

@@ -52,7 +52,7 @@ export class FacturaListComponent implements OnInit {
       if (confirm("Seguro quiere eliminar  " + entity.nombre + "?")) {
         var index = this.data.indexOf(entity);
         this.data.splice(index, 1);    
-        this.entityService.delete(entity.id)
+        this.entityService.delete(entity.Id)
           .subscribe(null,
             err => {
               alert("El item no se puede eliminar.");

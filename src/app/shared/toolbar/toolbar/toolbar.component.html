@@ -10,8 +10,11 @@
                 <input type="text" class="form-control" placeholder="Buscar" [ngModel]="name" (ngModelChange) = "onFindByName($event)" id="NameFilter" name="NameFilter">
             </div>            
         </form>        
-        <ul class="navbar-nav">
+          <ul *ngIf="addNewVisible==true" class="navbar-nav">
               <li class="nav-item"><button (click)="onAddNew()"  class="navbar-brand btn"><mat-icon class="align-middle">add_circle</mat-icon></button></li>
+          </ul>
+          <ul *ngIf="printVisible==true" class="navbar-nav">
+            <li class="nav-item"><button (click)="onPrint()"  class="navbar-brand btn"><mat-icon class="align-middle">print</mat-icon></button></li>
           </ul>
           <ul class="navbar-nav">
             <li class="nav-item"><a (click)="onExportToExcel()"  class="btn"><i class="fa fa-file-excel-o align-middle" aria-hidden="true"></i></a></li>

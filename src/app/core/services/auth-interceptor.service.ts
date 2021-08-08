@@ -22,9 +22,9 @@ export class AuthInterceptorService implements HttpInterceptor {
     //request = req.clone({ headers: req.headers.set("Content-Type","application/json")});
    
     if (token) {   
-      request = req.clone({ headers: req.headers.set("Authorization", 'Bearer '+ token)});     
+     request = req.clone({ headers: req.headers.set("Authorization", 'Bearer '+ token)});     
     }
-    if (idEmpresa)
+    if (idEmpresa != 'undefined')
     {
       request = req.clone({ headers: request.headers.set('IdEmpresa', idEmpresa) });
     }
@@ -35,7 +35,16 @@ export class AuthInterceptorService implements HttpInterceptor {
         if (err.status === 401) {
           this.router.navigateByUrl('/login');
         }
-
+        let errorMessage = '';
+        if (err.error instanceof ErrorEvent) {
+          // client-side error
+          errorMessage = `Error: ${err.error.message}`;
+        } else {
+          // server-side error
+          errorMessage = `Error Code: ${err.status}\nMessage: ${err.error}`;
+        }
+        //window.alert(errorMessage);        
+        //return throwError(errorMessage);
         return throwError( err );
 
       })

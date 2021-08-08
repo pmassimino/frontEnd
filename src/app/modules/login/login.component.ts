@@ -31,7 +31,7 @@ export class LoginComponent {
     .subscribe(
       data => {
         localStorage.setItem('empresas', JSON.stringify(data));
-        this.empresaService.select(data[0].id);
+        this.empresaService.select(data[0].Id);
       }  
     )  
     this.router.navigate(['']);

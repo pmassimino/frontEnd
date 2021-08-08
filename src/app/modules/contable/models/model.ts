@@ -1,54 +1,95 @@
 import { Sujeto } from '../../comun/models/model';
 
 export class CuentaMayor {
-    id: string;
-    nombre: string;
-    idSuperior: string;
-    idTipo: string;
-    idUso: string;
-    tipoCuentaMayor: TipoCuentaMayor;
-    usoCuentaMayor: UsoCuentaMayor;
-    superior: CuentaMayor;
+    Id: string;
+    Nombre: string;
+    IdSuperior: string;
+    IdTipo: string;
+    IdUso: string;
+    TipoCuentaMayor: TipoCuentaMayor;
+    UsoCuentaMayor: UsoCuentaMayor;
+    Superior: CuentaMayor;
 }
 
 export class UsoCuentaMayor {
-    id: string;
-    nombre: string;
+    Id: string;
+    Nombre: string;
 }
 
 export class TipoCuentaMayor {
-    id: string;
-    nombre: string;
+    Id: string;
+    Nombre: string;
 }
 
 export class Mayor {
-    id: string;
-    idEmpresa: string;
-    idSucursal: string;
-    idArea: string;
-    idSeccion: string;
-    idTransaccion: string;
-    fecha: string;
-    fechaComp: string;
-    fechaVenc: string;
-    concepto: string;
-    idComprobante: string;
-    pe:number;
-    numero:number;
-    origen: string;
-    detalle: DetalleMayor[];
+    Id: string;
+    IdEmpresa: string;
+    IdSucursal: string;
+    IdArea: string;
+    IdSeccion: string;
+    IdTransaccion: string;
+    Fecha: string;
+    FechaComp: string;
+    FechaVenc: string;
+    Concepto: string;
+    IdComprobante: string;
+    Pe:number;
+    Numero:number;
+    Origen: string;
+    Detalle: DetalleMayor[];
 }
 
 export class DetalleMayor {
-    id: string;
-    item: number;
-    fechaVenc: string;
-    idCuentaMayor: string;
-    concepto: string;
-    idCuenta: string;
-    idTipo: string;
-    importe: number;
-    cantidad: number;
-    cuentaMayor: CuentaMayor;
-    sujeto: Sujeto;
+    Id: string;
+    Item: number;
+    FechaVenc: string;
+    IdCuentaMayor: string;
+    Concepto: string;
+    IdCuenta: string;
+    IdTipo: string;
+    Importe: number;
+    Cantidad: number;
+    CuentaMayor: CuentaMayor;
+    Sujeto: Sujeto;
+}
+
+export class MovCtaCte {
+    Id: number;
+    IdEmpresa: string;
+    IdSucursal: string;
+    IdArea: string;
+    IdSeccion: string;
+    IdTransaccion: string;
+    IdCuenta: string;
+    IdCuentaMayor: string;
+    IdComprobante: string;
+    Fecha: string;
+    FechaComp: string;
+    FechaVenc: string;
+    Pe: number;
+    Numero: number;
+    Concepto: string;
+    IdTipo: string;
+    Importe: number;
+    Origen: string;
+    CuentaMayor: CuentaMayor;
+    Sujeto: Sujeto;
+}
+export class MovSaldoCtaCte {
+    IdCuenta: string;
+    IdCuentaMayor: string;
+    Nombre: string;
+    SaldoVencido: number;
+    SaldoAVencer: number;
+    Saldo: number;
+}
+
+export class MovCtaCteView {
+    MovCtaCte: MovCtaCte;
+    CuentaMayor: CuentaMayor;
+    Cuenta: Sujeto;
+    Debe: number;
+    Haber: number;
+    Saldo: number;
+    Vencido: boolean;
 }

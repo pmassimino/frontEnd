@@ -13,11 +13,11 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of articuloData">
-            <td>{{item.id}}</td>
-            <td>{{item.nombre}}</td>
-            <td>{{item.precioVentaFinal}}</td>
+            <td>{{item.Id}}</td>
+            <td>{{item.Nombre}}</td>
+            <td>{{item.PrecioVentaFinal}}</td>
             <td>
-              <a [routerLink]="['/almacen/articulo', item.id]">
+              <a [routerLink]="['/almacen/articulo', item.Id]">
                 <i class="material-icons">mode_edit</i>
               </a>
             </td>

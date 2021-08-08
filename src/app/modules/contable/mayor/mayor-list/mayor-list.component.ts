@@ -42,7 +42,7 @@ export class MayorListComponent implements OnInit {
        .subscribe(res => {this.data = res; console.log(this.data); } , err => {console.log(err) ; });
       }
       delete(entity){
-        if (confirm("Seguro quiere eliminar  " + entity.nombre + "?")) {
+        if (confirm("Seguro quiere eliminar  " + entity.Nombre + "?")) {
           var index = this.data.indexOf(entity);
           this.data.splice(index, 1);    
           this.entityService.delete(entity.id)

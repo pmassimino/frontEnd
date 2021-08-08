@@ -7,7 +7,14 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
 
-  @Input() name:string 
+  @Input() 
+  name:string; 
+
+  @Input()
+  addNewVisible:boolean=true;
+
+  @Input()
+  printVisible:boolean=false;   
   //Events
   @Output()
   addNew = new EventEmitter();
@@ -15,10 +22,14 @@ export class ToolbarComponent implements OnInit {
   exportToExcel = new EventEmitter();
   @Output()
   findByName = new EventEmitter<string>();
-  constructor() { }
+  @Output()
+  print = new EventEmitter();
 
-  ngOnInit(): void {
-  }
+  constructor() { }
+  ngOnInit() {  
+  } 
+  
+
   onAddNew()
   {
     this.addNew.emit();
@@ -30,7 +41,11 @@ export class ToolbarComponent implements OnInit {
   onFindByName(newname)
   {
     this.name = newname;
-    this.findByName.emit(this.name);
+    this.findByName.emit(this.name);    
+  }
+  onPrint()
+  {
+    this.print.emit();
   }
 
 }

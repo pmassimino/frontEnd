@@ -1,0 +1,36 @@
+<app-layout>
+    <div toolbar >
+      <app-toolbar (findByName)="findByName($event)"></app-toolbar>
+    </div>
+      <table class="table table-hover table-responsive-sm">
+          <thead>
+            <tr>
+              <th class="th-sm">Codigo</th>
+              <th class="th-sm">Nombre                     </th> 
+              <th>Cuenta Contable</th>     
+              <th>Saldo Vencido</th>           
+              <th>Saldo a Vencer</th>           
+              <th>Saldo</th>           
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of entityData">
+              <td>{{item.IdCuenta}}</td>
+              <td>{{item.Nombre}}</td>  
+              <td>{{item.IdCuentaMayor}}</td>          
+              <td>{{item.SaldoVencido}}</td>            
+              <td>{{item.SaldoAVencer}}</td>
+              <td>{{item.Saldo}}</td>                        
+              <td><a (click)="onClick(item)">
+                <i class="material-icons">mode_edit</i>
+              </a>
+              </td>
+              <td>
+                   </td>
+            </tr>
+          </tbody>
+        </table>
+   </app-layout>
+  

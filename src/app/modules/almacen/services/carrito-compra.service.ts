@@ -11,8 +11,8 @@ export class CarritoCompraService {
   {
     const carritoList = this.getAll();
     const item:ItemCarrito= new ItemCarrito();
-    item.articulo = articulo;
-    item.cantidad = 1;
+    item.Articulo = articulo;
+    item.Cantidad = 1;
     carritoList.push(item);
     localStorage.setItem("carritoList", JSON.stringify(carritoList));
 
@@ -21,7 +21,7 @@ export class CarritoCompraService {
   {
     const carritoList = this.getAll();
     for (let i = 0; i < carritoList.length; i++) {
-      if (carritoList[i].articulo.id === id) {
+      if (carritoList[i].Articulo.Id === id) {
         carritoList.splice(i, 1);
         break;
       }
