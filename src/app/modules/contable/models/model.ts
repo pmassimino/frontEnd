@@ -54,7 +54,7 @@ export class DetalleMayor {
 }
 
 export class MovCtaCte {
-    Id: number;
+    Id: string;
     IdEmpresa: string;
     IdSucursal: string;
     IdArea: string;

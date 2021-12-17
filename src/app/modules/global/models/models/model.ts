@@ -66,6 +66,10 @@ export class Account {
     IdGrupo: string;
     Estado: string;
 }    
-    
+
+export class Setting {
+    Id: string;
+    Value: string;
+}
 
 

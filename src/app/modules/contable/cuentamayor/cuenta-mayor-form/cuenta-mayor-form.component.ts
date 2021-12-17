@@ -34,7 +34,7 @@ export class CuentaMayorFormComponent implements OnInit {
     
     ngOnInit(): void {
       this.popupData();    
-      this._id = this.route.snapshot.params['Id'];
+      this._id = this.route.snapshot.params['id'];
       this._idSuperior = this.route.snapshot.queryParamMap.get('IdSuperior');
       //editar
       if(this._id)
@@ -76,7 +76,7 @@ export class CuentaMayorFormComponent implements OnInit {
        
     getById(id):void
     {
-      this.entityService.findOne(id).subscribe(res=>{this.entity = res;this.createForm()});
+      this.entityService.findOne(id).subscribe(res=>{this.entity = res;this.createForm();});
     }
    new(): void
     {

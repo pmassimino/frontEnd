@@ -3,6 +3,8 @@ import { ROUTES } from '../sidebar/sidebar.component';
 import { Router } from '@angular/router';
 import { Location} from '@angular/common';
 import { Empresa } from '../../modules/global/models/models/model';
+import { AuthService } from '../../core/services/auth.service';
+import { SessionService } from '../../modules/comun/services/session.service';
 
 
 @Component({
@@ -16,13 +18,14 @@ export class NavbarComponent implements OnInit{
   private nativeElement: Node;
   private toggleButton;
   private sidebarVisible: boolean;
+  username :string;
   @Output() ToggleClick = new EventEmitter<string>();
 
   public isCollapsed = true;
   empresaSelected:Empresa;
   @ViewChild("navbar-cmp", {static: false}) button;
 
-  constructor(location:Location, private element : ElementRef, private router: Router) {
+  constructor(location:Location, private element : ElementRef, private router: Router,private authService:AuthService,private sessionService:SessionService) {
       this.location = location;
       this.nativeElement = element.nativeElement;
       this.sidebarVisible = false;
@@ -31,7 +34,8 @@ export class NavbarComponent implements OnInit{
   ngOnInit(){
       this.listTitles = ROUTES.filter(listTitle => listTitle);
       var navbar : HTMLElement = this.element.nativeElement; 
-      this.empresaSelected = JSON.parse(localStorage.getItem("empresaSelected"));    
+      this.empresaSelected = this.sessionService.CurrentEmpresa;//JSON.parse(localStorage.getItem("empresaSelected"));   
+      this.username = this.authService.currentAccount().Nombre; 
   }
   getTitle(){
     var titlee = this.location.prepareExternalUrl(this.location.path());

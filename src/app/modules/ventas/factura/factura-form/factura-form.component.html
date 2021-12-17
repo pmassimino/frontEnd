@@ -38,7 +38,7 @@
             <div class="col-xs-2 col-lg-2">
                 <label for="tipo">Tipo</label>
                 <select class="form-control" formControlName = "Tipo" name="Tipo">
-                  <option *ngFor="let item of tipoFactura" [ngValue]="item.Id" >{{item.Nombre}} </option>
+                  <option *ngFor="let item of tipoFactura" [ngValue]="item.Id" [selected]="entity.Tipo === item.Id" >{{item.Nombre}} </option>
                 </select>   
            </div>     
                 <div class="col-xs-1 col-lg-1">

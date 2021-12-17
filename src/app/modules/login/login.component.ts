@@ -13,7 +13,10 @@ export class LoginComponent {
   public password: string;
   public error: string;
 
-  constructor(private auth: AuthService, private router: Router,private empresaService :EmpresaService ) { }
+  constructor(private auth: AuthService, private router: Router,private empresaService :EmpresaService ) 
+  { 
+    auth.logout();
+  }
 
   public submit() {
     this.auth.login(this.username, this.password)
@@ -27,13 +30,7 @@ export class LoginComponent {
   login():void
   {
     //Cargar empresas y leleccionar preseterminada
-    this.empresaService.findAll()
-    .subscribe(
-      data => {
-        localStorage.setItem('empresas', JSON.stringify(data));
-        this.empresaService.select(data[0].Id);
-      }  
-    )  
+    localStorage.setItem('empresas', JSON.stringify(this.empresaService.Current));
     this.router.navigate(['']);
   }
 }

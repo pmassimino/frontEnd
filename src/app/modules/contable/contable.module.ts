@@ -12,15 +12,17 @@ import { MayorListComponent } from './mayor/mayor-list/mayor-list.component';
 import { ResumenSaldoListComponent } from './ctacte/resumen-saldo-list/resumen-saldo-list.component';
 import { ResumenComponent } from './ctacte/resumen/resumen.component';
 import { TestComponent } from './ctacte/test/test.component';
+import { CuentaMayorSelectComponent } from './cuentamayor/cuenta-mayor-select/cuenta-mayor-select.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
 @NgModule({
-  declarations: [CuentaMayorListComponent, CuentaMayorFormComponent, MayorListComponent, ResumenSaldoListComponent, ResumenComponent, TestComponent],
+  declarations: [CuentaMayorListComponent, CuentaMayorFormComponent, MayorListComponent, ResumenSaldoListComponent, ResumenComponent, TestComponent, CuentaMayorSelectComponent],
   imports: [
     CommonModule,ContableRoutingModule,SharedModule,FormsModule,
-    ReactiveFormsModule, 
-    MatIconModule,MatSelectModule,MatInputModule,
+    ReactiveFormsModule, MatIconModule,MatSelectModule,MatInputModule,SharedModule,FormsModule,
+    MatDialogModule,
   ]
 })
 export class ContableModule { }

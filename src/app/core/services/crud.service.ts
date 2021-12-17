@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient,HttpErrorResponse } from '@angular/common/http';
 import { CrudOperations } from './crud-operations.interface';
 import {  throwError } from 'rxjs';
@@ -6,6 +6,7 @@ import {ValidationErrors } from '@angular/forms';
 import { retry, catchError } from 'rxjs/operators';
 export abstract class CrudService<T, ID> implements CrudOperations<T, ID> {
 
+  private readonly _Current = new BehaviorSubject<T>(null);
   constructor(
     protected http: HttpClient,
     protected base: string
@@ -34,6 +35,14 @@ export abstract class CrudService<T, ID> implements CrudOperations<T, ID> {
 
   delete(id: ID): Observable<T> {
     return this.http.delete<T>(this.base +  id).pipe(catchError(this.handleError));
+  }
+
+  get Current(): T {
+    return this._Current.getValue();
+  }
+  
+  set Current(val: T) {
+    this._Current.next(val);
   }
  
   handleError(error: HttpErrorResponse) {

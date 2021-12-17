@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {ConfigService} from './config.service';
 import * as jwt_decode from 'jwt-decode';
+import { Account } from '../../modules/global/models/models/model';
 
 
 
@@ -25,6 +26,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('EmpresaSelected');
   }
   public get loggedIn(): boolean {
     return (localStorage.getItem('access_token') !== null);
@@ -32,12 +34,28 @@ export class AuthService {
   
   public isAuthenticated(): boolean {
     const token = localStorage.getItem('access_token');
-    // Check whether the token is expired and return
-    // true or false
-    return !this.tokenExpired(token);
+    var result:boolean=false;
+    if (token!=null)
+    {
+      result = !this.tokenExpired(token);
+    }    
+    return result;
   }
   private tokenExpired(token: string) {
     const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
     return (Math.floor((new Date).getTime() / 1000)) >= expiry;
+  }
+  public currentAccount():Account {
+    const account:Account=new Account();
+    if (this.isAuthenticated()==false)
+    {
+     return account;
+    }
+    const token = localStorage.getItem('access_token');
+    const tmpTokenJSon =  (JSON.parse(atob(token.split('.')[1])));
+    account.Id = tmpTokenJSon.id;
+    account.Nombre =tmpTokenJSon.nombre;
+    account.Email = tmpTokenJSon.email;
+    return account;
   }
 }

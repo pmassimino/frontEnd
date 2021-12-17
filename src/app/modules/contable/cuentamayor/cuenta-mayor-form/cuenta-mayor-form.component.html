@@ -5,8 +5,7 @@
         <div class="form-group row">
           <div class="col-xs-1 col-lg-2">
           <label for="name">Codigo</label>
-          <input type="text" class="form-control" formControlName = "Id"   [readonly]="mode=='edit'">
-          <input type="hidden" class="form-control"  formControlName = "IdSuperior">
+          <input type="text" class="form-control" formControlName = "Id"   [readonly]="mode=='edit'">          
           <div *ngIf="id.invalid && (id.dirty || id.touched)" class="alert alert-danger">
                <div *ngIf="id.errors.required">Codigo Requerido.</div>
                <div *ngIf="id.errors?.serverError">{{id.errors.serverError}}</div>               
@@ -23,7 +22,7 @@
           <div class="col-md-3">
             <label for="idTipoCuentaMayor">Tipo Cuenta</label>
             <select class="form-control" formControlName = "IdTipo" name="IdTipo" >
-               <option *ngFor="let item of tipoCuentaMayor" [ngValue]="item.Id">{{item.Nombre}} </option>
+               <option *ngFor="let item of tipoCuentaMayor" [ngValue]="item.Id" >{{item.Nombre}} </option>
              </select>                
            </div>
         </div>
@@ -31,7 +30,7 @@
             <div class="col-md-3">
               <label for="IdUsoCuentaMayor">Uso Cuenta</label>
               <select class="form-control" formControlName = "IdUso" name="IdUso" >
-                 <option *ngFor="let item of usoCuentaMayor"  [ngValue]="item.Id">{{item.Nombre}} </option>
+                 <option *ngFor="let item of usoCuentaMayor" [ngValue]="item.Id" >{{item.Nombre}} </option>
               </select>              
               <span *ngIf="f.IdUso.errors?.serverError">{{f.IdUso.errors?.serverError}}</span>   
              </div>

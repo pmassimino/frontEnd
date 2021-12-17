@@ -1,0 +1,37 @@
+<mat-dialog-content>  
+ <app-toolbar (findByName)="findByName($event)"></app-toolbar> 
+ <div>
+ <form [formGroup]="form" (ngSubmit)="onSubmit()">
+ <div>
+  <table class="table table-sm" formArrayName="ComprobanteDisponible" >
+        <tr class="row">
+          <th class="col-2">Fecha</th>
+          <th class="col-1">Pe</th>
+          <th class="col-1">Numero</th>
+          <th class="col-3">Concepto</th>
+          <th class="col-1">Importe</th>
+          <th class="col-1">Disponible</th>
+          <th class="col-1">Importe Asignar</th>
+          <th class="col-1"></th>          
+        </tr>
+        <tr class="row" *ngFor="let item of ComprobanteDisponible.controls; let i=index"  [formGroupName]="i">
+          <td class="col-2"><label>{{entityData[i].Fecha | date:'dd-MM-yyyy'}}</label></td>
+          <td class="col-1"><label>{{entityData[i].Pe}} </label></td>
+          <td class="col-1"><label>{{entityData[i].Numero}} </label></td>
+          <td class="col-3"><label>{{entityData[i].Concepto}}</label></td>
+          <td class="col-1"><label>{{entityData[i].Importe}}</label> </td>
+          <td class="col-1"><label>{{entityData[i].ImporteDisponible}}</label></td>
+          <td class="col-1"><input type="number" class="form-control" formControlName = "ImporteAsignar" required  ></td>
+          <td class="col-1">
+            <input type="checkbox"  formControlName = "Select" (change)="add(i)" >   
+          </td>          
+        </tr>      
+  </table>
+</div>>
+  </form>
+</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button class="mat-raised-button"(click)="onSubmit()" [disabled]="!isFormValid()" disabled>Agregar</button>
+  <button class="mat-raised-button"(click)="onClose()">Cancelar</button>  
+</mat-dialog-actions>

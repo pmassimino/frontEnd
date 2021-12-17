@@ -10,11 +10,13 @@ import { SujetoService } from './services/sujeto.service';
 import { SujetoFormComponent } from './sujeto/sujeto-form/sujeto-form.component';
 import { MatSelectionList } from '@angular/material/list';
 import {MatInputModule} from '@angular/material/input';
+import { AreaSelectComponent } from './Area/area-select/area-select.component';
+import { NumeradorDocumentoListComponent } from './NumeradorDocumento/numerador-documento-list/numerador-documento-list.component';
 
 
 
 @NgModule({
-  declarations: [SujetoListComponent, SujetoFormComponent],
+  declarations: [SujetoListComponent, SujetoFormComponent, AreaSelectComponent, NumeradorDocumentoListComponent],
   imports: [
     CommonModule,ComunRoutingModule,SharedModule,FormsModule,
     ReactiveFormsModule, 

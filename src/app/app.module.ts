@@ -13,16 +13,10 @@ import { NgxMaskModule, IConfig } from 'ngx-mask'
 // Interceptors
 import { AuthInterceptorService } from './core/services/auth-interceptor.service';
 import { LoginComponent } from './modules/login/login.component';
-import { ArticuloListComponent } from './modules/almacen/articulo/articulo-list/articulo-list.component';
 import { ExcelService } from './core/services/excel.service';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { CoreService } from './core/services/core.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatDialogModule } from '@angular/material/dialog';
-import { JwtModule } from '@auth0/angular-jwt';
+
 
 
 export function initializeApp(appConfig: ConfigService) {

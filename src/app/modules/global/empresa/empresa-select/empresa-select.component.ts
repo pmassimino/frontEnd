@@ -54,8 +54,9 @@ export class EmpresaSelectComponent implements OnInit {
   }
   select(entity:Empresa)
   {
-    this.service.select(entity.Id);
+    this.service.Current = entity;
     this.closeDialog();    
+    this.router.navigate(['dashboard']);
 
   }
   

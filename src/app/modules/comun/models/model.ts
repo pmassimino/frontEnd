@@ -89,4 +89,27 @@ export class Rol {
     Id: string;
     Nombre: string;
 }
+export class Sucursal {
+    Id: string;
+    Nombre: string;
+}
 
+
+export class Area {
+    Id: string;
+    Nombre: string;
+}
+export class Seccion {
+    Id: string;
+    Nombre: string;
+}
+export class Setting {
+    Id: string;
+    Value: string;
+}
+export interface NumeradorDocumento {
+    Id: string;
+    Nombre: string;
+    PuntoEmision: number;
+    Numero: number;
+}
