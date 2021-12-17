@@ -16,26 +16,22 @@ import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
-  declarations: [ ArticuloFormComponent,ArticuloListComponent, 
-    FamiliaListComponent, FamiliaFormComponent, ArticuloSelectComponent],
-  imports: [
-    CommonModule,
-    AlmacenRoutingModule,
-    SharedModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatIconModule,
-    MatSelectModule,
-    MatInputModule,
-    MatDialogModule 
-  ],
-  entryComponents: [
-    ArticuloSelectComponent
-  ],
-  providers: [
-    ArticuloService
-  ],
-  exports: [ArticuloSelectComponent],
-
+    declarations: [ArticuloFormComponent, ArticuloListComponent,
+        FamiliaListComponent, FamiliaFormComponent, ArticuloSelectComponent],
+    imports: [
+        CommonModule,
+        AlmacenRoutingModule,
+        SharedModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatIconModule,
+        MatSelectModule,
+        MatInputModule,
+        MatDialogModule
+    ],
+    providers: [
+        ArticuloService
+    ],
+    exports: [ArticuloSelectComponent]
 })
 export class AlmacenModule { }

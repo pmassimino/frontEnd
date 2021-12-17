@@ -17,17 +17,14 @@ import { FacturaAFIPComponent } from './factura/factura-afip/factura-afip.compon
 
 
 @NgModule({
-  declarations: [FacturaFormComponent, FacturaListComponent, FacturaAFIPComponent],
-  imports: [
-    CommonModule,VentasRoutingModule,SharedModule,FormsModule,
-    ReactiveFormsModule,    
-    MatIconModule,
-    MatSelectModule,
-    MatInputModule,
-    MatDialogModule,        
-  ],
-  entryComponents: [
-    ArticuloSelectComponent
-  ],
+    declarations: [FacturaFormComponent, FacturaListComponent, FacturaAFIPComponent],
+    imports: [
+        CommonModule, VentasRoutingModule, SharedModule, FormsModule,
+        ReactiveFormsModule,
+        MatIconModule,
+        MatSelectModule,
+        MatInputModule,
+        MatDialogModule,
+    ]
 })
 export class VentasModule { }
