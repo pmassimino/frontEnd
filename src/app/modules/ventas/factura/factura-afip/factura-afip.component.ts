@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { TipoFactura } from '../../../global/models/models/model';
+import { TipoFacturaService } from '../../../global/services/tipo-factura.service';
 import { Factura } from '../../models/model';
 import { FacturaService } from '../../services/factura.service';
 
@@ -16,7 +18,9 @@ export class FacturaAFIPComponent implements OnInit {
   id:string;
   form :  FormGroup;
   errors = [];
-  constructor(private router: Router,private route: ActivatedRoute,private service:FacturaService,private formBuilder: FormBuilder,@Inject(MAT_DIALOG_DATA)  data,private dialogRef: MatDialogRef<FacturaAFIPComponent>) 
+  tipoFactura:TipoFactura[] = [];  
+  constructor(private router: Router,private route: ActivatedRoute,private service:FacturaService,private tipoFacturaService:TipoFacturaService,
+    private formBuilder: FormBuilder,@Inject(MAT_DIALOG_DATA)  data,private dialogRef: MatDialogRef<FacturaAFIPComponent>) 
   {
     this.id = data.id;
   }
@@ -26,14 +30,14 @@ export class FacturaAFIPComponent implements OnInit {
     
     if(this.id)
     { 
-      this.getById(this.id);     
-      //this.createForm();
+      this.popupData();
+      this.getById(this.id);           
     }
     
   }
   popupData():void
   {
-
+    this.tipoFacturaService.findAll().subscribe(res => { this.tipoFactura = res; }, err => {console.log(err); });
   }
   getById(id):void
     {

@@ -34,8 +34,8 @@ constructor(private articuloService: ArticuloService, private condIvaOpService: 
 
   ngOnInit(): void {
     this.popupData();    
-    this._id = this.route.snapshot.params['id'];
-    this.createForm();
+    this._id = this.route.snapshot.params['id'];   
+    this.createForm(); 
     //editar
     if(this._id)
     { 
@@ -116,8 +116,8 @@ constructor(private articuloService: ArticuloService, private condIvaOpService: 
   
   calculate():void{
     this.myForm.valueChanges.subscribe(val =>{
-      const newPrecioVenta =((val.CostoVenta * val.MargenVenta/ 100) + val.ImpuestoVenta + val.CostoVenta);
-      const newPrecioVentaFinal = (((newPrecioVenta - val.ImpuestoVenta) * val.AlicuotaIva/ 100) + newPrecioVenta);
+      const newPrecioVenta =((val.CostoVenta * val.MargenVenta/ 100) +  val.CostoVenta);
+      const newPrecioVentaFinal = (((newPrecioVenta - val.ImpuestoVenta) * val.AlicuotaIva/ 100) + newPrecioVenta + val.ImpuestoVenta);
       this.myForm.controls.PrecioVenta.patchValue(newPrecioVenta, {emitEvent: false});
       this.myForm.controls.PrecioVentaFinal.patchValue(newPrecioVentaFinal, {emitEvent: false});        
   });
@@ -127,7 +127,7 @@ constructor(private articuloService: ArticuloService, private condIvaOpService: 
   }
 
   goBack() {
-    this.router.navigate(['almacen/articulo/list']);
+    this.router.navigate(['almacen/articulo/list']);   
   }
 
   setControlsError(validationErrors)

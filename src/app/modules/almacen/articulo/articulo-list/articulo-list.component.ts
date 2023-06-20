@@ -12,8 +12,10 @@ import { ExcelService } from '../../../../core/services/excel.service';
 })
 export class ArticuloListComponent implements OnInit {
 
-    articuloData: Articulo[] = [];
-    
+   page = 1;   
+   itemsPerPage = 15;
+   totalItems : number; 
+   articuloData: Articulo[] = [];    
 
     constructor(private articuloApi: ArticuloService, private router: Router,private excelService: ExcelService) { }
 
@@ -32,13 +34,22 @@ export class ArticuloListComponent implements OnInit {
       }
     getAll():void
       {
+        if (this.articuloApi.CurrentList == null)
+        {
         this.articuloApi.findAll()
-        .subscribe(res => {this.articuloData = res; } ,
+        .subscribe(res => {this.articuloData = res;this.articuloApi.CurrentList = res; this.totalItems=res.length;} ,
         err => {console.log(err) ; });
+        }
+        else
+        {
+          this.articuloData = this.articuloApi.CurrentList;
+        }
       }
       findByName(name): void {       
-        this.articuloApi.findByName(name)
-       .subscribe(res => {this.articuloData = res; console.log(this.articuloData); } , err => {console.log(err) ; });
+        //this.articuloApi.findByName(name)
+        //.subscribe(res => {this.articuloData = res; console.log(this.articuloData); } , err => {console.log(err) ; });
+       this.articuloData.filter(f=> f.Nombre.toUpperCase().includes(name.toUpperCase()));
+       
       }
       delete(articulo){
         if (confirm("Are you sure you want to delete " + articulo.nombre + "?")) {

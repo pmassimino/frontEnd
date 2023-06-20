@@ -10,6 +10,7 @@ import { MayorListComponent } from './mayor/mayor-list/mayor-list.component';
 import { ResumenSaldoListComponent } from './ctacte/resumen-saldo-list/resumen-saldo-list.component';
 import { ResumenComponent } from './ctacte/resumen/resumen.component';
 import { TestComponent } from './ctacte/test/test.component';
+import { LibroIvaListComponent } from './libroiva/libro-iva-list/libro-iva-list.component';
 
 
 const routes: Routes = [
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'ctacte/test', component: TestComponent},
   { path: 'ctacte/list', component: ResumenSaldoListComponent ,canActivate: [AuthGuard]},
   { path: 'ctacte/resumen/:id', component: ResumenComponent ,canActivate: [AuthGuard]},
+  { path: 'libroiva/list', component: LibroIvaListComponent ,canActivate: [AuthGuard]},
 ];
 
 @NgModule({

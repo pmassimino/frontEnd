@@ -13,6 +13,7 @@ import { CuentaMayor } from '../../../contable/models/model';
 import { CuentaMayorService } from '../../../contable/services/cuenta-mayor.service';
 import { ComprobantesDisponible, DetalleComprobante, DetalleValores, ReciboCtaCte } from '../../models/model';
 import { ReciboCtaCteService } from '../../services/recibo-cta-cte.service';
+import { ACtaAddComponent } from '../acta-add/acta-add.component';
 import { ComprobanteAddComponent } from '../comprobante-add/comprobante-add.component';
 
 @Component({
@@ -105,6 +106,7 @@ constructor(private entityService: ReciboCtaCteService,private sujetoService : S
     this.detalleComprobante.valueChanges.subscribe(res=>this.calculateTotal());    
     return itemGrp;
   }
+  
   addDetalleValores(itemDetalle : DetalleValores):FormGroup {          
     let item = this.entity.DetalleComprobante.length;
     let itemGrp =  this.formBuilder.group({
@@ -119,8 +121,7 @@ constructor(private entityService: ReciboCtaCteService,private sujetoService : S
       FechaVencimiento: new FormControl(itemDetalle.FechaVencimiento),
       Sucursal: new FormControl(itemDetalle.Sucursal),
       Numero: new FormControl(itemDetalle.Numero),
-      Importe: new FormControl(itemDetalle.Importe)      
-     
+      Importe: new FormControl(itemDetalle.Importe)
     });    
     this.detalleValores.push(itemGrp);
     this.calculateTotal();
@@ -157,17 +158,18 @@ constructor(private entityService: ReciboCtaCteService,private sujetoService : S
   calculateTotal()
   {
     this.totalComprobantes = 0;
-     this.detalleComprobante.controls.forEach((control) => {      
-          var IdTipo = control.get("IdTipo").value;          
-          var Importe = control.get("Importe").value;          
-          this.totalComprobantes += IdTipo==1?Importe:-Importe;                   
-      })       
-      this.totalValores = 0;
-      this.detalleValores.controls.forEach((control) => {      
-        var IdTipo = control.get("IdTipo").value;          
-        var Importe = control.get("Importe").value;          
-        this.totalValores += IdTipo==1?Importe:-Importe;                   
+    this.detalleComprobante.controls.forEach((control) => {      
+    var IdTipo = control.get("IdTipo").value;          
+    var Importe:number = control.get("Importe").value;          
+    this.totalComprobantes += IdTipo==1?Importe:-Importe;                   
+    })       
+    this.totalValores = 0;
+    this.detalleValores.controls.forEach((control) => {      
+    var IdTipo = control.get("IdTipo").value;          
+    var Importe = control.get("Importe").value;          
+    this.totalValores += IdTipo==1?Importe:-Importe;                   
     }) 
+    this.totalSaldo = 0;
     this.totalSaldo = (this.totalComprobantes-this.totalValores);    
   }
 
@@ -193,6 +195,7 @@ constructor(private entityService: ReciboCtaCteService,private sujetoService : S
        {
          console.log(err);
         });
+       this.entityService.NextNumber(this.sessionServie.CurrentSeccion.Id).subscribe(res=>{this.form.get("Pe").patchValue(res.PuntoEmision);this.form.get("Numero").patchValue(res.Numero);});
   }
   getById(id):void
   {
@@ -216,7 +219,8 @@ constructor(private entityService: ReciboCtaCteService,private sujetoService : S
     .subscribe(data => {console.log(data);
                this.goBack();this.submitted = true; }, 
                error => {console.log(error);               
-               this.setControlsError(error.error);               
+               this.setControlsError(error.error);
+               for(var tKey in error.error) this.errors.push({name: tKey, value: error.error[tKey]});               
                }
      );
      }
@@ -238,7 +242,19 @@ constructor(private entityService: ReciboCtaCteService,private sujetoService : S
     var downloadURL = URL.createObjectURL(resultBlob);
     window.open(downloadURL);});
   } 
-  
+  isValidAddComprobante():boolean
+  {
+    var result = true;
+    if (this.form.get("IdCuenta").value == null || this.form.get("IdCuentaMayor").value== null)
+    {
+      result = false;
+    }
+    if (this.mode == "edit")
+    {
+      result = false;
+    }
+    return result;
+  } 
   
   onSubmit() 
   {
@@ -262,6 +278,20 @@ constructor(private entityService: ReciboCtaCteService,private sujetoService : S
     this.dialog.open(ComprobanteAddComponent, dialogConfig).afterClosed()
     .subscribe(response  => {if (response.data=="ok"){this.descargaComprobante()};      
     });
+}
+addACtaDialog() {
+
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = false;
+  dialogConfig.autoFocus = true;
+  dialogConfig.panelClass="dialog-responsive";
+  dialogConfig.width='1200px';
+  this.idCuenta=this.form.get('IdCuenta').value;
+  this.idCuentaMayor = this.form.get('IdCuentaMayor').value;  
+  dialogConfig.data = {idCuenta:this.idCuenta,idCuentaMayor:this.idCuentaMayor,totalSaldo:this.totalSaldo}
+  this.dialog.open(ACtaAddComponent, dialogConfig).afterClosed()
+  .subscribe(response  => {if (response.data=="ok"){this.descargaComprobante()};      
+  });
 }
 
 addCuentaMayorDialog() {
@@ -291,7 +321,8 @@ addDetalleValor()
 }
 descargaComprobante()
   {
-    this.entityService.DetalleComprobante.map(item=>this.addDetalleComprobante(item));    
+    this.entityService.DetalleComprobante.map(item=>this.addDetalleComprobante(item));
+    this.entityService.DetalleComprobante=[];    
   }
 
   setControlsError(validationErrors)

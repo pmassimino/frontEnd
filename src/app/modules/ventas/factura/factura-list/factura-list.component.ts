@@ -32,6 +32,11 @@ export class FacturaListComponent implements OnInit {
     {
 
     }
+  
+  getTipoFactura(entity:Factura):string
+  {
+    return this.entityService.TipoFactura(entity);
+  }  
   print(id:string)
   {
     this.entityService.print(id).subscribe((resultBlob: Blob) => {

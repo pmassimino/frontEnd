@@ -9,9 +9,9 @@ import { FacturaListComponent } from './factura/factura-list/factura-list.compon
 
 
 const routes: Routes = [
-  { path: 'factura/list', component: FacturaListComponent ,canActivate: [AuthGuard]},
-  { path: 'factura/add', component: FacturaFormComponent ,canActivate: [AuthGuard]},
-  { path: 'factura/:id', component: FacturaFormComponent ,canActivate: [AuthGuard]},   
+  { path: 'factura/list', component: FacturaListComponent ,canActivate: [AuthGuard],data:{permiso:"Venta.Factura.GetAll"}},
+  { path: 'factura/add', component: FacturaFormComponent ,canActivate: [AuthGuard],data:{permiso:"Venta.Factura.Add"}},
+  { path: 'factura/:id', component: FacturaFormComponent ,canActivate: [AuthGuard],data:{permiso:"Venta.Factura.Edit"}}   
 ];
 
 @NgModule({

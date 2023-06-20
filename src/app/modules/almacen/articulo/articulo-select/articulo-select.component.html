@@ -1,29 +1,42 @@
 <mat-dialog-content>  
-  <app-toolbar (findByName)="findByName($event)"></app-toolbar> 
-  <table class="table table-hover table-responsive-sm">
-      <thead>
-        <tr>
-          <th class="th-sm">Codigo</th>
-          <th class="th-sm">Nombre                      </th>
-          <th class="th-sm">Precio</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of articuloData">
-          <td>{{item.Id}}</td>
-          <td>{{item.Nombre}}</td>
-          <td>{{item.PrecioVentaFinal}}</td>
-          <td>
-            <a [routerLink]="[]"  class="btn" (click)="add(item)">
-              <i class="material-icons">shopping_cart</i>
-            </a>
-          </td>
-          <td> </td>
-        </tr>
-      </tbody>
-  </table>
+  <div toolbar >
+    <app-toolbar  (exportToExcel)="exportToExcel()" (findByName)="applyFilter($event)"></app-toolbar> 
+  </div>  
+  <div >    
+    <mat-table [dataSource]="dataSource" matSort>
+  
+      <!-- ID Column -->
+      <ng-container matColumnDef="Id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Codigo </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.Id}} </mat-cell>
+      </ng-container>
+  
+      <!-- Nombre Column -->
+      <ng-container matColumnDef="Nombre">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.Nombre}}</mat-cell>
+      </ng-container>
+  
+      <!-- Precio Column -->
+      <ng-container matColumnDef="PrecioVentaFinal">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Precio </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.PrecioVentaFinal}} </mat-cell>
+      </ng-container>  
+      <!-- Add Cart Column -->
+      <ng-container matColumnDef="Edit">
+        <mat-header-cell *matHeaderCellDef>  </mat-header-cell>
+        <mat-cell *matCellDef="let row">          
+          <a [routerLink]="[]"  class="btn" (click)="add(row)">
+            <i class="material-icons">shopping_cart</i>
+          </a>           
+       </mat-cell>
+      </ng-container> 
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
+    </mat-table>  
+    <mat-paginator [pageSizeOptions]="[15, 25, 50, 100]"></mat-paginator>
+  </div> 
 </mat-dialog-content>
 <mat-dialog-actions>
   <button class="mat-raised-button"(click)="close()">Cerrar</button>  

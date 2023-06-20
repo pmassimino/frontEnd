@@ -9,7 +9,7 @@
   </div>
     <h3>Factura</h3>
     <div>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
         <div class="form-group row">        
           <div class="col-xs-12 col-lg-12" *ngFor="let error of errors" class="alert alert-warning alert-dismissible fade show" role="alert">
               {{error.value}}
@@ -36,15 +36,15 @@
         </div>
         <div class="form-group row">
             <div class="col-xs-2 col-lg-2">
-                <label for="tipo">Tipo</label>
+                <label>Tipo</label>
                 <select class="form-control" formControlName = "Tipo" name="Tipo">
-                  <option *ngFor="let item of tipoFactura" [ngValue]="item.Id" [selected]="entity.Tipo === item.Id" >{{item.Nombre}} </option>
+                  <option *ngFor="let item of tipoFactura" [ngValue]="item.Id"  >{{item.Nombre}} </option>
                 </select>   
            </div>     
                 <div class="col-xs-1 col-lg-1">
-                <label for="fechaVenc">Letra</label>
+                <label>Letra</label>
                 <select class="form-control" formControlName = "Letra" name="Letra">
-                  <option *ngFor="let item of letras"  [selected]="entity.Letra === item">{{item}} </option>
+                  <option *ngFor="let item of letras"  [ngValue]="item">{{item}} </option>
                </select>    
               </div>
              <div class="col-xs-1 col-md-1">
@@ -59,7 +59,7 @@
         <div class="form-group row">
           <div class="col-xs-2 col-lg-2">
                <label for="fecha">Fecha</label>
-               <input type="date" class="form-control" id="Fecha" formControlName = "Fecha" required name="Fecha" [ngModel]="entity.Fecha | date:'yyyy-MM-dd'">
+               <input type="date" class="form-control" id="Fecha" formControlName = "FechaComp" required name="FechaComp" [ngModel]="entity.FechaComp | date:'yyyy-MM-dd'">
           </div>
           <div class="col-xs-2 col-lg-2">
             <label for="fechaVenc">Fecha Venc</label>
@@ -68,9 +68,9 @@
         </div>        
         <div class="form-group row">
             <div class="col-xs-5 col-lg-5">
-                <label for="idCuenta">Cuenta</label>
-                <select class="form-control" formControlName = "IdCuenta" name="IdCuenta"  (change)="onCuentaChange($event.target.value)" >
-                   <option *ngFor="let item of sujetos" [ngValue]="item.Id" [selected]="entity.IdCuenta === item.Id">{{item.Nombre}} </option>
+                <label >Cuenta</label>
+                <select class="form-control" formControlName = "IdCuenta" name="IdCuenta"  (change)="onCuentaChange()" >
+                   <option *ngFor="let item of sujetos" [ngValue]="item.Id" >{{item.Nombre}} </option>
                 </select>                
                </div>  
         </div>
@@ -149,29 +149,30 @@
          <div class="col-12">    
           <table class="table table-sm">
             <tr class="row">
-              <th class="col-4"></th>
+              <th class="col-3"></th>
               <th class="col-1">Items</th>
               <th class="col-1">Sub Total</th>
               <th class="col-1">%</th>
               <th class="col-1">Descuento</th>
               <th class="col-1">Importe Neto</th>
+              <th class="col-1">Otros.Trib.</th>
               <th class="col-1">Iva General</th>
               <th class="col-1">Total </th>
           </tr> 
           <tr  class="row">
-            <th class="col-4"></th>
+            <th class="col-3"></th>
             <td class="col-1"><div [formGroup]="form"><input class="form-control" [readonly]="true" formControlName="TotalItems"></div></td>
             <td class="col-1"><div [formGroup]="form"><input class="form-control" formControlName="TotalNeto" [readonly]="true" ></div></td>
             <td class="col-1"><div [formGroup]="form"><input type="number" class="form-control" formControlName="PorDescuento" [readonly]="true"></div></td>
             <td class="col-1"><div [formGroup]="form"><input class="form-control" formControlName="TotalDescuento" [readonly]="true" ></div></td>
             <td class="col-1"><div [formGroup]="form"><input class="form-control" formControlName="TotalNeto" [readonly]="true" ></div></td>
+            <td class="col-1"><div [formGroup]="form"><input class="form-control" formControlName="TotalOTributos" [readonly]="true" ></div></td>
             <td class="col-1"><div [formGroup]="form"><input class="form-control" formControlName="TotalIva" [readonly]="true" ></div></td>
             <td class="col-1"><div [formGroup]="form"><input class="form-control" formControlName="Total" [readonly]="true" ></div></td>
           </tr>         
           </table>
-          </div>        
-        </div>
-        
+         </div>        
+        </div>        
         <div class="row">
           <div class="col-1">   
             <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Aceptar</button>    

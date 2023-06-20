@@ -7,6 +7,7 @@ import { retry, catchError } from 'rxjs/operators';
 export abstract class CrudService<T, ID> implements CrudOperations<T, ID> {
 
   private readonly _Current = new BehaviorSubject<T>(null);
+  private readonly _CurrentList = new BehaviorSubject<T[]>(null);
   constructor(
     protected http: HttpClient,
     protected base: string
@@ -28,9 +29,13 @@ export abstract class CrudService<T, ID> implements CrudOperations<T, ID> {
   findByName(name: string): Observable<T[]> {
     return this.http.get<T[]>(this.base + 'byName/' + name);
   }
-
+  
+  findByTransaccion(id: string): Observable<T[]> {
+    return this.http.get<T[]>(this.base + 'byTransaccion/' + id);
+  }
+ 
   findAll(): Observable<T[]> {
-    return this.http.get<T[]>(this.base);
+    return this.http.get<T[]>(this.base);    
   }
 
   delete(id: ID): Observable<T> {
@@ -43,6 +48,17 @@ export abstract class CrudService<T, ID> implements CrudOperations<T, ID> {
   
   set Current(val: T) {
     this._Current.next(val);
+  }
+  get CurrentList(): T[] {
+    return this._CurrentList.getValue();
+  }
+  
+  set CurrentList(val: T[]) {
+    this._CurrentList.next(val);
+  }
+  currentValue():Observable<T>
+  {
+    return this._Current.asObservable();
   }
  
   handleError(error: HttpErrorResponse) {
@@ -59,3 +75,7 @@ export abstract class CrudService<T, ID> implements CrudOperations<T, ID> {
   }
 
 }
+function Cacheable() {
+  throw new Error('Function not implemented.');
+}
+

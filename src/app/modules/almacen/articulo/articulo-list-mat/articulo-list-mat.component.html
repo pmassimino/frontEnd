@@ -1,0 +1,42 @@
+<app-layout>
+  <div toolbar >
+    <app-toolbar (addNew)="addNew()" (exportToExcel)="exportToExcel()" (findByName)="applyFilter($event)"></app-toolbar> </div>
+  
+  <div class="example-container mat-elevation-z8">    
+    <mat-table [dataSource]="dataSource" matSort>
+  
+      <!-- ID Column -->
+      <ng-container matColumnDef="Id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Codigo </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.Id}} </mat-cell>
+      </ng-container>
+  
+      <!-- Nombre Column -->
+      <ng-container matColumnDef="Nombre">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.Nombre}}</mat-cell>
+      </ng-container>
+  
+      <!-- Precio Column -->
+      <ng-container matColumnDef="PrecioVentaFinal">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Precio </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.PrecioVentaFinal}} </mat-cell>
+      </ng-container>  
+      <!-- Editr Column -->
+      <ng-container matColumnDef="Edit">
+        <mat-header-cell *matHeaderCellDef>  </mat-header-cell>
+        <mat-cell *matCellDef="let row">          
+          <a (click)="edit(row)"><mat-icon>edit</mat-icon></a>                 
+       </mat-cell>
+      </ng-container>  
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
+    </mat-table>  
+    <mat-paginator [pageSizeOptions]="[15, 25, 50, 100]"></mat-paginator>
+  </div> 
+</app-layout>
+<section>
+  <router-outlet name="details"></router-outlet>
+</section>

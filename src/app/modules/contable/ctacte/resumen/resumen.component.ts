@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExcelService } from '../../../../core/services/excel.service';
-import { MovCtaCteView } from '../../models/model';
+import { TransaccionService } from '../../../comun/services/transaccion.service';
+import { MovCtaCte, MovCtaCteView } from '../../models/model';
 import { MovCtaCteService } from '../../services/mov-cta-cte.service';
 
 @Component({
@@ -18,10 +19,10 @@ export class ResumenComponent implements OnInit {
   fechaHasta: Date = new Date();
   entity : MovCtaCteView[]=[]; 
   
-  constructor(private entityService: MovCtaCteService, private router: Router,private excelService: ExcelService,private route: ActivatedRoute) { }
+  constructor(private entityService: MovCtaCteService, private transaccionService:TransaccionService,private router: Router,private excelService: ExcelService,private route: ActivatedRoute) { }
   
   ngOnInit(): void {    
-    this.fecha.setDate(this.fecha.getDate() - 30);    
+    this.fecha.setDate(this.fecha.getDate() - 365);    
     this.idCuenta = this.route.snapshot.params['id'];
     this.idCuentaMayor = this.route.snapshot.queryParams['idCuentaMayor'];
     this.popupData();
@@ -40,5 +41,11 @@ export class ResumenComponent implements OnInit {
     var downloadURL = URL.createObjectURL(resultBlob);
     window.open(downloadURL);});
   } 
+  onPrintItem(item:MovCtaCteView)
+   {    
+    this.transaccionService.print(item.MovCtaCte.IdTransaccion).subscribe((resultBlob: Blob) => {
+      var downloadURL = URL.createObjectURL(resultBlob);
+      window.open(downloadURL);});
+    }
 
 }

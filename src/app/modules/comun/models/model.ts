@@ -1,3 +1,5 @@
+import { Localidad } from "../../global/models/models/model";
+
 export class Sujeto {
     Id: string;
     Nombre: string;
@@ -5,8 +7,10 @@ export class Sujeto {
     IdTipoDoc: string;
     NumeroDocumento: number;
     IdLocalidad: string;
+    IdProvincia: string;
     Domicilio: string;
     Altura: number;
+    CodigoPostal :string;
     Piso: number;
     Oficina: number;
     Telefono1: string;
@@ -27,8 +31,9 @@ export class Sujeto {
     NumeroIB: number;
     IdCondicionProductor: string;
     Estado: string;
+    Localidad:Localidad;
     Domicilios: Domicilio[];
-    RolSujeto: RolSujeto[]=[];
+    TipoRolSujeto: TipoRolSujeto[]=[];
     Vehiculos: Vehiculo[];
     Contactos: Contacto[];
 }
@@ -72,20 +77,20 @@ export class Contacto {
     Sujeto: Sujeto;
 }
 
-export class RolSujeto {
+export class TipoRolSujeto {
 
-    constructor(idRol:string,idSujeto:string) {
-        this.IdRol=idRol;
+    constructor(idTipoRol:string,idSujeto:string) {
+        this.IdTipoRol=idTipoRol;
         this.IdSujeto = idSujeto;
     }
     IdSujeto: string;
-    IdRol: string;
+    IdTipoRol: string;
     DateAdd: string | null;
-    Rol: Rol;
+    TipoRol: TipoRol;
     Sujeto: Sujeto;
 }
 
-export class Rol {
+export class TipoRol {
     Id: string;
     Nombre: string;
 }
@@ -112,4 +117,11 @@ export interface NumeradorDocumento {
     Nombre: string;
     PuntoEmision: number;
     Numero: number;
+}
+
+export class Transaccion {
+    Id: string;
+    Tipo: string;
+    Owner: string;
+    Fecha: string;
 }

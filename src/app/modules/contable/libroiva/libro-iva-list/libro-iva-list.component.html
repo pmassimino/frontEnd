@@ -1,0 +1,75 @@
+<app-layout>
+    <div toolbar >
+      <app-toolbar  [addNewVisible]="false" [printVisible]="true"  (print)="onPrint()" >        
+      </app-toolbar>
+    </div>
+    <div>
+      <label>Libro Iva </label>
+      <select [(ngModel)]="tipo" (change)="onGetAll()">
+        <option value="V">VENTAS</option>
+        <option value="C"> COMPRAS</option>
+      </select>
+      <label>Fecha</label>
+      <input  type="date" [ngModel]="fecha | date:'yyyy-MM-dd'"   (ngModelChange)="parseFecha($event);onGetAll()">
+      <label>Fecha Hasta</label>
+      <input type="date"  [ngModel]="fechaHasta | date:'yyyy-MM-dd'"   (ngModelChange)="parseFechaHasta($event);onGetAll()">
+      <label><input type="checkbox" id="filtraAutorizado" name="filtraAutorizado" [(ngModel)]="filtraAutorizado" (change)="onGetAll()" >Filtrar Autorizado</label>
+      <label><input [disabled]="!filtraAutorizado" type="checkbox" id="autorizado" name="autorizado" [(ngModel)]="autorizado" (change)="onGetAll()" >Autorizado</label>      
+    </div>
+    <div><input type="text" class="form-control"  [readonly]></div>
+      <table class="table table-hover table-responsive-sm">
+          <thead>
+            <tr>
+              <th class="th-sm">Fecha</th>
+              <th class="th-sm">Numero</th>
+              <th class="th-sm">N°Doc</th> 
+              <th class="th-sm">Nombre       </th> 
+              <th>Gravado</th>     
+              <th>No Gravado</th>           
+              <th>Exento</th>
+              <th>Iva 10.5</th>
+              <th>Iva 21</th>
+              <th>Iva 27</th>
+              <th>Iva Otro</th>
+              <th>Otro Trib</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of entityList">
+              <td>{{item.FechaComprobante | date:'dd-MM-yyyy'}}</td>
+              <td>{{item.Pe.toString().padStart(4 ,"0")}}-{{item.Numero.toString().padStart(8 ,"0")  }}</td>  
+              <td>{{item.NumeroDocumento}}</td>          
+              <td>{{item.Nombre}}</td>            
+              <td class="text-right">{{item.Gravado | number : '1.2-2' }}</td>
+              <td class="text-right">{{item.NoGravado | number : '1.2-2' }}</td>
+              <td class="text-right">{{item.Exento | number : '1.2-2' }}</td>
+              <td class="text-right">{{item.Iva105 | number : '1.2-2' }}</td>
+              <td class="text-right">{{item.Iva21 | number : '1.2-2' }}</td>
+              <td class="text-right">{{item.Iva27 | number : '1.2-2' }}</td>
+              <td class="text-right">{{item.IvaOtro | number : '1.2-2' }}</td>   
+              <td class="text-right">{{item.OtrosTributos | number : '1.2-2' }}</td>  
+              <td class="text-right">{{item.Total | number : '1.2-2' }}</td>                                      
+              <td><a (click)="onPrintItem(item)"><i class="material-icons btn">print</i></a></td>
+              <td></td>
+            </tr>
+            <tr>              
+                <td>Totales</td>
+                <td class="th-sm"></td>
+                <td class="th-sm"></td> 
+                <td class="th-sm"></td> 
+                <td class="text-right">{{totalGravado | number : '1.2-2' }}</td>     
+                <td class="text-right">{{totalNoGravado | number : '1.2-2' }}</td>           
+                <td class="text-right">{{totalExento | number : '1.2-2' }}</td>
+                <td class="text-right">{{totalIva105 | number : '1.2-2' }}</td>
+                <td class="text-right">{{totalIva21 | number : '1.2-2' }}</td>
+                <td class="text-right">{{totalIva27 | number : '1.2-2' }}</td>
+                <td class="text-right">{{totalIvaOtro | number : '1.2-2' }}</td>
+                <td class="text-right">{{totalOtrosTributos | number : '1.2-2' }}</td>
+                <td class="text-right">{{total | number : '1.2-2' }}</td>
+                <td></td>              
+            </tr>
+          </tbody>
+        </table>
+   </app-layout>

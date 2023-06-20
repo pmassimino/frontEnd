@@ -18,7 +18,7 @@
           <tbody>
             <tr *ngFor="let item of data">
               <td>{{item.Fecha | date:'dd-MM-yyyy'}}</td>
-              <td><span *ngIf="item.Tipo=='1'">FACTURA</span><span *ngIf="item.Tipo=='2'">NOTA DE CREDITO</span></td>
+              <td><span>{{getTipoFactura(item)}}</span></td>
               <td>{{item.Pe.toString().padStart(4 ,"0")}}-{{item.Numero.toString().padStart(8 ,"0")  }}</td>
               <td>{{item.Sujeto.Nombre}}</td>
               <td>{{item.Total}}</td>            

@@ -52,6 +52,7 @@ export class DetalleFactura {
     Iva: number=0;
     NoGravado: number=0;
     Exento: number=0;
+    OtroTributo: number=0;
     Total: number=0;
     Lote: string;
     Serie: string;

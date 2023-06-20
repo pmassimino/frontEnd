@@ -93,3 +93,78 @@ export class MovCtaCteView {
     Saldo: number;
     Vencido: boolean;
 }
+
+export class LibroIva {
+    Id: string;
+    IdEmpresa: string;
+    IdSucursal: string;
+    IdArea: string;
+    IdSeccion: string;
+    IdTransaccion: string;
+    Tipo: string;
+    Fecha: string;
+    FechaComp: string;
+    FechaVenc: string;
+    IdComprobante: string;
+    IdMoneda: string;
+    CotizacionMoneda: number;
+    Pe: number;
+    Numero: number;
+    IdCuenta: string;
+    Nombre: string;
+    IdTipoDoc: string;
+    NumeroDocumento: number;
+    Origen: string;
+    Gravado: number;
+    Iva: number;
+    NoGravado: number;
+    Exento: number;
+    OtrosTributos: number;
+    Total: number;
+    Autorizado: boolean;
+    DetalleIva: ItemIva[];
+    DetalleTributo: ItemTributo[];
+}
+
+export class ItemIva {
+    Id: string;
+    Item: number;
+    CondIva: string;
+    BaseImponible: number;
+    Importe: number;
+    lLibroIva: LibroIva;
+}
+
+export class ItemTributo {
+    Id: string;
+    Item: number;
+    IdTributo: string;
+    Nombre: string;
+    BaseImponible: number;
+    Tarifa: number;
+    Importe: number;
+    LibroIva: LibroIva;
+}
+export class LibroIvaView {
+    Id: string;
+    IdTransaccion: string;
+    LibroIva: LibroIva;
+    Cuenta: Sujeto;
+    Fecha: string;
+    FechaComprobante: string;
+    Pe: number;
+    Numero: number;
+    IdCuenta: string;
+    Nombre: string;
+    IdTipoDoc: string;
+    NumeroDocumento: number;
+    Gravado: number;
+    NoGravado: number;
+    Exento: number;
+    Iva21: number;
+    Iva105: number;
+    Iva27: number;
+    IvaOtro: number;
+    OtrosTributos: number;
+    Total: number;
+}

@@ -35,7 +35,13 @@ Routes: [{ path: '/ventas/factura/list',     title: 'Facturas',    icon: 'nc-dia
 {title: 'Contabilidad', icon: '',
 Routes: [{ path: '/contable/mayor/list',     title: 'Mayor',    icon: 'nc-diamond',  class: '' },
   { path: '/contable/cuentamayor/list',     title: 'Cuentas',    icon: 'nc-diamond',  class: '' },
-  { path: '/contable/ctacte/list',     title: 'Cuentas Corriente',    icon: 'nc-diamond',  class: '' }]}];
+  { path: '/contable/ctacte/list',     title: 'Cuentas Corriente',    icon: 'nc-diamond',  class: '' },
+  { path: '/contable/libroiva/list',     title: 'Libro IVA',    icon: 'nc-diamond',  class: '' }],
+},
+{title: 'Tesoreria', icon: '',
+Routes: [{ path: '/tesoreria/reciboctacte/list',     title: 'Recibo Cta. Cte.',    icon: 'nc-diamond',  class: '' },
+{ path: '/tesoreria/carteravalor/list',     title: 'Cartera Valor',    icon: 'nc-diamond',  class: '' }],
+}];
 
 @Component({
   selector: 'app-sidebar',

@@ -72,4 +72,41 @@ export class Setting {
     Value: string;
 }
 
+export class Localidad {
+    Id: string;
+    Nombre: string;
+    IdProvincia: string;
+    Provincia: Provincia;
+}
 
+export class Provincia {
+    Id: string;
+    Nombre: string;
+}
+
+export class Rol {
+    Id: number;
+    IdOrganizacion: string;
+    Nombre: string;
+    Organizacion: Organizacion;
+    Permisos: RolPermiso[];
+    Accounts: RolAccount[];
+}
+
+export class RolPermiso {
+    IdRol: number;
+    IdOrganizacion: string;
+    IdPermiso: string;
+    Rol: Rol;
+}
+
+export class RolAccount {
+    IdRol: number;
+    IdAccount: string;
+    Rol: Rol;
+    Account: Account;
+}
+export class Organizacion {
+    Id: string;
+    Nombre: string;
+}

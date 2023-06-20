@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../../../core/services/auth.service';
 import { ConfigService } from '../../../core/services/config.service';
@@ -17,24 +17,24 @@ export class EmpresaService extends CrudService<Empresa, string> {
     super(http, config.data.apiUrl + '/global/empresa/');
     this.initValue();
   }
- 
+  
   get Current():Empresa
   {
     return super.Current;
   }
   set Current(entity:Empresa)
-  { 
-    localStorage.setItem('idEmpresaSelected',entity.Id);
-    localStorage.setItem('EmpresaSelected', JSON.stringify(entity));   
-    var idSetting:string = "idEmpresaSelected." + this.authService.currentAccount().Id ;
-    this.settingService.setValue(idSetting,entity.Id).subscribe();
-    super.Current=entity;
+  { if (entity != null)
+      { 
+       localStorage.setItem('idEmpresaSelected',entity.Id);
+       localStorage.setItem('EmpresaSelected', JSON.stringify(entity));   
+       var idSetting:string = "idEmpresaSelected." + this.authService.currentAccount().Id ;
+       this.settingService.setValue(idSetting,entity.Id).subscribe();
+       super.Current=entity;
+      }       
   }
-
   findLastOrDefault(): Observable<Empresa> {
     return this.http.get<Empresa>(this.base + "LastOrDefault");
-  }
-  
+  }  
   private initValue()
   {
     var retrievedObject =  localStorage.getItem('EmpresaSelected');
@@ -47,9 +47,7 @@ export class EmpresaService extends CrudService<Empresa, string> {
     if (result == null)
     {
       this.findLastOrDefault().subscribe(res=>{this.Current = res});;
-    }    
-    
-    
+    } 
   }
   
   handleError(error: HttpErrorResponse) {

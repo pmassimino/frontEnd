@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {ConfigService} from './config.service';
 import * as jwt_decode from 'jwt-decode';
-import { Account } from '../../modules/global/models/models/model';
+import { Account, Rol } from '../../modules/global/models/models/model';
 
 
 
@@ -27,6 +27,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('EmpresaSelected');
+    localStorage.removeItem('idEmpresaSelected');
   }
   public get loggedIn(): boolean {
     return (localStorage.getItem('access_token') !== null);
@@ -58,4 +59,6 @@ export class AuthService {
     account.Email = tmpTokenJSon.email;
     return account;
   }
+  
+
 }

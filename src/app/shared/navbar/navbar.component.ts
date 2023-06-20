@@ -5,6 +5,8 @@ import { Location} from '@angular/common';
 import { Empresa } from '../../modules/global/models/models/model';
 import { AuthService } from '../../core/services/auth.service';
 import { SessionService } from '../../modules/comun/services/session.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { EmpresaService } from '../../modules/global/services/empresa.service';
 
 
 @Component({
@@ -25,7 +27,7 @@ export class NavbarComponent implements OnInit{
   empresaSelected:Empresa;
   @ViewChild("navbar-cmp", {static: false}) button;
 
-  constructor(location:Location, private element : ElementRef, private router: Router,private authService:AuthService,private sessionService:SessionService) {
+  constructor(location:Location, private element : ElementRef, private router: Router,private authService:AuthService,private sessionService:SessionService,private empresaService:EmpresaService) {
       this.location = location;
       this.nativeElement = element.nativeElement;
       this.sidebarVisible = false;
@@ -34,7 +36,8 @@ export class NavbarComponent implements OnInit{
   ngOnInit(){
       this.listTitles = ROUTES.filter(listTitle => listTitle);
       var navbar : HTMLElement = this.element.nativeElement; 
-      this.empresaSelected = this.sessionService.CurrentEmpresa;//JSON.parse(localStorage.getItem("empresaSelected"));   
+      //this.empresaSelected = this.sessionService.CurrentEmpresa;//JSON.parse(localStorage.getItem("empresaSelected"));         
+      this.empresaService.currentValue().subscribe(res=>this.empresaSelected = res);
       this.username = this.authService.currentAccount().Nombre; 
   }
   getTitle(){

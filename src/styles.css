@@ -79,3 +79,6 @@ input[type=number] {
    padding: .0rem .0rem
 }
 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

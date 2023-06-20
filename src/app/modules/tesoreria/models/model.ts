@@ -29,7 +29,7 @@ export class DetalleComprobante {
     Item: number;
     IdTipo: string;
     IdTipoComp: string;
-    IdMovCtaCte: number;
+    IdMovCtaCte: string;
     Fecha: string;
     Pe: number;
     Numero: number;
@@ -74,4 +74,58 @@ export class ComprobantesDisponible {
     ImporteDisponible: number;
     ImporteAsignar: number;
     Select: boolean;
+}
+export class CarteraValor {
+    Id: string;
+    IdEmpresa: string;
+    IdSucursal: string;
+    IdArea: string;
+    IdSeccion: string;
+    IdTransaccion: string;
+    IdCuenta: string;
+    IdCuentaMayor: string;
+    Fecha: string;
+    FechaVencimiento: string;
+    Numero: number;
+    Tipo: string;
+    Banco: string;
+    Sucursal: string;
+    Importe: number;
+    Obs: string;
+    MovCarteraValor: MovCarteraValor[];
+    CuentaMayor: CuentaMayor;
+    Sujeto: Sujeto;
+}
+
+export class MovCarteraValor {
+    Id: string;
+    Item: number;
+    Tipo: string;
+    IdTransaccion: string;
+    Fecha: string;
+    Estado: string;
+    Concepto: string;
+    CarteraValor: CarteraValor;
+}
+
+export class CarteraValorView {
+    Id: string;
+    IdEmpresa: string;
+    IdSucursal: string;
+    IdArea: string;
+    IdSeccion: string;
+    IdTransaccion: string;
+    IdCuenta: string;
+    NombreCuenta: string;
+    IdCuentaMayor: string;
+    NombreCuentaMayor: string;
+    Fecha: string;
+    FechaVencimiento: string;
+    Numero: number;
+    Tipo: string;
+    Banco: string;
+    Sucursal: string;
+    Importe: number;
+    Obs: string;
+    Estado: string;
 }

@@ -4,7 +4,6 @@ import { AlmacenRoutingModule } from './almacen-routing.module';
 import {ArticuloService} from './services/articulo.service';
 import { SharedModule } from '../../shared/shared.module';
 import { ArticuloFormComponent } from './articulo/articulo-form/articulo-form.component';
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { ArticuloListComponent } from './articulo/articulo-list/articulo-list.component';
 import { MatIconModule } from '@angular/material/icon';
 import {MatDialogModule} from "@angular/material/dialog";
@@ -13,11 +12,16 @@ import { FamiliaFormComponent } from './familia/familia-form/familia-form.compon
 import { ArticuloSelectComponent } from './articulo/articulo-select/articulo-select.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-
-
+import {MatPaginatorModule} from '@angular/material/paginator'
+import {MatSortModule} from '@angular/material/sort'
+import {MatTableDataSource} from '@angular/material/table';
+import {MatTableModule} from '@angular/material/table';
+import {NgxPaginationModule } from 'ngx-pagination';
+import {ArticuloListMatComponent } from './articulo/articulo-list-mat/articulo-list-mat.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
     declarations: [ArticuloFormComponent, ArticuloListComponent,
-        FamiliaListComponent, FamiliaFormComponent, ArticuloSelectComponent],
+        FamiliaListComponent, FamiliaFormComponent, ArticuloSelectComponent, ArticuloListMatComponent],
     imports: [
         CommonModule,
         AlmacenRoutingModule,
@@ -27,7 +31,11 @@ import { MatInputModule } from '@angular/material/input';
         MatIconModule,
         MatSelectModule,
         MatInputModule,
-        MatDialogModule
+        MatDialogModule,
+        MatPaginatorModule, 
+        MatSortModule,        
+        MatTableModule,
+        NgxPaginationModule,      
     ],
     providers: [
         ArticuloService

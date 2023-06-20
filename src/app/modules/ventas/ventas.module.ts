@@ -13,6 +13,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ArticuloSelectComponent } from '../almacen/articulo/articulo-select/articulo-select.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FacturaAFIPComponent } from './factura/factura-afip/factura-afip.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -25,6 +29,14 @@ import { FacturaAFIPComponent } from './factura/factura-afip/factura-afip.compon
         MatSelectModule,
         MatInputModule,
         MatDialogModule,
+        MatIconModule,
+        MatSelectModule,
+        MatInputModule,
+        MatDialogModule,
+        MatPaginatorModule, 
+        MatSortModule,        
+        MatTableModule,
+        NgxPaginationModule,      
     ]
 })
 export class VentasModule { }

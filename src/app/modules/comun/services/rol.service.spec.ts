@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import { TipoRolService } from './tuipo-rol.service';
 
-import { RolService } from './rol.service';
 
 describe('RolService', () => {
-  let service: RolService;
+  let service: TipoRolService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RolService);
+    service = TestBed.inject(TipoRolService);
   });
 
   it('should be created', () => {

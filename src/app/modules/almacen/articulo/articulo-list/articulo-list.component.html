@@ -1,31 +1,32 @@
 <app-layout>
   <div toolbar >
   <app-toolbar (addNew)="addNew()" (exportToExcel)="exportToExcel()" (findByName)="findByName($event)"></app-toolbar> </div>
-    <table class="table table-hover table-responsive-sm">
+    <table class="table table-hover table-responsive-md">
         <thead>
           <tr>
-            <th class="th-sm">Codigo</th>
-            <th class="th-sm">Nombre                      </th>
-            <th class="th-sm">Precio</th>
-            <th></th>
-            <th></th>
+            <th class="col-md-1">Codigo</th>
+            <th class="col-md-4">Nombre                      </th>
+            <th class="col-md-1">Precio</th>
+            <th class="col-md-1"></th>
+            <th class="col-md-1"></th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of articuloData">
-            <td>{{item.Id}}</td>
-            <td>{{item.Nombre}}</td>
-            <td>{{item.PrecioVentaFinal}}</td>
-            <td>
+          <tr *ngFor="let item of articuloData | paginate : {itemsPerPage: itemsPerPage,currentPage: page,totalItems: totalItems}">
+            <td class="col-md-1">{{item.Id}}</td>
+            <td class="col-md-4">{{item.Nombre}}</td>
+            <td class="col-md-1">{{item.PrecioVentaFinal}}</td>
+            <td class="col-md-1">
               <a [routerLink]="['/almacen/articulo', item.Id]">
                 <i class="material-icons">mode_edit</i>
               </a>
             </td>
-            <td> <a (click)="delete(item)" >
+            <td class="col-md-1"> <a (click)="delete(item)" >
               <i class="material-icons btn">delete</i>
             </a></td>
           </tr>
         </tbody>
       </table>
+      <div class="col-md-12"><pagination-controls  class="pagi"  (pageChange)="page = $event"></pagination-controls></div>
  </app-layout>
     

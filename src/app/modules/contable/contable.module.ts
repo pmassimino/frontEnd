@@ -14,11 +14,12 @@ import { ResumenComponent } from './ctacte/resumen/resumen.component';
 import { TestComponent } from './ctacte/test/test.component';
 import { CuentaMayorSelectComponent } from './cuentamayor/cuenta-mayor-select/cuenta-mayor-select.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { LibroIvaListComponent } from './libroiva/libro-iva-list/libro-iva-list.component';
 
 
 
 @NgModule({
-  declarations: [CuentaMayorListComponent, CuentaMayorFormComponent, MayorListComponent, ResumenSaldoListComponent, ResumenComponent, TestComponent, CuentaMayorSelectComponent],
+  declarations: [CuentaMayorListComponent, CuentaMayorFormComponent, MayorListComponent, ResumenSaldoListComponent, ResumenComponent, TestComponent, CuentaMayorSelectComponent, LibroIvaListComponent],
   imports: [
     CommonModule,ContableRoutingModule,SharedModule,FormsModule,
     ReactiveFormsModule, MatIconModule,MatSelectModule,MatInputModule,SharedModule,FormsModule,

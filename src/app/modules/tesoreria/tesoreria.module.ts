@@ -12,6 +12,8 @@ import { ReciboCtaCteService } from './services/recibo-cta-cte.service';
 import { ReciboCtaCteFormComponent } from './ReciboCtaCte/recibo-cta-cte-form/recibo-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ComprobanteAddComponent } from './ReciboCtaCte/comprobante-add/comprobante-add.component';
+import { ACtaAddComponent } from './ReciboCtaCte/acta-add/acta-add.component';
+import { CarteraValorListComponent } from './CarteraValor/cartera-valor-list/cartera-valor-list.component';
 
 
 
@@ -20,6 +22,8 @@ import { ComprobanteAddComponent } from './ReciboCtaCte/comprobante-add/comproba
     ReciboCtaCteListComponent,
     ReciboCtaCteFormComponent,
     ComprobanteAddComponent,
+    ACtaAddComponent,
+    CarteraValorListComponent,
   ],
   providers: [
     ReciboCtaCteService

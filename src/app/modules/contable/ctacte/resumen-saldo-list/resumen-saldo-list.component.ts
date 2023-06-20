@@ -31,7 +31,9 @@ export class ResumenSaldoListComponent implements OnInit {
   }
   onClick(item:MovCtaCte){
     this.router.navigate( ['/contable/ctacte/resumen/' + item.IdCuenta], {queryParams: {idCuentaMayor:item.IdCuentaMayor}});
-  }
+  }  
+    
+  
 
 
 }

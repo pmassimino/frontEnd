@@ -1,17 +1,20 @@
 
-<main  role="main">
-<form [formGroup]="form">
+<h2 mat-dialog-title>Autorizar Factura Electronica</h2>
+<form [formGroup]="form" *ngIf="form">
     <div class="form-group row">
-       <div class="col-xs-2 col-lg-2">
-            <label>Tipo</label>          
+       <div class="col-xs-3 col-lg-3">
+        <label>Tipo</label>
+        <select class="form-control" formControlName = "Tipo" name="Tipo" disabled="true" >
+          <option *ngFor="let item of tipoFactura" [ngValue]="item.Id"  >{{item.Nombre}} </option>
+        </select>          
        </div>     
        <div class="col-xs-2 col-lg-2">
             <label>Letra</label>
             <label>{{entity.Letra}}</label>
        </div>
-       <div class="col-xs-1 col-md-1">
+       <div class="col-xs-1 col-lg-2">
             <label>Numero</label>
-            <label>{{("0000" + entity.Pe).slice(-4) | number:'4'}}</label>
+            <label>{{entity.Pe.toString().padStart(4 ,"0")}}-{{entity.Numero.toString().padStart(8 ,"0")  }}</label>
        </div>       
     </div>
     <div class="form-group row">
@@ -60,4 +63,3 @@
         </mat-dialog-actions>
     </div>    
 </form>
-</main>

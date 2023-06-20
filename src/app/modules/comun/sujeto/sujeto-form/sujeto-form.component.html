@@ -15,13 +15,13 @@
         <div class="form-group row">
           <div class="col-xs-6 col-lg-6">
                <label for="name">Nombre</label>
-               <input type="text" class="form-control" id="Nombre" formControlName = "Nombre" required name="Nombre" >
+               <input type="text" class="form-control" id="Nombre" formControlName = "Nombre" required name="Nombre"  >
           </div>
         </div>
         <div class="form-group row">
             <div class="col-xs-6 col-lg-6">
                  <label for="name">Nombre Comercial</label>
-                 <input type="text" class="form-control" formControlName = "NombreComercial" required name="NombreComercial" >
+                 <input type="text" class="form-control" formControlName = "NombreComercial" required name="NombreComercial" onfocus="onNombreChanged()" >
             </div>
         </div>
         <div class="form-group row">
@@ -33,7 +33,27 @@
                 <label for="name">Altura</label>
                 <input type="number" class="form-control" formControlName = "Altura" required name="Altura">
            </div>
-        </div>          
+        </div>
+        <div class="form-group row">   
+        <div class="col-md-3">
+          <label for="IdProvincia">Provincia</label>
+          <select class="form-control" formControlName = "IdProvincia" name="IdProvincia" (change)="getLocalidadByProvincia()" >
+             <option *ngFor="let item of provincia" [ngValue]="item.Id" >{{item.Nombre}} </option>
+           </select>   
+         </div> 
+        </div>
+        <div class="form-group row">   
+          <div class="col-md-3">
+            <label for="IdLocalidad">Localidad</label>
+            <select class="form-control" formControlName = "IdLocalidad" name="IdLocalidad" >
+               <option *ngFor="let item of localidad" [ngValue]="item.Id" >{{item.Nombre}} </option>
+             </select>   
+           </div>             
+          <div class="col-md-2">
+            <label >Codigo Postal</label>
+            <input type="text" class="form-control" formControlName = "CodigoPostal" required name="CodigoPostal">   
+          </div>                 
+       </div>    
         <div class="form-group row"> 
           <div class="col-md-3">
             <label for="IdCondicionIva">Cond. Iva</label>

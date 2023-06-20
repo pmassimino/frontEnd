@@ -11,7 +11,6 @@ import { Sujeto } from '../../../comun/models/model';
 import { CondIvaOperacion, TipoFactura } from '../../../global/models/models/model';
 import { CuentaMayor } from '../../../contable/models/model';
 import { CuentaMayorService } from '../../../contable/services/cuenta-mayor.service';
-import { identifierModuleUrl } from '@angular/compiler';
 import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ArticuloSelectComponent } from '../../../almacen/articulo/articulo-select/articulo-select.component';
@@ -19,6 +18,7 @@ import { CarritoCompraService } from '../../../almacen/services/carrito-compra.s
 import { FacturaAFIPComponent } from '../factura-afip/factura-afip.component';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { CondIvaOperacionService } from '../../../global/services/cond-iva-operacion.service';
+import { SessionService } from '../../../comun/services/session.service';
 
 const resolvedPromise = Promise.resolve(null);
 
@@ -45,14 +45,18 @@ export class FacturaFormComponent implements OnInit {
   letras:String[]=[];
   condIva:CondIvaOperacion[]=[];
   errors = [];
+  DigitosDecimal:number=2;
+
 
   get f() { return this.form.controls; }
   
   constructor(private entityService: FacturaService,private sujetoService : SujetoService,private articuloService:ArticuloService,
     private tipoFacturaService:TipoFacturaService,private cuentaMayorService:CuentaMayorService,private condIvaOperacionService:CondIvaOperacionService,
+    private sessionServie:SessionService,
     private router: Router,private route: ActivatedRoute,
               private formBuilder: FormBuilder,private dialog: MatDialog,private carritoService: CarritoCompraService)            
-              {                      
+              {    
+                this.DigitosDecimal = entityService.DigitosDecimal                  
               }
     
   ngOnInit(): void {
@@ -66,7 +70,8 @@ export class FacturaFormComponent implements OnInit {
       }
       else //set default values
       {
-        this.setDefaultValues();        
+        this.setDefaultValues();  
+
       }   
   
       }
@@ -82,9 +87,10 @@ export class FacturaFormComponent implements OnInit {
         IdTransaccion: new FormControl(this.entity.IdTransaccion),
         IdMoneda: new FormControl(this.entity.IdMoneda),
         Letra: new FormControl(this.entity.Letra,Validators.required),
-        Fecha: new FormControl(this.entity.Fecha,Validators.required),        
+        Fecha: new FormControl(this.entity.Fecha,Validators.required),
+        FechaComp: new FormControl(this.entity.FechaComp,Validators.required),        
         FechaVencimiento: new FormControl(this.entity.FechaVencimiento,Validators.required),
-        IdCuenta: new FormControl(this.entity.IdCuenta,{ validators: Validators.required}),
+        IdCuenta: new FormControl(this.entity.IdCuenta,Validators.required),
         Pe: new FormControl(this.entity.Pe,{ validators: Validators.required}),
         Numero: new FormControl(this.entity.Numero,{ validators: Validators.required}),
         Tipo: new FormControl(this.entity.Tipo,{ validators: Validators.required}),
@@ -101,7 +107,9 @@ export class FacturaFormComponent implements OnInit {
         Obs: new FormControl(this.entity.Obs),
         Detalle:this.formBuilder.array([],Validators.required),
         MedioPago:this.formBuilder.array([])
-      });    
+      }); 
+      this.form.get('Letra').valueChanges.subscribe(res=>this.onNextNumber());
+      this.form.get('Tipo').valueChanges.subscribe(res=>this.onNextNumber());   
     }
     
     get detalle(): FormArray {
@@ -109,6 +117,19 @@ export class FacturaFormComponent implements OnInit {
     }
     get mediopago(): FormArray {
       return this.form.get('MedioPago') as FormArray;
+    }
+
+    onNextNumber()
+    {
+      if (this.mode == "new")
+      {
+        const idSeccion = this.form.get("IdSeccion").value;
+        const letra = this.form.get("Letra").value;
+        const tipo = this.form.get("Tipo").value;
+        this.entityService.nextNumber(idSeccion,letra,tipo).subscribe(res=>
+          { this.form.get("Pe").patchValue(res.PuntoEmision);
+            this.form.get("Numero").patchValue(res.Numero);})
+      }
     }
    
     addDetalle()
@@ -155,13 +176,15 @@ export class FacturaFormComponent implements OnInit {
         NoGravado: new FormControl(itemDetalle.NoGravado),
         Exento: new FormControl(itemDetalle.Exento),
         CondIva: new FormControl(itemDetalle.CondIva),
+        OtroTributo:new FormControl(itemDetalle.OtroTributo),
+        ImpuestoVenta:new FormControl(itemDetalle.OtroTributo/itemDetalle.Cantidad),
         Iva: new FormControl(itemDetalle.Iva),
         Total: new FormControl(itemDetalle.Total,Validators.required),
       });
       itemGrp.get('Cantidad').valueChanges.subscribe(res=>this.calculateTotal());
       itemGrp.get('PorBonificacion').valueChanges.subscribe(res=>this.calculateTotal());
       itemGrp.get('Precio').valueChanges.subscribe(res=>this.calculateTotal());
-      itemGrp.get('IdArticulo').valueChanges.subscribe(res=>this.calculateTotal());
+      itemGrp.get('IdArticulo').valueChanges.subscribe(res=>this.calculateTotal());      
       this.detalle.push(itemGrp);
       return itemGrp;
     }
@@ -191,7 +214,7 @@ export class FacturaFormComponent implements OnInit {
   {    
     if (this.mediopago.length == 1)
     {
-    this.mediopago.at(0).get("Importe").setValue(total);  
+    this.mediopago.at(0).get("Importe").setValue(total.toFixed(this.DigitosDecimal));  
     }
   }
   addArticulo(itemGrp:FormGroup)
@@ -202,7 +225,8 @@ export class FacturaFormComponent implements OnInit {
       let precioVenta = res.PrecioVenta;            
       itemGrp.get('CondIva').setValue(res.CondIva,{ onlySelf: true });
       itemGrp.get('Precio').setValue(precioVenta,{ onlySelf: true });      
-      itemGrp.get('CondIva').setValue(res.CondIva,{ onlySelf: true });      
+      itemGrp.get('CondIva').setValue(res.CondIva,{ onlySelf: true });  
+      itemGrp.get('ImpuestoVenta').setValue(res.ImpuestoVenta,{ onlySelf: true });               
       },
       err => {console.log(err); });
           
@@ -210,28 +234,25 @@ export class FacturaFormComponent implements OnInit {
     
  popupData():void
   {
+      this.entityService.letrasDisponible(this.sessionServie.CurrentSeccion.Id).subscribe(res=>this.letras = res);      
       this.sujetoService.findAll().subscribe(res => { this.sujetos = res; }, err => {console.log(err); });
       this.articuloService.findAll().subscribe(res => { this.articulos = res; }, err => {console.log(err); });
       this.tipoFacturaService.findAll().subscribe(res => { this.tipoFactura = res; }, err => {console.log(err); });
       this.cuentaMayorService.findMediosPagos().subscribe(res=>{this.mediosPagos=res},err => {console.log(err); })
       this.sujetoService.findOne(this.entity.IdCuenta).subscribe();
-      this.condIvaOperacionService.findAll().subscribe(res=>{this.condIva = res;},err => {console.log(err);});
-      this.popupLetras();
+      this.condIvaOperacionService.findAll().subscribe(res=>{this.condIva = res;},err => {console.log(err);});      
   }
   popupEntity(entity:Factura):void
   {
      entity.MedioPago.forEach(item=>this.createMedioPago(item));
       entity.Detalle.forEach(item=>this.createItem(item));
   }
-  popupLetras(idCondIva:string="")
-  {
-    this.entityService.letrasDisponible(idCondIva).subscribe(res=>this.letras=res);
-  }
+  
     
   setDefaultValues():void
   {
-    this.entityService.newDefault().subscribe(res=>{this.entity=res;this.createForm(); 
-      this.markFormGroupTouched(this.form);this.addMedioPago();},err => {console.log(err);});      
+    this.entityService.newDefault().subscribe(res=>{this.entity=res;this.createForm();this.onNextNumber(); 
+    this.markFormGroupTouched(this.form);this.addMedioPago();},err => {console.log(err);});      
   }
        
   getById(id):void
@@ -278,20 +299,22 @@ export class FacturaFormComponent implements OnInit {
     let total = 0;
     let totalIva = 0;
     let totalItems = 0;
+    let totalOTributos = 0;
     for (let item of this.detalle.controls) 
-    {
-
-      
+    {      
       let tmpCondIva = this.condIva.find(i => i.Id == this.detalle.at(totalItems).get('CondIva').value);
       //Bonificacion
       let cantidad = this.detalle.at(totalItems).get('Cantidad').value;
       let precio = this.detalle.at(totalItems).get('Precio').value;
+      let impuestoVenta = this.detalle.at(totalItems).get('ImpuestoVenta').value;
       let porBonificacion = this.detalle.at(totalItems).get('PorBonificacion').value
       let bonificacion = cantidad * precio * porBonificacion / 100;
-      let subTotal = cantidad * precio - bonificacion;    
+      let subTotal = cantidad * precio - bonificacion;
+      let subTotalImpuesto = cantidad * impuestoVenta;   
       let gravado = 0;
       let noGravado = 0;
       let exento = 0;
+    
       if (tmpCondIva.Id =="001")//No Gravado
       {        
         item.get("NoGravado").patchValue(subTotal);
@@ -310,24 +333,30 @@ export class FacturaFormComponent implements OnInit {
       //iva
       let iva = gravado*tmpCondIva.Alicuota/100;
       totalNoGravado += noGravado;
-      totalExento += exento;
+      totalExento += exento ;
       totalGravado += gravado;
+      totalOTributos +=subTotalImpuesto;
       totalIva += iva;   
+      this.detalle.at(totalItems).get('OtroTributo').patchValue(totalOTributos);
       this.detalle.at(totalItems).get('Total').patchValue(subTotal);
       this.detalle.at(totalItems).get('Item').patchValue(totalItems);
+      
       totalItems +=1;
+      
     }
-   let totalOTributos = 0;
+   //let totalOTributos = 0;
    // for (let item of this.entity.Tributos) 
   // {
   //   totalOTributos += item.Importe;
   // }
+
   this.entity.TotalOTributos = totalOTributos;
   let totalNeto = totalNoGravado + totalExento + totalGravado;
   let totalDescuento = totalNeto * this.entity.PorDescuento /100
   total = totalNeto - totalDescuento + totalOTributos + totalIva;  
  
-   this.form.patchValue({"TotalNeto":totalNeto,"TotalItems":totalItems,"TotalGravado":totalGravado,"TotalNoGravado":totalNoGravado,"TotalExento":totalExento,"TotalOTributos": totalOTributos,"TotalIva":totalIva,"Total":total});
+   this.form.patchValue({"TotalNeto":totalNeto.toFixed(this.DigitosDecimal),"TotalItems":totalItems,"TotalGravado":totalGravado.toFixed(this.DigitosDecimal),
+   "TotalNoGravado":totalNoGravado.toFixed(this.DigitosDecimal),"TotalExento":totalExento.toFixed(this.DigitosDecimal),"TotalOTributos": totalOTributos.toFixed(this.DigitosDecimal),"TotalIva":totalIva.toFixed(this.DigitosDecimal),"Total":total.toFixed(this.DigitosDecimal)});
    this.updateTotalMedioPago(total);
   
         
@@ -342,10 +371,22 @@ export class FacturaFormComponent implements OnInit {
       }
     });
 }
-   onCuentaChange(idCuenta:string)
+   onCuentaChange()
    {
-     this.sujetoService.findOne(this.entity.IdCuenta).subscribe(res=>this.popupLetras(res.IdCondicionIva));
+     this.sujetoService.findOne(this.form.get("IdCuenta").value).subscribe(
+       res=>this.setDefaultLetra(res.IdCondicionIva));
 
+   }
+   setDefaultLetra(idCondIva:string)
+   {
+    if (idCondIva=="01")
+    {
+      this.form.get("Letra").patchValue("A");
+    }
+    else  
+    {
+      this.form.get("Letra").patchValue("B");
+    }
    }
     onSubmit() {
        this.save();
@@ -366,6 +407,8 @@ export class FacturaFormComponent implements OnInit {
       dialogConfig.disableClose = false;
       dialogConfig.autoFocus = true;
       dialogConfig.panelClass="dialog-responsive";
+      dialogConfig.width = "80%";
+      dialogConfig.height = "80%";
 
       this.dialog.open(ArticuloSelectComponent, dialogConfig).afterClosed()
       .subscribe(response => {
@@ -379,8 +422,6 @@ export class FacturaFormComponent implements OnInit {
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass="dialog-responsive";
-  
-
     this.dialog.open(FacturaAFIPComponent,{data:{id:this.entity.Id},width: '50%',height: '50%'}).afterClosed()
     .subscribe(response => {
       //alguna Accion
@@ -397,9 +438,11 @@ export class FacturaFormComponent implements OnInit {
         itemDetalle.Concepto = element.Articulo.Nombre;
         itemDetalle.Cantidad = element.Cantidad;
         itemDetalle.Precio = element.Articulo.PrecioVenta;
-        itemDetalle.CondIva = element.Articulo.CondIva;
+        itemDetalle.CondIva = element.Articulo.CondIva;        
         this.entity.Detalle.push(itemDetalle);       
         let item = this.createItem(itemDetalle);
+        item.get('ImpuestoVenta').setValue(element.Articulo.ImpuestoVenta,{ onlySelf: true });  
+      
     });
     this.carritoService.deleteAll();
     this.calculateTotal();

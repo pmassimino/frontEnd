@@ -49,7 +49,7 @@
     <div class="form-group row">
       <div class="col-md-6">
       <label for="name">Cond. Iva</label>
-    <select class="form-control" formControlName = "CondIva" name="CondIva"  (change)="condIvaChange($event)">
+    <select class="form-control" formControlName = "CondIva" name="CondIva"  (change)="condIvaChange($event.target.value)">
       <option *ngFor="let item of condIva" [ngValue]="item.Id">{{item.Nombre}} </option>
     </select> 
     <input type="hidden" class="form-control" id="AlicuotaIva" formControlName = "AlicuotaIva"  name="AlicuotaIva">  
