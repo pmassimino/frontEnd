@@ -1,6 +1,5 @@
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { TransaccionService } from '../../../comun/services/transaccion.service';
 import { LibroIvaView } from '../../models/model';
 import { LibroIvaService } from '../../services/libro-iva.service';
@@ -12,7 +11,7 @@ import { LibroIvaService } from '../../services/libro-iva.service';
 })
 export class LibroIvaListComponent implements OnInit {  
   paramForm:LibroIvaParam;
-  form :  FormGroup;
+  form :  UntypedFormGroup;
   fecha:Date;
   fechaHasta:Date;
   tipo:string="V";
@@ -29,7 +28,7 @@ export class LibroIvaListComponent implements OnInit {
   totalOtrosTributos:number=0;
   total:number=0;
  
-  constructor(private libroIvaService:LibroIvaService,private transaccionService:TransaccionService,private formBuilder: FormBuilder) 
+  constructor(private libroIvaService:LibroIvaService,private transaccionService:TransaccionService,private formBuilder: UntypedFormBuilder) 
   {
     var today:Date= new Date;
     var month = today.getMonth()
@@ -44,11 +43,11 @@ export class LibroIvaListComponent implements OnInit {
   createForm():void
   {
     this.form = this.formBuilder.group({
-      Tipo: new FormControl(this.paramForm.Tipo,Validators.required),
-      Fecha: new FormControl(this.paramForm.Fecha,Validators.required),
-      FechaHasta: new FormControl(this.paramForm.FechaHasta,Validators.required),
-      FiltrarAutorizado: new FormControl(this.paramForm.FiltrarAutorizado),
-      Autorizado: new FormControl(this.paramForm.Autorizado)});
+      Tipo: new UntypedFormControl(this.paramForm.Tipo,Validators.required),
+      Fecha: new UntypedFormControl(this.paramForm.Fecha,Validators.required),
+      FechaHasta: new UntypedFormControl(this.paramForm.FechaHasta,Validators.required),
+      FiltrarAutorizado: new UntypedFormControl(this.paramForm.FiltrarAutorizado),
+      Autorizado: new UntypedFormControl(this.paramForm.Autorizado)});
   }
 
   ngOnInit(): void {

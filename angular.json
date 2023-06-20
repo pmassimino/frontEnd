@@ -126,7 +126,6 @@
       }
     }
   },
-  "defaultProject": "gadm",
   "cli": {
     "analytics": "a5fb0f77-cff0-491a-88e2-b28fa661cb99"
   }

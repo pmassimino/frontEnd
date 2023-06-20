@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorService {
-  form :  FormGroup;
+  form :  UntypedFormGroup;
   constructor() { }
   setControlsError(validationErrors)
     {    

@@ -3,7 +3,7 @@ import { ArticuloService } from '../../services/articulo.service';
 import { Articulo, Familia } from '../../models/model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FamiliaService } from '../../services/familia.service';
-import { FormControl, FormGroup, Validators, FormBuilder} from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, UntypedFormBuilder} from '@angular/forms';
 import { CondIvaOperacion, UnidadMedida } from '../../../global/models/models/model';
 import { CondIvaOperacionService } from '../../../global/services/cond-iva-operacion.service';
 import { UnidadMedidaService } from '../../../global/services/unidad-medida.service';
@@ -14,7 +14,7 @@ import { UnidadMedidaService } from '../../../global/services/unidad-medida.serv
   styleUrls: ['./articulo-form.component.css']
 })
 export class ArticuloFormComponent implements OnInit {
-myForm :  FormGroup;
+myForm :  UntypedFormGroup;
 entity: Articulo = new Articulo();
 condIva: CondIvaOperacion[] = [];
 familia: Familia[] = [];
@@ -26,7 +26,7 @@ _id= String;
 constructor(private articuloService: ArticuloService, private condIvaOpService: CondIvaOperacionService,
             private familiaService: FamiliaService,private unidadMedidaService: UnidadMedidaService, 
             private router: Router,private route: ActivatedRoute,
-            private formBuilder: FormBuilder)            
+            private formBuilder: UntypedFormBuilder)            
             { 
                             
             }
@@ -50,18 +50,18 @@ constructor(private articuloService: ArticuloService, private condIvaOpService: 
 
   createForm():void
     {
-      this.myForm = new FormGroup({
-      Id: new FormControl(this.entity.Id,Validators.required),
-      Nombre: new FormControl(this.entity.Nombre,Validators.required),
-      IdFamilia: new FormControl(this.entity.IdFamilia),
-      IdUnidad: new FormControl(this.entity.IdUnidad),
-      CostoVenta: new FormControl(this.entity.CostoVenta),
-      ImpuestoVenta: new FormControl(this.entity.ImpuestoVenta),
-      CondIva:new FormControl(this.entity.CondIva),
-      AlicuotaIva: new FormControl(this.entity.AlicuotaIva),
-      MargenVenta: new FormControl(this.entity.MargenVenta),
-      PrecioVenta: new FormControl(this.entity.PrecioVenta),
-      PrecioVentaFinal: new FormControl(this.entity.PrecioVentaFinal)});
+      this.myForm = new UntypedFormGroup({
+      Id: new UntypedFormControl(this.entity.Id,Validators.required),
+      Nombre: new UntypedFormControl(this.entity.Nombre,Validators.required),
+      IdFamilia: new UntypedFormControl(this.entity.IdFamilia),
+      IdUnidad: new UntypedFormControl(this.entity.IdUnidad),
+      CostoVenta: new UntypedFormControl(this.entity.CostoVenta),
+      ImpuestoVenta: new UntypedFormControl(this.entity.ImpuestoVenta),
+      CondIva:new UntypedFormControl(this.entity.CondIva),
+      AlicuotaIva: new UntypedFormControl(this.entity.AlicuotaIva),
+      MargenVenta: new UntypedFormControl(this.entity.MargenVenta),
+      PrecioVenta: new UntypedFormControl(this.entity.PrecioVenta),
+      PrecioVentaFinal: new UntypedFormControl(this.entity.PrecioVentaFinal)});
       this.calculate();      
   }
 

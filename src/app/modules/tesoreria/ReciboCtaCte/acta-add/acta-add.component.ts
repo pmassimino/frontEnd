@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DetalleComprobante } from '../../models/model';
@@ -13,7 +13,7 @@ import { ComprobanteAddComponent } from '../comprobante-add/comprobante-add.comp
 })
 export class ACtaAddComponent implements OnInit {
 
-  form :  FormGroup;
+  form :  UntypedFormGroup;
   formBuilder: any;
   idCuentaMayor:string;
   totalSaldo:number = 0;
@@ -29,9 +29,9 @@ export class ACtaAddComponent implements OnInit {
   }
   createForm():void
   {
-    this.form = new FormGroup({   
-    Concepto: new FormControl("A Cuenta",Validators.required),
-    Importe: new FormControl(this.totalSaldo,Validators.required)   
+    this.form = new UntypedFormGroup({   
+    Concepto: new UntypedFormControl("A Cuenta",Validators.required),
+    Importe: new UntypedFormControl(this.totalSaldo,Validators.required)   
   });
  }
  onSubmit() : void

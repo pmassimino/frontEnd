@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Sujeto, TipoRolSujeto, TipoRol } from '../../models/model';
-import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, ValidationErrors, FormArray, FormGroupDirective, NgForm } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, UntypedFormControl, AbstractControl, ValidationErrors, UntypedFormArray, FormGroupDirective, NgForm } from '@angular/forms';
 import { SujetoService } from '../../services/sujeto.service';
 
 import { Router, ActivatedRoute } from '@angular/router';
@@ -9,7 +9,6 @@ import { TipoDocumento, CondIva, Provincia, Localidad } from '../../../global/mo
 import { CoreService } from '../../../../core/services/core.service';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { variable } from '@angular/compiler/src/output/output_ast';
 import { CondIvaService } from '../../../global/services/cond-iva.service';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { ProvinciaService } from '../../../global/services/provincia.service';
@@ -17,7 +16,7 @@ import { LocalidadService } from '../../../global/services/localidad.service';
 import { TipoRolService } from '../../services/tuipo-rol.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
     return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
   }
@@ -32,7 +31,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class SujetoFormComponent implements OnInit {
 
   
-form :  FormGroup;
+form :  UntypedFormGroup;
 entity: Sujeto = new Sujeto();
 tipoDocumento:TipoDocumento[] = [];
 provincia:Provincia[] = [];
@@ -50,7 +49,7 @@ constructor(private entityService: SujetoService,tipoRolService : TipoRolService
             private tipoDocumentoService:TipoDocumentoService,private condIvaService:CondIvaService,
             private provinciaService:ProvinciaService,private localidadService:LocalidadService,
             private router: Router,private route: ActivatedRoute,
-            private formBuilder: FormBuilder)            
+            private formBuilder: UntypedFormBuilder)            
             { 
                       
             }
@@ -78,20 +77,20 @@ constructor(private entityService: SujetoService,tipoRolService : TipoRolService
 
   createForm():void
     {
-      this.form = new FormGroup({
-      Id: new FormControl(this.entity.Id,Validators.required),
-      Nombre: new FormControl(this.entity.Nombre,Validators.required),
-      NombreComercial: new FormControl(this.entity.NombreComercial,Validators.required),
-      Domicilio: new FormControl(this.entity.Domicilio),
-      Altura: new FormControl(this.entity.Altura),
-      IdProvincia: new FormControl(this.entity.IdProvincia,Validators.required),
-      IdLocalidad: new FormControl(this.entity.IdLocalidad,Validators.required),
-      CodigoPostal:new FormControl(this.entity.CodigoPostal),
-      IdCondicionIva: new FormControl(this.entity.IdCondicionIva),
-      IdTipoDoc: new FormControl(this.entity.IdTipoDoc,{ validators: Validators.required}),
-      NumeroDocumento:new FormControl(this.entity.NumeroDocumento, { validators: Validators.required, updateOn: 'blur' }),
-      Email1: new FormControl(this.entity.Email1,Validators.email),
-      TipoRolSujeto:new FormArray([this.createItem()])        
+      this.form = new UntypedFormGroup({
+      Id: new UntypedFormControl(this.entity.Id,Validators.required),
+      Nombre: new UntypedFormControl(this.entity.Nombre,Validators.required),
+      NombreComercial: new UntypedFormControl(this.entity.NombreComercial,Validators.required),
+      Domicilio: new UntypedFormControl(this.entity.Domicilio),
+      Altura: new UntypedFormControl(this.entity.Altura),
+      IdProvincia: new UntypedFormControl(this.entity.IdProvincia,Validators.required),
+      IdLocalidad: new UntypedFormControl(this.entity.IdLocalidad,Validators.required),
+      CodigoPostal:new UntypedFormControl(this.entity.CodigoPostal),
+      IdCondicionIva: new UntypedFormControl(this.entity.IdCondicionIva),
+      IdTipoDoc: new UntypedFormControl(this.entity.IdTipoDoc,{ validators: Validators.required}),
+      NumeroDocumento:new UntypedFormControl(this.entity.NumeroDocumento, { validators: Validators.required, updateOn: 'blur' }),
+      Email1: new UntypedFormControl(this.entity.Email1,Validators.email),
+      TipoRolSujeto:new UntypedFormArray([this.createItem()])        
     });
   }
 
@@ -119,7 +118,7 @@ constructor(private entityService: SujetoService,tipoRolService : TipoRolService
    } 
   }
   
-  createItem(): FormGroup {
+  createItem(): UntypedFormGroup {
     let rol = new TipoRolSujeto("1",this.entity.Id);    
     this.entity.TipoRolSujeto.push(rol);    
     return this.formBuilder.group({
@@ -171,7 +170,7 @@ constructor(private entityService: SujetoService,tipoRolService : TipoRolService
     this.router.navigate(['comun/sujeto/list']);
   }
   
-  private numeroDocumentoValidator(control: FormControl): Observable<ValidationErrors | null> {
+  private numeroDocumentoValidator(control: UntypedFormControl): Observable<ValidationErrors | null> {
     let numeroDocumento = this.form.get("NumeroDocumento").value;    
     let idTipoDoc = this.form.get("IdTipoDoc").value;
     return this.coreService.validarNumeroDocumento(idTipoDoc,numeroDocumento).pipe(

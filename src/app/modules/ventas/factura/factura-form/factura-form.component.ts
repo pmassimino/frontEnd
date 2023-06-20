@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, UntypedFormControl, Validators, UntypedFormArray } from '@angular/forms';
 import { Factura, DetalleFactura, MedioPago } from '../../models/model';
 import { FacturaService } from '../../services/factura.service';
 import { SujetoService } from '../../../comun/services/sujeto.service';
@@ -16,7 +16,6 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ArticuloSelectComponent } from '../../../almacen/articulo/articulo-select/articulo-select.component';
 import { CarritoCompraService } from '../../../almacen/services/carrito-compra.service';
 import { FacturaAFIPComponent } from '../factura-afip/factura-afip.component';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { CondIvaOperacionService } from '../../../global/services/cond-iva-operacion.service';
 import { SessionService } from '../../../comun/services/session.service';
 
@@ -31,7 +30,7 @@ const resolvedPromise = Promise.resolve(null);
 export class FacturaFormComponent implements OnInit {
 
   
-  form :  FormGroup;
+  form :  UntypedFormGroup;
   entity: Factura = new Factura();
   totalItems:number=0;
   submitted = false;
@@ -54,7 +53,7 @@ export class FacturaFormComponent implements OnInit {
     private tipoFacturaService:TipoFacturaService,private cuentaMayorService:CuentaMayorService,private condIvaOperacionService:CondIvaOperacionService,
     private sessionServie:SessionService,
     private router: Router,private route: ActivatedRoute,
-              private formBuilder: FormBuilder,private dialog: MatDialog,private carritoService: CarritoCompraService)            
+              private formBuilder: UntypedFormBuilder,private dialog: MatDialog,private carritoService: CarritoCompraService)            
               {    
                 this.DigitosDecimal = entityService.DigitosDecimal                  
               }
@@ -79,32 +78,32 @@ export class FacturaFormComponent implements OnInit {
     createForm():void
       {
         this.form = this.formBuilder.group({
-        Id: new FormControl(this.entity.Id),
-        IdEmpresa: new FormControl(this.entity.IdEmpresa),
-        IdSucursal: new FormControl(this.entity.IdSucursal),
-        IdArea: new FormControl(this.entity.IdArea),
-        IdSeccion: new FormControl(this.entity.IdSeccion),
-        IdTransaccion: new FormControl(this.entity.IdTransaccion),
-        IdMoneda: new FormControl(this.entity.IdMoneda),
-        Letra: new FormControl(this.entity.Letra,Validators.required),
-        Fecha: new FormControl(this.entity.Fecha,Validators.required),
-        FechaComp: new FormControl(this.entity.FechaComp,Validators.required),        
-        FechaVencimiento: new FormControl(this.entity.FechaVencimiento,Validators.required),
-        IdCuenta: new FormControl(this.entity.IdCuenta,Validators.required),
-        Pe: new FormControl(this.entity.Pe,{ validators: Validators.required}),
-        Numero: new FormControl(this.entity.Numero,{ validators: Validators.required}),
-        Tipo: new FormControl(this.entity.Tipo,{ validators: Validators.required}),
-        TotalNeto: new FormControl(this.entity.TotalNeto),
-        TotalItems: new FormControl(0),
-        PorDescuento: new FormControl(this.entity.PorDescuento),
-        TotalDescuento: new FormControl(this.entity.TotalDescuento),
-        TotalGravado: new FormControl(this.entity.TotalGravado),
-        TotalNoGravado: new FormControl(this.entity.TotalNoGravado),
-        TotalExento: new FormControl(this.entity.TotalExento),
-        TotalIva: new FormControl(this.entity.TotalIva),
-        TotalOTributos: new FormControl(this.entity.TotalOTributos),
-        Total: new FormControl(this.entity.Total),
-        Obs: new FormControl(this.entity.Obs),
+        Id: new UntypedFormControl(this.entity.Id),
+        IdEmpresa: new UntypedFormControl(this.entity.IdEmpresa),
+        IdSucursal: new UntypedFormControl(this.entity.IdSucursal),
+        IdArea: new UntypedFormControl(this.entity.IdArea),
+        IdSeccion: new UntypedFormControl(this.entity.IdSeccion),
+        IdTransaccion: new UntypedFormControl(this.entity.IdTransaccion),
+        IdMoneda: new UntypedFormControl(this.entity.IdMoneda),
+        Letra: new UntypedFormControl(this.entity.Letra,Validators.required),
+        Fecha: new UntypedFormControl(this.entity.Fecha,Validators.required),
+        FechaComp: new UntypedFormControl(this.entity.FechaComp,Validators.required),        
+        FechaVencimiento: new UntypedFormControl(this.entity.FechaVencimiento,Validators.required),
+        IdCuenta: new UntypedFormControl(this.entity.IdCuenta,Validators.required),
+        Pe: new UntypedFormControl(this.entity.Pe,{ validators: Validators.required}),
+        Numero: new UntypedFormControl(this.entity.Numero,{ validators: Validators.required}),
+        Tipo: new UntypedFormControl(this.entity.Tipo,{ validators: Validators.required}),
+        TotalNeto: new UntypedFormControl(this.entity.TotalNeto),
+        TotalItems: new UntypedFormControl(0),
+        PorDescuento: new UntypedFormControl(this.entity.PorDescuento),
+        TotalDescuento: new UntypedFormControl(this.entity.TotalDescuento),
+        TotalGravado: new UntypedFormControl(this.entity.TotalGravado),
+        TotalNoGravado: new UntypedFormControl(this.entity.TotalNoGravado),
+        TotalExento: new UntypedFormControl(this.entity.TotalExento),
+        TotalIva: new UntypedFormControl(this.entity.TotalIva),
+        TotalOTributos: new UntypedFormControl(this.entity.TotalOTributos),
+        Total: new UntypedFormControl(this.entity.Total),
+        Obs: new UntypedFormControl(this.entity.Obs),
         Detalle:this.formBuilder.array([],Validators.required),
         MedioPago:this.formBuilder.array([])
       }); 
@@ -112,11 +111,11 @@ export class FacturaFormComponent implements OnInit {
       this.form.get('Tipo').valueChanges.subscribe(res=>this.onNextNumber());   
     }
     
-    get detalle(): FormArray {
-      return this.form.get('Detalle') as FormArray;
+    get detalle(): UntypedFormArray {
+      return this.form.get('Detalle') as UntypedFormArray;
     }
-    get mediopago(): FormArray {
-      return this.form.get('MedioPago') as FormArray;
+    get mediopago(): UntypedFormArray {
+      return this.form.get('MedioPago') as UntypedFormArray;
     }
 
     onNextNumber()
@@ -160,26 +159,26 @@ export class FacturaFormComponent implements OnInit {
       this.detalle.removeAt(i);
       this.calculateTotal();
     }
-    createItem(itemDetalle : DetalleFactura):FormGroup {
+    createItem(itemDetalle : DetalleFactura):UntypedFormGroup {
           
       let item = this.entity.Detalle.length;
       let itemGrp =  this.formBuilder.group({
         Id: this.entity.Id,
         Item: item,
-        IdArticulo: new FormControl(itemDetalle.IdArticulo,Validators.required),
-        Cantidad: new FormControl(itemDetalle.Cantidad,Validators.required),
-        Concepto: new FormControl(itemDetalle.Concepto,Validators.required),
-        Precio: new FormControl(itemDetalle.Precio,Validators.required),
-        PorBonificacion: new FormControl(itemDetalle.PorBonificacion),
-        Bonificacion: new FormControl(itemDetalle.Bonificacion),
-        Gravado: new FormControl(itemDetalle.Gravado),
-        NoGravado: new FormControl(itemDetalle.NoGravado),
-        Exento: new FormControl(itemDetalle.Exento),
-        CondIva: new FormControl(itemDetalle.CondIva),
-        OtroTributo:new FormControl(itemDetalle.OtroTributo),
-        ImpuestoVenta:new FormControl(itemDetalle.OtroTributo/itemDetalle.Cantidad),
-        Iva: new FormControl(itemDetalle.Iva),
-        Total: new FormControl(itemDetalle.Total,Validators.required),
+        IdArticulo: new UntypedFormControl(itemDetalle.IdArticulo,Validators.required),
+        Cantidad: new UntypedFormControl(itemDetalle.Cantidad,Validators.required),
+        Concepto: new UntypedFormControl(itemDetalle.Concepto,Validators.required),
+        Precio: new UntypedFormControl(itemDetalle.Precio,Validators.required),
+        PorBonificacion: new UntypedFormControl(itemDetalle.PorBonificacion),
+        Bonificacion: new UntypedFormControl(itemDetalle.Bonificacion),
+        Gravado: new UntypedFormControl(itemDetalle.Gravado),
+        NoGravado: new UntypedFormControl(itemDetalle.NoGravado),
+        Exento: new UntypedFormControl(itemDetalle.Exento),
+        CondIva: new UntypedFormControl(itemDetalle.CondIva),
+        OtroTributo:new UntypedFormControl(itemDetalle.OtroTributo),
+        ImpuestoVenta:new UntypedFormControl(itemDetalle.OtroTributo/itemDetalle.Cantidad),
+        Iva: new UntypedFormControl(itemDetalle.Iva),
+        Total: new UntypedFormControl(itemDetalle.Total,Validators.required),
       });
       itemGrp.get('Cantidad').valueChanges.subscribe(res=>this.calculateTotal());
       itemGrp.get('PorBonificacion').valueChanges.subscribe(res=>this.calculateTotal());
@@ -188,16 +187,16 @@ export class FacturaFormComponent implements OnInit {
       this.detalle.push(itemGrp);
       return itemGrp;
     }
-    createMedioPago(medioPago : MedioPago):FormGroup {
+    createMedioPago(medioPago : MedioPago):UntypedFormGroup {
     
       this.entity.MedioPago.push(medioPago);
       let item = this.entity.MedioPago.length;    
       let itemGrpMP =  this.formBuilder.group({
         Id: medioPago.Id,
         Item: item,
-        Concepto: new FormControl(medioPago.Concepto,Validators.required),
-        IdCuentaMayor: new FormControl(medioPago.IdCuentaMayor,Validators.required),
-        Importe: new FormControl(medioPago.Importe,Validators.required),        
+        Concepto: new UntypedFormControl(medioPago.Concepto,Validators.required),
+        IdCuentaMayor: new UntypedFormControl(medioPago.IdCuentaMayor,Validators.required),
+        Importe: new UntypedFormControl(medioPago.Importe,Validators.required),        
       }); 
       itemGrpMP.get('Importe').valueChanges.subscribe(res=>this.updateImporteMedioPago(res));    
 
@@ -217,7 +216,7 @@ export class FacturaFormComponent implements OnInit {
     this.mediopago.at(0).get("Importe").setValue(total.toFixed(this.DigitosDecimal));  
     }
   }
-  addArticulo(itemGrp:FormGroup)
+  addArticulo(itemGrp:UntypedFormGroup)
   {
     let idArticulo = itemGrp.get('IdArticulo').value;    
     this.articuloService.findOne(idArticulo).subscribe(
@@ -362,12 +361,12 @@ export class FacturaFormComponent implements OnInit {
         
   }
   
-  private markFormGroupTouched(form: FormGroup) {
+  private markFormGroupTouched(form: UntypedFormGroup) {
     Object.values(form.controls).forEach(control => {
       control.markAsPristine();
 
       if ((control as any).controls) {
-        this.markFormGroupTouched(control as FormGroup);
+        this.markFormGroupTouched(control as UntypedFormGroup);
       }
     });
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms';
+import { Validators, UntypedFormControl, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { FamiliaService } from '../../services/familia.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Familia } from '../../models/model';
@@ -11,7 +11,7 @@ import { Familia } from '../../models/model';
 })
 export class FamiliaFormComponent implements OnInit {
 
-form :  FormGroup;
+form :  UntypedFormGroup;
 entity: Familia = new Familia();
 submitted = false;
 mode = "new";
@@ -19,7 +19,7 @@ _id= String;
 
 constructor(private entityService: FamiliaService, 
             private router: Router,private route: ActivatedRoute,
-            private formBuilder: FormBuilder)            
+            private formBuilder: UntypedFormBuilder)            
             { 
                             
             }
@@ -42,9 +42,9 @@ constructor(private entityService: FamiliaService,
 
   createForm():void
     {
-      this.form = new FormGroup({
-      Id: new FormControl(this.entity.Id,Validators.required),
-      Nombre: new FormControl(this.entity.Nombre,Validators.required)});      
+      this.form = new UntypedFormGroup({
+      Id: new UntypedFormControl(this.entity.Id,Validators.required),
+      Nombre: new UntypedFormControl(this.entity.Nombre,Validators.required)});      
   }
 
   popupData():void

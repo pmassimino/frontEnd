@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isTypeNode } from 'typescript';
@@ -16,12 +16,12 @@ export class ComprobanteAddComponent implements OnInit {
   entityData: ComprobantesDisponible[] = [];
   private idCuenta:string;
   private idCuentaMayor:string;
-  form :  FormGroup;
+  form :  UntypedFormGroup;
     
 
 constructor(private service : ReciboCtaCteService,private route: ActivatedRoute,
     private router: Router,private dialogRef: MatDialogRef<ComprobanteAddComponent>,
-    @Inject(MAT_DIALOG_DATA) data,private formBuilder: FormBuilder)
+    @Inject(MAT_DIALOG_DATA) data,private formBuilder: UntypedFormBuilder)
     {
       this.idCuenta = data.idCuenta;
       this.idCuentaMayor = data.idCuentaMayor;
@@ -35,26 +35,26 @@ ngOnInit(): void
    }
 createForm():void
    {
-   this.form = new FormGroup({
+   this.form = new UntypedFormGroup({
     ComprobanteDisponible:this.formBuilder.array([],Validators.required)});        
    }
 
-addIten(item : ComprobantesDisponible):FormGroup {          
+addIten(item : ComprobantesDisponible):UntypedFormGroup {          
    let i = this.entityData.length;
    let itemGrp =  this.formBuilder.group({
-   Id: new FormControl(item.Id),
-   Item:new FormControl(i),
-   IdTipo: new FormControl(item.IdTipo),
-   IdTipoComp: new FormControl("1"),
-   IdMovCtaCte: new FormControl(item.IdMovCtaCte),
-   Fecha: new FormControl(item.Fecha),
-   Pe: new FormControl(item.Pe),
-   Numero: new FormControl(item.Numero),
-   Concepto: new FormControl(item.Concepto),
-   Importe: new FormControl(item.Importe),
-   ImporteDisponible: new FormControl(item.ImporteDisponible),
-   ImporteAsignar: new FormControl(item.ImporteAsignar),
-   Select: new FormControl(item.Select)          
+   Id: new UntypedFormControl(item.Id),
+   Item:new UntypedFormControl(i),
+   IdTipo: new UntypedFormControl(item.IdTipo),
+   IdTipoComp: new UntypedFormControl("1"),
+   IdMovCtaCte: new UntypedFormControl(item.IdMovCtaCte),
+   Fecha: new UntypedFormControl(item.Fecha),
+   Pe: new UntypedFormControl(item.Pe),
+   Numero: new UntypedFormControl(item.Numero),
+   Concepto: new UntypedFormControl(item.Concepto),
+   Importe: new UntypedFormControl(item.Importe),
+   ImporteDisponible: new UntypedFormControl(item.ImporteDisponible),
+   ImporteAsignar: new UntypedFormControl(item.ImporteAsignar),
+   Select: new UntypedFormControl(item.Select)          
    });            
    itemGrp.get("Item").patchValue(this.ComprobanteDisponible.length);    
        
@@ -63,13 +63,13 @@ addIten(item : ComprobantesDisponible):FormGroup {
         
   return itemGrp;
 }
-get ComprobanteDisponible(): FormArray {
-   return this.form.get('ComprobanteDisponible') as FormArray;
+get ComprobanteDisponible(): UntypedFormArray {
+   return this.form.get('ComprobanteDisponible') as UntypedFormArray;
 }
 
 add(i:number):void
 {
-  var item = <FormGroup>this.ComprobanteDisponible.controls[i];
+  var item = <UntypedFormGroup>this.ComprobanteDisponible.controls[i];
   let select = this.ComprobanteDisponible.at(i).get('Select').value;
   let importeDisponible = this.ComprobanteDisponible.at(i).get('ImporteDisponible').value;  
   if (select)

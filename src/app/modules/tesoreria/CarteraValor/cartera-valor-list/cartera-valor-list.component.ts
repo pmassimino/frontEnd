@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { TransaccionService } from '../../../comun/services/transaccion.service';
 import { CarteraValorView } from '../../models/model';
 import { CarteraValorService } from '../../services/cartera-valor.service';
@@ -12,7 +12,7 @@ import { CarteraValorService } from '../../services/cartera-valor.service';
 export class CarteraValorListComponent implements OnInit {
 
   paramForm:CarteraValorParam;
-  form :  FormGroup;
+  form :  UntypedFormGroup;
   fecha:Date;
   fechaHasta:Date;
   tipo:string="V";
@@ -21,7 +21,7 @@ export class CarteraValorListComponent implements OnInit {
   entityList:CarteraValorView[]=[]; 
   total:number=0;
  
-  constructor(private service:CarteraValorService,private transaccionService:TransaccionService,private formBuilder: FormBuilder) 
+  constructor(private service:CarteraValorService,private transaccionService:TransaccionService,private formBuilder: UntypedFormBuilder) 
   {
     var today:Date= new Date;
     var month = today.getMonth();
@@ -39,8 +39,8 @@ export class CarteraValorListComponent implements OnInit {
   createForm():void
   {
     this.form = this.formBuilder.group({
-      Estado: new FormControl(this.paramForm.Estado),
-      Fecha: new FormControl(this.paramForm.Fecha,Validators.required)});
+      Estado: new UntypedFormControl(this.paramForm.Estado),
+      Fecha: new UntypedFormControl(this.paramForm.Fecha,Validators.required)});
   }
 
   ngOnInit(): void {

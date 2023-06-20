@@ -1,6 +1,6 @@
 import { Inject } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TipoFactura } from '../../../global/models/models/model';
@@ -16,11 +16,11 @@ import { FacturaService } from '../../services/factura.service';
 export class FacturaAFIPComponent implements OnInit {
   entity: Factura ;
   id:string;
-  form :  FormGroup;
+  form :  UntypedFormGroup;
   errors = [];
   tipoFactura:TipoFactura[] = [];  
   constructor(private router: Router,private route: ActivatedRoute,private service:FacturaService,private tipoFacturaService:TipoFacturaService,
-    private formBuilder: FormBuilder,@Inject(MAT_DIALOG_DATA)  data,private dialogRef: MatDialogRef<FacturaAFIPComponent>) 
+    private formBuilder: UntypedFormBuilder,@Inject(MAT_DIALOG_DATA)  data,private dialogRef: MatDialogRef<FacturaAFIPComponent>) 
   {
     this.id = data.id;
   }
@@ -62,27 +62,27 @@ export class FacturaAFIPComponent implements OnInit {
   createForm():void
       {
         this.form = this.formBuilder.group({
-        Id: new FormControl(this.entity.Id),
-        IdEmpresa: new FormControl(this.entity.IdEmpresa),
-        IdSucursal: new FormControl(this.entity.IdSucursal),
-        IdArea: new FormControl(this.entity.IdArea),
-        IdSeccion: new FormControl(this.entity.IdSeccion),
-        IdTransaccion: new FormControl(this.entity.IdTransaccion),
-        IdMoneda: new FormControl(this.entity.IdMoneda),
-        Letra: new FormControl(this.entity.Letra),
-        Fecha: new FormControl(this.entity.Fecha),        
-        FechaVencimiento: new FormControl(this.entity.FechaVencimiento),        
-        Pe: new FormControl(this.entity.Pe),
-        Numero: new FormControl(this.entity.Numero),
-        Tipo: new FormControl(this.entity.Tipo),
-        TotalNeto: new FormControl(this.entity.TotalNeto),
-        TotalDescuento: new FormControl(this.entity.TotalDescuento),
-        TotalGravado: new FormControl(this.entity.TotalGravado),
-        TotalNoGravado: new FormControl(this.entity.TotalNoGravado),
-        TotalExento: new FormControl(this.entity.TotalExento),
-        TotalIva: new FormControl(this.entity.TotalIva),
-        TotalOTributos: new FormControl(this.entity.TotalOTributos),
-        Total: new FormControl(this.entity.Total),
+        Id: new UntypedFormControl(this.entity.Id),
+        IdEmpresa: new UntypedFormControl(this.entity.IdEmpresa),
+        IdSucursal: new UntypedFormControl(this.entity.IdSucursal),
+        IdArea: new UntypedFormControl(this.entity.IdArea),
+        IdSeccion: new UntypedFormControl(this.entity.IdSeccion),
+        IdTransaccion: new UntypedFormControl(this.entity.IdTransaccion),
+        IdMoneda: new UntypedFormControl(this.entity.IdMoneda),
+        Letra: new UntypedFormControl(this.entity.Letra),
+        Fecha: new UntypedFormControl(this.entity.Fecha),        
+        FechaVencimiento: new UntypedFormControl(this.entity.FechaVencimiento),        
+        Pe: new UntypedFormControl(this.entity.Pe),
+        Numero: new UntypedFormControl(this.entity.Numero),
+        Tipo: new UntypedFormControl(this.entity.Tipo),
+        TotalNeto: new UntypedFormControl(this.entity.TotalNeto),
+        TotalDescuento: new UntypedFormControl(this.entity.TotalDescuento),
+        TotalGravado: new UntypedFormControl(this.entity.TotalGravado),
+        TotalNoGravado: new UntypedFormControl(this.entity.TotalNoGravado),
+        TotalExento: new UntypedFormControl(this.entity.TotalExento),
+        TotalIva: new UntypedFormControl(this.entity.TotalIva),
+        TotalOTributos: new UntypedFormControl(this.entity.TotalOTributos),
+        Total: new UntypedFormControl(this.entity.Total),
             });
     }
 

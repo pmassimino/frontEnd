@@ -1,10 +1,8 @@
 import { formatDate } from '@angular/common';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { isTryStatement } from 'typescript';
 import { Sujeto } from '../../../comun/models/model';
 import { SessionService } from '../../../comun/services/session.service';
 import { SujetoService } from '../../../comun/services/sujeto.service';
@@ -23,7 +21,7 @@ import { ComprobanteAddComponent } from '../comprobante-add/comprobante-add.comp
 })
 export class ReciboCtaCteFormComponent implements OnInit {
 
-form :  FormGroup;
+form :  UntypedFormGroup;
 entity: ReciboCtaCte= new ReciboCtaCte();
 sujetos:Sujeto[] = [];  
 submitted = false;
@@ -40,7 +38,7 @@ totalSaldo :number=0;
 constructor(private entityService: ReciboCtaCteService,private sujetoService : SujetoService,
             private cuentaMayorService:CuentaMayorService,private sessionServie:SessionService,
             private router: Router,private route: ActivatedRoute,
-            private formBuilder: FormBuilder,private dialog: MatDialog)            
+            private formBuilder: UntypedFormBuilder,private dialog: MatDialog)            
             { 
                             
             }
@@ -65,41 +63,41 @@ constructor(private entityService: ReciboCtaCteService,private sujetoService : S
 
   createForm():void
     {
-      this.form = new FormGroup({
-        Id: new FormControl(this.entity.Id),
-        IdEmpresa: new FormControl(this.entity.IdEmpresa),
-        IdSucursal: new FormControl(this.entity.IdSucursal),
-        IdArea: new FormControl(this.entity.IdArea),
-        IdSeccion: new FormControl(this.entity.IdSeccion),
-        IdTransaccion: new FormControl(this.entity.IdTransaccion), 
-        Pe:new FormControl(this.entity.Pe),
-        Numero:new FormControl(this.entity.Numero),
-        Fecha:new FormControl(this.entity.Fecha),
-        FechaVencimiento:new FormControl(this.entity.FechaVencimiento),        
-        IdCuenta: new FormControl(this.entity.IdCuenta),
-        IdCuentaMayor: new FormControl(this.entity.IdCuentaMayor),                
-        Obs:new FormControl(this.entity.Obs),
-        IdTipo: new FormControl(this.entity.IdTipo),    
-        Importe:new FormControl(this.entity.Importe),
+      this.form = new UntypedFormGroup({
+        Id: new UntypedFormControl(this.entity.Id),
+        IdEmpresa: new UntypedFormControl(this.entity.IdEmpresa),
+        IdSucursal: new UntypedFormControl(this.entity.IdSucursal),
+        IdArea: new UntypedFormControl(this.entity.IdArea),
+        IdSeccion: new UntypedFormControl(this.entity.IdSeccion),
+        IdTransaccion: new UntypedFormControl(this.entity.IdTransaccion), 
+        Pe:new UntypedFormControl(this.entity.Pe),
+        Numero:new UntypedFormControl(this.entity.Numero),
+        Fecha:new UntypedFormControl(this.entity.Fecha),
+        FechaVencimiento:new UntypedFormControl(this.entity.FechaVencimiento),        
+        IdCuenta: new UntypedFormControl(this.entity.IdCuenta),
+        IdCuentaMayor: new UntypedFormControl(this.entity.IdCuentaMayor),                
+        Obs:new UntypedFormControl(this.entity.Obs),
+        IdTipo: new UntypedFormControl(this.entity.IdTipo),    
+        Importe:new UntypedFormControl(this.entity.Importe),
         DetalleComprobante:this.formBuilder.array([],Validators.required),
         DetalleValores:this.formBuilder.array([],Validators.required),
         DetalleRelacion:this.formBuilder.array([])}); 
         this.onChanges(); 
   }
 
-  addDetalleComprobante(itemDetalle : DetalleComprobante):FormGroup {          
+  addDetalleComprobante(itemDetalle : DetalleComprobante):UntypedFormGroup {          
     let item = this.entity.DetalleComprobante.length;
     let itemGrp =  this.formBuilder.group({
       Id: this.entity.Id,
       Item: item,
-      IdTipo: new FormControl(itemDetalle.IdTipo,Validators.required),
-      IdTipoComp: new FormControl(itemDetalle.IdTipoComp),
-      IdMovCtaCte: new FormControl(itemDetalle.IdMovCtaCte),
+      IdTipo: new UntypedFormControl(itemDetalle.IdTipo,Validators.required),
+      IdTipoComp: new UntypedFormControl(itemDetalle.IdTipoComp),
+      IdMovCtaCte: new UntypedFormControl(itemDetalle.IdMovCtaCte),
       Fecha: [formatDate(itemDetalle.Fecha, 'yyyy-MM-dd', 'en'), [Validators.required]],
-      Pe: new FormControl(itemDetalle.Pe),
-      Numero: new FormControl(itemDetalle.Numero),
-      Importe: new FormControl(itemDetalle.Importe),      
-      Concepto: new FormControl(itemDetalle.Concepto)      
+      Pe: new UntypedFormControl(itemDetalle.Pe),
+      Numero: new UntypedFormControl(itemDetalle.Numero),
+      Importe: new UntypedFormControl(itemDetalle.Importe),      
+      Concepto: new UntypedFormControl(itemDetalle.Concepto)      
     });    
     this.detalleComprobante.push(itemGrp);
     this.calculateTotal();
@@ -107,33 +105,33 @@ constructor(private entityService: ReciboCtaCteService,private sujetoService : S
     return itemGrp;
   }
   
-  addDetalleValores(itemDetalle : DetalleValores):FormGroup {          
+  addDetalleValores(itemDetalle : DetalleValores):UntypedFormGroup {          
     let item = this.entity.DetalleComprobante.length;
     let itemGrp =  this.formBuilder.group({
       Id: this.entity.Id,
       Item: item,
-      IdTipo: new FormControl(itemDetalle.IdTipo,Validators.required),
-      IdComp: new FormControl(itemDetalle.IdTipo),
-      IdCuentaMayor: new FormControl(itemDetalle.IdCuentaMayor,Validators.required),      
-      Concepto: new FormControl(itemDetalle.Concepto),      
-      Banco: new FormControl(itemDetalle.Banco),
-      Fecha: new FormControl(itemDetalle.Fecha),
-      FechaVencimiento: new FormControl(itemDetalle.FechaVencimiento),
-      Sucursal: new FormControl(itemDetalle.Sucursal),
-      Numero: new FormControl(itemDetalle.Numero),
-      Importe: new FormControl(itemDetalle.Importe)
+      IdTipo: new UntypedFormControl(itemDetalle.IdTipo,Validators.required),
+      IdComp: new UntypedFormControl(itemDetalle.IdTipo),
+      IdCuentaMayor: new UntypedFormControl(itemDetalle.IdCuentaMayor,Validators.required),      
+      Concepto: new UntypedFormControl(itemDetalle.Concepto),      
+      Banco: new UntypedFormControl(itemDetalle.Banco),
+      Fecha: new UntypedFormControl(itemDetalle.Fecha),
+      FechaVencimiento: new UntypedFormControl(itemDetalle.FechaVencimiento),
+      Sucursal: new UntypedFormControl(itemDetalle.Sucursal),
+      Numero: new UntypedFormControl(itemDetalle.Numero),
+      Importe: new UntypedFormControl(itemDetalle.Importe)
     });    
     this.detalleValores.push(itemGrp);
     this.calculateTotal();
     this.detalleValores.valueChanges.subscribe(res=>this.calculateTotal());    
     return itemGrp;
   }
-  get detalleValores(): FormArray {
-    return this.form.get('DetalleValores') as FormArray;
+  get detalleValores(): UntypedFormArray {
+    return this.form.get('DetalleValores') as UntypedFormArray;
   }
 
-  get detalleComprobante(): FormArray {
-    return this.form.get('DetalleComprobante') as FormArray;
+  get detalleComprobante(): UntypedFormArray {
+    return this.form.get('DetalleComprobante') as UntypedFormArray;
   }
   onChanges(): void {
     this.form.get('IdCuenta').valueChanges.subscribe(value => {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, UntypedFormControl, Validators } from '@angular/forms';
 import { CuentaMayor, TipoCuentaMayor, UsoCuentaMayor } from '../../models/model';
 import { CuentaMayorService } from '../../services/cuenta-mayor.service';
 import { UsoCuentaMayorService } from '../../services/uso-cuenta-mayor.service';
@@ -14,7 +14,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class CuentaMayorFormComponent implements OnInit {
 
   
-  form :  FormGroup;
+  form :  UntypedFormGroup;
   entity: CuentaMayor = new CuentaMayor();
   tipoCuentaMayor:TipoCuentaMayor[] = [];
   usoCuentaMayor:UsoCuentaMayor[] = [];
@@ -27,7 +27,7 @@ export class CuentaMayorFormComponent implements OnInit {
   
   constructor(private entityService: CuentaMayorService,private usoCuentaMayorService : UsoCuentaMayorService,private tipoCuentaMayorService : TipoCuentaMayorService,
               private router: Router,private route: ActivatedRoute,
-              private formBuilder: FormBuilder)            
+              private formBuilder: UntypedFormBuilder)            
               {
                       
               }
@@ -55,11 +55,11 @@ export class CuentaMayorFormComponent implements OnInit {
     createForm():void
       {
         this.form = this.formBuilder.group({
-        Id: new FormControl(this.entity.Id,Validators.required),
-        IdSuperior: new FormControl(this.entity.IdSuperior),
-        Nombre: new FormControl(this.entity.Nombre,Validators.required),
-        IdTipo: new FormControl(this.entity.IdTipo,Validators.required),
-        IdUso: new FormControl(this.entity.IdUso,{ validators: Validators.required})               
+        Id: new UntypedFormControl(this.entity.Id,Validators.required),
+        IdSuperior: new UntypedFormControl(this.entity.IdSuperior),
+        Nombre: new UntypedFormControl(this.entity.Nombre,Validators.required),
+        IdTipo: new UntypedFormControl(this.entity.IdTipo,Validators.required),
+        IdUso: new UntypedFormControl(this.entity.IdUso,{ validators: Validators.required})               
       });
     }
   

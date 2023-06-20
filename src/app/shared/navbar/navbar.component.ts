@@ -5,7 +5,6 @@ import { Location} from '@angular/common';
 import { Empresa } from '../../modules/global/models/models/model';
 import { AuthService } from '../../core/services/auth.service';
 import { SessionService } from '../../modules/comun/services/session.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { EmpresaService } from '../../modules/global/services/empresa.service';
 
 
