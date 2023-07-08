@@ -11,6 +11,9 @@ import { ResumenSaldoListComponent } from './ctacte/resumen-saldo-list/resumen-s
 import { ResumenComponent } from './ctacte/resumen/resumen.component';
 import { TestComponent } from './ctacte/test/test.component';
 import { LibroIvaListComponent } from './libroiva/libro-iva-list/libro-iva-list.component';
+import { AsientoFormComponent } from './asiento/asiento-form/asiento-form.component';
+import { MayorBalanceComponent } from './mayor/mayor-balance/mayor-balance.component';
+import { MayorListViewComponent } from './mayor/mayor-list-view/mayor-list-view.component';
 
 
 const routes: Routes = [
@@ -18,6 +21,10 @@ const routes: Routes = [
   { path: 'cuentamayor/add', component: CuentaMayorFormComponent ,canActivate: [AuthGuard]},
   { path: 'cuentamayor/:id', component: CuentaMayorFormComponent ,canActivate: [AuthGuard]},  
   { path: 'mayor/list', component: MayorListComponent ,canActivate: [AuthGuard]},
+  { path: 'mayor/listview', component: MayorListViewComponent ,canActivate: [AuthGuard]},
+  { path: 'mayor/balance', component: MayorBalanceComponent ,canActivate: [AuthGuard]},
+  { path: 'mayor/add', component: AsientoFormComponent ,canActivate: [AuthGuard]},
+  { path: 'mayor/:id', component: AsientoFormComponent ,canActivate: [AuthGuard]},
   { path: 'ctacte/test', component: TestComponent},
   { path: 'ctacte/list', component: ResumenSaldoListComponent ,canActivate: [AuthGuard]},
   { path: 'ctacte/resumen/:id', component: ResumenComponent ,canActivate: [AuthGuard]},

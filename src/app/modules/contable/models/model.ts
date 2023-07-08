@@ -48,6 +48,8 @@ export class DetalleMayor {
     IdCuenta: string;
     IdTipo: string;
     Importe: number;
+    Debe:number;
+    Haber:number;
     Cantidad: number;
     CuentaMayor: CuentaMayor;
     Sujeto: Sujeto;
@@ -168,3 +170,39 @@ export class LibroIvaView {
     OtrosTributos: number;
     Total: number;
 }
+
+export class ComprobanteMayor {
+    Id: string
+    Nombre: string
+    IdComprobante: string
+    IdTipo: string
+  }
+
+export class BalanceMayorView
+{
+    IdCuentaMayor:string
+    Nombre:string
+    SaldoAnterior:number
+    Debitos:number
+    Creditos:number
+    SaldoPeriodo:number
+    Saldo:number
+}
+export interface MayorView {
+    Id: string
+    Fecha: string
+    FechaComp: string
+    FechaVenc: string
+    IdCuentaMayor: string
+    Nombre: string
+    Concepto: string
+    Pe: number
+    Numero: number
+    Debe: number
+    Haber: number
+    Saldo: number
+  }
+  
+
+
+

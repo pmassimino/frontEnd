@@ -41,7 +41,7 @@ export class CuentaMayorSelectComponent implements OnInit {
     }
     close():void
     {
-      this.dialogRef.close({ data: 'ok' });
+      this.dialogRef.close({ data: 'cancel' });
     }
     cancel():void
     {

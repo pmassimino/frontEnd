@@ -1,7 +1,8 @@
 <app-layout>
   <ng-template #customTabButtons>
     <ul class="navbar-nav">
-      <li class="nav-item"><button [disabled]="mode!='edit' || entity.Cae!=0"(click)="openDialogAfip()"  class="navbar-brand btn"><mat-icon class="align-middle">check_circle_outline</mat-icon></button></li>
+      <li class="nav-item"><button [disabled]="mode!='edit' || entity.Cae!=0" (click)="openDialogAfip()"  class="navbar-brand btn"><mat-icon class="align-middle">check_circle_outline</mat-icon></button></li>
+      <li class="nav-item"><button [disabled]="mode!='edit'" (click)="onAddNew()"  class="navbar-brand btn"><mat-icon class="align-middle">add_circle</mat-icon></button></li>
     </ul>
   </ng-template>
   <div toolbar >

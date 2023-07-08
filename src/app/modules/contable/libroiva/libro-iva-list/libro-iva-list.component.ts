@@ -3,6 +3,7 @@ import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } 
 import { TransaccionService } from '../../../comun/services/transaccion.service';
 import { LibroIvaView } from '../../models/model';
 import { LibroIvaService } from '../../services/libro-iva.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-libro-iva-list',

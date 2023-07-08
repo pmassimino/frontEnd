@@ -36,6 +36,7 @@ export class CuentaMayorFormComponent implements OnInit {
       this.popupData();    
       this._id = this.route.snapshot.params['id'];
       this._idSuperior = this.route.snapshot.queryParamMap.get('IdSuperior');
+      this.createForm();
       //editar
       if(this._id)
       { 
@@ -46,16 +47,15 @@ export class CuentaMayorFormComponent implements OnInit {
       {
         this.setDefaultValues();
       }
+       
       
-  
-      //this.createForm();
       this.calculateOnInit();
       }
   
     createForm():void
       {
         this.form = this.formBuilder.group({
-        Id: new UntypedFormControl(this.entity.Id,Validators.required),
+        Id: [this.entity.Id, Validators.required],
         IdSuperior: new UntypedFormControl(this.entity.IdSuperior),
         Nombre: new UntypedFormControl(this.entity.Nombre,Validators.required),
         IdTipo: new UntypedFormControl(this.entity.IdTipo,Validators.required),
@@ -85,8 +85,10 @@ export class CuentaMayorFormComponent implements OnInit {
      
     save() 
     {    
-      if( this.mode=="new"){  //new
-      this.entityService.add(this.form.value)
+      var entity = this.form.value;
+      if( this.mode=="new"){  //
+      
+      this.entityService.add(entity)
       .subscribe(data => {this.goBack();}, 
                  error => {console.log(error);
                  this.errMsg = error;               

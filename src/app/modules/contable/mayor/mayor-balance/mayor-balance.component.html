@@ -1,0 +1,51 @@
+<app-layout>
+    <div toolbar >
+      <app-toolbar  [addNewVisible]="false" [printVisible]="true"  (print)="onPrint()" (findByName)="findByName($event)" >        
+      </app-toolbar>
+    </div>
+    <div>
+      <label>Balance Mayor </label>     
+      <label>Fecha</label>      
+      <input type="date"  [ngModel]="fecha | date:'yyyy-MM-dd'"   (ngModelChange)="parseFecha($event);onGetAll()">        
+      <label>Fecha Hasta</label>
+      <input type="date"  [ngModel]="fechaHasta | date:'yyyy-MM-dd'"   (ngModelChange)="parseFechaHasta($event);onGetAll()">        
+    </div>
+    <div><input type="text" class="form-control"  [readonly]></div>
+      <table class="table table-hover table-responsive-sm">
+          <thead>
+            <tr>
+              <th class="th-sm">Codigo</th>
+              <th class="th-sm">Nombre</th>
+              <th class="text-right">Saldo Anterior</th>     
+              <th class="text-right">Debitos</th> 
+              <th class="text-right">Creditos       </th> 
+              <th class="text-right">Saldo Periodo</th>     
+              <th class="text-right">Saldo</th> 
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of entityFiltredList">
+              <td><a href="contable/mayor/listview?idCuentaMayor={{item.IdCuentaMayor}}">{{item.IdCuentaMayor}}</a></td>
+              <td>{{item.Nombre  }}</td>  
+              <td class="text-right">{{item.SaldoAnterior | number : '1.2-2' }}</td>
+              <td class="text-right">{{item.Debitos | number : '1.2-2' }}</td>
+              <td class="text-right">{{item.Creditos | number : '1.2-2' }}</td>
+              <td class="text-right">{{item.SaldoPeriodo | number : '1.2-2' }}</td>
+              <td class="text-right">{{item.Saldo | number : '1.2-2' }}</td>
+              <td><a><i class="material-icons btn">print</i></a></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th class="th-sm"></th>
+              <th class="th-sm">Totales</th>
+              <th class="text-right">{{totalSaldoAnterior | number : '1.2-2'}}</th>     
+              <th class="text-right">{{totalDebitos | number : '1.2-2'}}</th> 
+              <th class="text-right">{{totalCreditos | number : '1.2-2'}}</th> 
+              <th class="text-right"></th>                   
+              <th></th>
+            </tr>                     
+          </tbody>
+        </table>
+   </app-layout>
+

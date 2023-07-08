@@ -34,6 +34,7 @@ Routes: [{ path: '/comun/sujeto/list',     title: 'Sujeto',    icon: 'nc-diamond
 Routes: [{ path: '/ventas/factura/list',     title: 'Facturas',    icon: 'nc-diamond',  class: '' }]},
 {title: 'Contabilidad', icon: '',
 Routes: [{ path: '/contable/mayor/list',     title: 'Mayor',    icon: 'nc-diamond',  class: '' },
+  { path: '/contable/mayor/balance',     title: 'Balance Mayor',    icon: 'nc-diamond',  class: '' },
   { path: '/contable/cuentamayor/list',     title: 'Cuentas',    icon: 'nc-diamond',  class: '' },
   { path: '/contable/ctacte/list',     title: 'Cuentas Corriente',    icon: 'nc-diamond',  class: '' },
   { path: '/contable/libroiva/list',     title: 'Libro IVA',    icon: 'nc-diamond',  class: '' }],

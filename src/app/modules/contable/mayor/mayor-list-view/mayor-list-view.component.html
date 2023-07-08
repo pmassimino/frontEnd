@@ -1,0 +1,70 @@
+<app-layout>
+    <div toolbar >
+      <app-toolbar  [addNewVisible]="false" [printVisible]="true"  (print)="onPrint()" (findByName)="findByName($event)" >        
+      </app-toolbar>
+    </div>
+    <div>
+      <label>Balance Mayor </label>     
+      <label>Fecha</label>      
+      <input type="date"  [ngModel]="fecha | date:'yyyy-MM-dd'"   (ngModelChange)="parseFecha($event);onGetAll()">        
+      <label>Fecha Hasta</label>
+      <input type="date"  [ngModel]="fechaHasta | date:'yyyy-MM-dd'"   (ngModelChange)="parseFechaHasta($event);onGetAll()">        
+    </div>    
+    <div class="">    
+      <mat-table  class="table-compact" [dataSource]="dataSource" matSort>           
+        <!-- Fecha Column -->
+        <ng-container matColumnDef="Fecha">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
+          <mat-cell *matCellDef="let item"> {{item.Fecha | date:'dd-MM-yyyy'}} </mat-cell>
+        </ng-container>
+        <!-- Concepto Column -->
+        <ng-container matColumnDef="Numero">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Numero </mat-header-cell>
+          <mat-cell *matCellDef="let item"> {{item.Pe.toString().padStart(4 ,"0")}}-{{item.Numero.toString().padStart(8 ,"0")  }}</mat-cell>
+        </ng-container>    
+        <!-- Concepto Column -->
+        <ng-container matColumnDef="Concepto">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Concepto </mat-header-cell>
+          <mat-cell *matCellDef="let item"> {{item.Concepto}}</mat-cell>
+        </ng-container>    
+        <!-- Debe Column -->
+        <ng-container matColumnDef="Debe">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Debe </mat-header-cell>
+          <mat-cell *matCellDef="let item"> {{item.Debe | number : '1.2-2' }}</mat-cell>
+        </ng-container>
+         <!-- Haber Column -->
+         <ng-container matColumnDef="Haber">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Haber </mat-header-cell>
+          <mat-cell *matCellDef="let item"> {{item.Haber | number : '1.2-2' }}</mat-cell>
+        </ng-container>  
+         <!-- Saldo Column -->
+         <ng-container matColumnDef="Saldo">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Saldo </mat-header-cell>
+          <mat-cell *matCellDef="let item"> {{item.Saldo | number : '1.2-2' }}</mat-cell>
+        </ng-container>
+        <!-- Editr Column -->
+        <ng-container matColumnDef="Edit">
+          <mat-header-cell *matHeaderCellDef>  </mat-header-cell>
+          <mat-cell *matCellDef="let item">          
+            <a [routerLink]="['/contable/mayor', item.Id]">
+              <i class="material-icons">mode_edit</i>
+            </a>                
+         </mat-cell>
+        </ng-container> 
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>    
+        <mat-footer-row>
+          <mat-cell></mat-cell>
+          <mat-cell></mat-cell>
+          <mat-cell></mat-cell>
+          <mat-cell>Total Debe</mat-cell>
+          <mat-cell>Total Haber</mat-cell>
+          <mat-cell></mat-cell>
+          <mat-cell></mat-cell>
+        </mat-footer-row>                 
+      </mat-table>  
+      <mat-paginator [pageSizeOptions]="[15, 25, 50, 100]"></mat-paginator>
+    </div>
+   </app-layout>
+
+

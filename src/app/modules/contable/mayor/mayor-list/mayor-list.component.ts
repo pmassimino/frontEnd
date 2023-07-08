@@ -11,7 +11,8 @@ import { ExcelService } from '../../../../core/services/excel.service';
 })
 export class MayorListComponent implements OnInit {
 
-    data: Mayor[] = [];
+    entityList: Mayor[] = [];
+    entityFiltredList: Mayor[] = [];
       
     constructor(private entityService: MayorService, private router: Router,private excelService: ExcelService) { }
   
@@ -22,10 +23,10 @@ export class MayorListComponent implements OnInit {
   
     addNew(): void
       {       
-        this.router.navigate(['contable/mayor/add'], { queryParams: { idSuperior: "" } });
+        this.router.navigate(['contable/mayor/add'] );
       }
       exportToExcel() {
-        this.excelService.exportAsExcelFile(this.data, 'Mayor');
+        this.excelService.exportAsExcelFile(this.entityFiltredList, 'Mayor');
       }
     edit(id:string)
       {
@@ -34,23 +35,26 @@ export class MayorListComponent implements OnInit {
     getAll():void
       {
         this.entityService.findAll()
-        .subscribe(res => {this.data = res; } ,
+        .subscribe(res => {this.entityList = res;this.entityFiltredList=res; } ,
         err => {console.log(err) ; });
       }
       findByName(name): void {       
-        this.entityService.findByName(name)
-       .subscribe(res => {this.data = res; console.log(this.data); } , err => {console.log(err) ; });
+        this.entityFiltredList = this.entityList.filter(f =>
+          f.Concepto.toLowerCase().includes(name.toLowerCase()) ||
+          f.Numero.toString().toLowerCase().includes(name.toLowerCase()) ||
+          f.Detalle.some(detalle => detalle.Concepto.toLowerCase().includes(name.toLowerCase())));
+        
       }
       delete(entity){
         if (confirm("Seguro quiere eliminar  " + entity.Nombre + "?")) {
-          var index = this.data.indexOf(entity);
-          this.data.splice(index, 1);    
+          var index = this.entityFiltredList.indexOf(entity);
+          this.entityFiltredList.splice(index, 1);    
           this.entityService.delete(entity.id)
             .subscribe(null,
               err => {
                 alert("El item no se puede eliminar.");
                 // Revert the view back to its original state
-                this.data.splice(index, 0, entity);
+                this.entityFiltredList.splice(index, 0, entity);
               });
         }
       }

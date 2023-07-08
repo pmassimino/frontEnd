@@ -7,24 +7,30 @@
             <tr>
                <td>Fecha</td>
                <td>Numero</td>
-               <td>Cuenta</td>
                <td>Concepto</td>
+               <td>Cuenta</td>
+               <td>Nombre</td>
                <td>Debe</td>
                <td>Haber</td>
               <td></td>
             </tr>
           </thead>
           <tbody>
-          <ng-container *ngFor="let item of data">            
-            <tr *ngFor="let itemD of item.Detalle">
-              <td>{{item.Fecha | date:'dd-MM-yyyy'}}</td>
-              <td>{{item.Pe.toString().padStart(4 ,"0")}}-{{item.Numero.toString().padStart(8 ,"0")  }}</td>
-              <td>{{itemD.IdCuentaMayor}}</td>
-              <td>{{itemD.Concepto}}</td>           
+          <ng-container *ngFor="let item of entityFiltredList"> 
+            <tr>
+              <td [attr.rowspan]="item.Detalle.length + 1">{{item.Fecha | date:'dd-MM-yyyy'}}</td>                     
+              <td [attr.rowspan]="item.Detalle.length + 1">{{item.Pe.toString().padStart(4 ,"0")}}-{{item.Numero.toString().padStart(8 ,"0")  }}</td>               
+              <td [attr.rowspan]="item.Detalle.length + 1">{{item.Concepto}}</td>     
+            </tr>             
+            <tr *ngFor="let itemD of item.Detalle">               
+              <td>{{itemD.IdCuentaMayor}}</td>                  
+              <td>{{itemD.Concepto}}</td>                  
               <td><span *ngIf="itemD.IdTipo=='1'">{{itemD.Importe}}</span></td> 
               <td><span *ngIf="itemD.IdTipo=='2'">{{itemD.Importe}}</span></td>
-              <td></td>
-            </tr>
+              <td><a [routerLink]="['/contable/mayor', item.Id]">
+                <i class="material-icons">mode_edit</i>
+              </a></td>
+            </tr>          
           </ng-container>
           </tbody>
         </table>

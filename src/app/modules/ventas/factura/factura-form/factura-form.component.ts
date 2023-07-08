@@ -283,10 +283,14 @@ export class FacturaFormComponent implements OnInit {
    else //Edit
    {
      this.entityService.update(this.entity.Id,this.entity)
-     .subscribe(data => {this.goBack();}, error => {
+     .subscribe(data => {this.goEdit(data.Id);}, error => {
                console.log(error);                 
                this.setControlsError(error.error);for(var tKey in error.error) this.errors.push({name: tKey, value: error.error[tKey]});});
     }
+    }
+    onAddNew(): void
+    {       
+      this.router.navigate(['ventas/factura/add']);
     }
   
   calculateTotal():void
@@ -338,10 +342,8 @@ export class FacturaFormComponent implements OnInit {
       totalIva += iva;   
       this.detalle.at(totalItems).get('OtroTributo').patchValue(totalOTributos);
       this.detalle.at(totalItems).get('Total').patchValue(subTotal);
-      this.detalle.at(totalItems).get('Item').patchValue(totalItems);
-      
-      totalItems +=1;
-      
+      this.detalle.at(totalItems).get('Item').patchValue(totalItems);      
+      totalItems +=1;      
     }
    //let totalOTributos = 0;
    // for (let item of this.entity.Tributos) 
@@ -385,6 +387,10 @@ export class FacturaFormComponent implements OnInit {
     else  
     {
       this.form.get("Letra").patchValue("B");
+    }
+    if(this.sessionServie.CurrentEmpresa.IdCondicionIva=="05")
+    {
+      this.form.get("Letra").patchValue("C");
     }
    }
     onSubmit() {
