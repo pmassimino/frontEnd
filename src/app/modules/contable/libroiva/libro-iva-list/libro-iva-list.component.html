@@ -1,75 +1,101 @@
 <app-layout>
     <div toolbar >
-      <app-toolbar  [addNewVisible]="false" [printVisible]="true"  (print)="onPrint()" >        
+      <app-toolbar  [addNewVisible]="false" [printVisible]="true"  (print)="onPrint()" (findByName)="findByName($event)" >        
       </app-toolbar>
     </div>
     <div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
       <label>Libro Iva </label>
-      <select [(ngModel)]="tipo" (change)="onGetAll()">
+      <select formControlName="Tipo" [(ngModel)]="param.Tipo" (change)="onSubmit()">
         <option value="V">VENTAS</option>
         <option value="C"> COMPRAS</option>
       </select>
       <label>Fecha</label>
-      <input  type="date" [ngModel]="fecha | date:'yyyy-MM-dd'"   (ngModelChange)="parseFecha($event);onGetAll()">
+      <input  type="date" formControlName = "Fecha" [ngModel]="param.Fecha | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">
       <label>Fecha Hasta</label>
-      <input type="date"  [ngModel]="fechaHasta | date:'yyyy-MM-dd'"   (ngModelChange)="parseFechaHasta($event);onGetAll()">
-      <label><input type="checkbox" id="filtraAutorizado" name="filtraAutorizado" [(ngModel)]="filtraAutorizado" (change)="onGetAll()" >Filtrar Autorizado</label>
-      <label><input [disabled]="!filtraAutorizado" type="checkbox" id="autorizado" name="autorizado" [(ngModel)]="autorizado" (change)="onGetAll()" >Autorizado</label>      
+      <input type="date"  formControlName = "FechaHasta" [ngModel]="param.FechaHasta | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">
+      <label><input type="checkbox" formControlName = "FiltrarAutorizado" id="FiltrarAutorizado" name="FiltrarAutorizado" [(ngModel)]="param.FiltrarAutorizado" (change)="onSubmit()" >Filtrar Autorizado</label>
+      <label><input formControlName="Autorizado" [disabled]="!param.FiltrarAutorizado" type="checkbox" id="Autorizado" name="autorizado" [(ngModel)]="param.Autorizado" (change)="onSubmit()" >Autorizado</label>      
+    </form>
     </div>
-    <div><input type="text" class="form-control"  [readonly]></div>
-      <table class="table table-hover table-responsive-sm">
-          <thead>
-            <tr>
-              <th class="th-sm">Fecha</th>
-              <th class="th-sm">Numero</th>
-              <th class="th-sm">N°Doc</th> 
-              <th class="th-sm">Nombre       </th> 
-              <th>Gravado</th>     
-              <th>No Gravado</th>           
-              <th>Exento</th>
-              <th>Iva 10.5</th>
-              <th>Iva 21</th>
-              <th>Iva 27</th>
-              <th>Iva Otro</th>
-              <th>Otro Trib</th>
-              <th>Total</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of entityList">
-              <td>{{item.FechaComprobante | date:'dd-MM-yyyy'}}</td>
-              <td>{{item.Pe.toString().padStart(4 ,"0")}}-{{item.Numero.toString().padStart(8 ,"0")  }}</td>  
-              <td>{{item.NumeroDocumento}}</td>          
-              <td>{{item.Nombre}}</td>            
-              <td class="text-right">{{item.Gravado | number : '1.2-2' }}</td>
-              <td class="text-right">{{item.NoGravado | number : '1.2-2' }}</td>
-              <td class="text-right">{{item.Exento | number : '1.2-2' }}</td>
-              <td class="text-right">{{item.Iva105 | number : '1.2-2' }}</td>
-              <td class="text-right">{{item.Iva21 | number : '1.2-2' }}</td>
-              <td class="text-right">{{item.Iva27 | number : '1.2-2' }}</td>
-              <td class="text-right">{{item.IvaOtro | number : '1.2-2' }}</td>   
-              <td class="text-right">{{item.OtrosTributos | number : '1.2-2' }}</td>  
-              <td class="text-right">{{item.Total | number : '1.2-2' }}</td>                                      
-              <td><a (click)="onPrintItem(item)"><i class="material-icons btn">print</i></a></td>
-              <td></td>
-            </tr>
-            <tr>              
-                <td>Totales</td>
-                <td class="th-sm"></td>
-                <td class="th-sm"></td> 
-                <td class="th-sm"></td> 
-                <td class="text-right">{{totalGravado | number : '1.2-2' }}</td>     
-                <td class="text-right">{{totalNoGravado | number : '1.2-2' }}</td>           
-                <td class="text-right">{{totalExento | number : '1.2-2' }}</td>
-                <td class="text-right">{{totalIva105 | number : '1.2-2' }}</td>
-                <td class="text-right">{{totalIva21 | number : '1.2-2' }}</td>
-                <td class="text-right">{{totalIva27 | number : '1.2-2' }}</td>
-                <td class="text-right">{{totalIvaOtro | number : '1.2-2' }}</td>
-                <td class="text-right">{{totalOtrosTributos | number : '1.2-2' }}</td>
-                <td class="text-right">{{total | number : '1.2-2' }}</td>
-                <td></td>              
-            </tr>
-          </tbody>
-        </table>
+    <div>
+      <mat-table  class="table-compact" [dataSource]="dataSource" matSort>           
+        <ng-container matColumnDef="Fecha">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item">{{item.FechaComprobante | date:'dd-MM-yyyy'}}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>Items</mat-footer-cell>
+        </ng-container>        
+        <ng-container matColumnDef="Numero">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Numero </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Pe.toString().padStart(4 ,"0")}}-{{item.Numero.toString().padStart(8 ,"0")  }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{items}}</mat-footer-cell>
+        </ng-container>            
+        <ng-container matColumnDef="NumeroDoc">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> N° Doc. </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item">{{item.NumeroDocumento}}</mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>            
+        <ng-container matColumnDef="Nombre">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"><H6>{{item.Nombre}}</H6></mat-cell>
+          <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
+        </ng-container>         
+         <ng-container matColumnDef="Gravado">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Gravado </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Gravado | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ totalGravado | number : '1.2-2' }}</mat-footer-cell>
+        </ng-container>  
+        <ng-container matColumnDef="NoGravado">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> No Gravado </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.NoGravado | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ totalNoGravado | number : '1.2-2' }}</mat-footer-cell>
+        </ng-container>  
+        <ng-container matColumnDef="Exento">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Exento </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Exento | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ totalExento | number : '1.2-2' }}</mat-footer-cell>
+        </ng-container>  
+        <ng-container matColumnDef="Iva105">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> IVA 10.5% </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Iva105 | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ totalIva105 | number : '1.2-2' }}</mat-footer-cell>
+        </ng-container>  
+        <ng-container matColumnDef="Iva21">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> IVA 21% </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Iva21 | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ totalIva21 | number : '1.2-2' }}</mat-footer-cell>
+        </ng-container>  
+        <ng-container matColumnDef="Iva27">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> IVA 27% </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Iva27 | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ totalIva27 | number : '1.2-2' }}</mat-footer-cell>
+        </ng-container>  
+        <ng-container matColumnDef="IvaOtro">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> IVA Otro </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.IvaOtro | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ totalIvaOtro | number : '1.2-2' }}</mat-footer-cell>
+        </ng-container>  
+        <ng-container matColumnDef="OtrosTributos">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> O.Tributos </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item">{{item.OtrosTributos | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ totalOtrosTributos | number : '1.2-2' }}</mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="Total">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Total </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item">{{item.Total | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ total | number : '1.2-2' }}</mat-footer-cell>
+        </ng-container>  
+        <ng-container matColumnDef="Imprimir">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"><a (click)="onPrintItem(item)"><i class="material-icons btn">print</i></a></mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container> 
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>  
+        <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row> 
+      </mat-table>  
+      <mat-paginator [pageSizeOptions]="[15, 25, 50, 100]"></mat-paginator>
+    </div>
+     
    </app-layout>

@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { BalanceMayorView } from '../../models/model';
 import { MayorService } from '../../services/mayor.service';
 import { TransaccionService } from '../../../comun/services/transaccion.service';
+import { ParamBase } from '../../../../core/models/common';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-mayor-balance',
@@ -10,45 +14,45 @@ import { TransaccionService } from '../../../comun/services/transaccion.service'
   styleUrls: ['./mayor-balance.component.css']
 })
 export class MayorBalanceComponent  implements OnInit {  
-paramForm:MayorBalanceParam;
 form :  UntypedFormGroup;
-fecha:Date;
-fechaHasta:Date;
-entityList:BalanceMayorView[]=[];
-entityFiltredList:BalanceMayorView[]=[];
+param : ParamBase = new ParamBase;
+//Paginacion
+pageSize = 14; // Número de elementos por página
+currentPage = 1; 
+totalItems = 0;
+dataSource: MatTableDataSource<BalanceMayorView>;
+@ViewChild(MatPaginator) paginator: MatPaginator;
+@ViewChild(MatSort) sort: MatSort;
+displayedColumns = ['Codigo', 'Nombre', 'SaldoAnterior','Debitos','Creditos','Saldo'];
 totalDebitos: number;
 totalCreditos:number;
 totalSaldoAnterior:number;
+totalSaldo:number;
 
 constructor(private service:MayorService,private transaccionService:TransaccionService,private formBuilder: UntypedFormBuilder) 
-{
-  var today:Date= new Date;
-  var month = today.getMonth()
-  var year = today.getFullYear()
-  this.fecha = new Date(year,month,1)
-  this.fechaHasta = new Date(year,month + 1,0);
-  this.paramForm = new MayorBalanceParam();
-  this.paramForm.Fecha = this.fecha.toDateString();
-  this.paramForm.FechaHasta = this.fechaHasta.toDateString();    
-}
+{  
+  this.createForm();
+}  
 
 createForm():void
-{
-  this.form = this.formBuilder.group({    
-    Fecha: new UntypedFormControl(this.paramForm.Fecha,Validators.required),
-    FechaHasta: new UntypedFormControl(this.paramForm.FechaHasta,Validators.required)    
-});
-}
-
+  {
+      this.form = new UntypedFormGroup({
+      Fecha: new UntypedFormControl(this.param.Fecha,Validators.required),
+      FechaHasta: new UntypedFormControl(this.param.FechaHasta,Validators.required)});
+  }
+  configTable() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 ngOnInit(): void {
-  this.onGetAll();
+  this.onSubmit();
   this.calcular();
 }
-onGetAll():void
+onSubmit():void
 {
-   
-    this.service.balance(this.fecha,this.fechaHasta)
-    .subscribe(res=>{this.entityFiltredList = res;this.entityList=res;this.calcular();})
+    this.param =   this.form.value;    
+    this.service.balance(this.param.Fecha,this.param.FechaHasta)
+    .subscribe(res=>{this.dataSource = new MatTableDataSource(res);this.configTable();this.calcular();})
   
 }
 onPrint():void
@@ -56,11 +60,8 @@ onPrint():void
  
 }
 findByName(name): void {       
-  this.entityFiltredList = this.entityList.
-  filter(f=>f.Nombre.toLowerCase().includes(name.toLowerCase()) ||
-   f.IdCuentaMayor.includes(name));   
-   this.calcular();
-  
+  this.dataSource.filter = name.trim().toLowerCase();
+  this.calcular();    
 }
 
 calcular():void
@@ -68,36 +69,14 @@ calcular():void
   this.totalDebitos = 0;
   this.totalCreditos = 0;   
   this.totalSaldoAnterior=0;
-  this.entityFiltredList.map(a=>this.totalSaldoAnterior += a.SaldoAnterior );   
-  this.entityFiltredList.map(a=>this.totalDebitos += a.Debitos );
-  this.entityFiltredList.map(a=>this.totalCreditos += a.Creditos );  
-}
-parseFecha(dateString: string): void 
-{
-  if (dateString) {
-      dateString.replace("-","/");
-      const [year, month, day] = dateString.split('-');
-      this.fecha =  new Date(Date.parse(dateString));
-      this.fecha = new Date(Date.UTC(Number(year),Number(month)-1,Number(day)));
-  }    
-}
-parseFechaHasta(dateString: string): void
-{
-if (dateString) {
-    dateString = this.replaceAll(dateString,"-","/");
-    this.fechaHasta =  new Date(dateString);
-}    
+  this.totalDebitos = this.dataSource.filteredData.reduce((total, item) => total + item.Debitos, 0);
+  this.totalCreditos = this.dataSource.filteredData.reduce((total, item) => total + item.Creditos, 0);
+  this.totalSaldoAnterior = this.dataSource.filteredData.reduce((total, item) => total + item.SaldoAnterior, 0);  
+  this.totalSaldo = this.dataSource.filteredData.reduce((total, item) => total + item.Saldo, 0);  
 }
 
-replaceAll(str, find, replace):string {
-var escapedFind=find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-return str.replace(new RegExp(escapedFind, 'g'), replace);
-}
 
 }
-export class MayorBalanceParam
-{
-Fecha: string;
-FechaHasta:string;
-}
+
+
 

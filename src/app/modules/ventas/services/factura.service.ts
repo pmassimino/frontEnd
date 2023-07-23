@@ -39,6 +39,12 @@ export class FacturaService extends CrudService<Factura,string> {
      params = params.append('id', id);    
      return this.http.get(this.base + id  + "/autorizar");
    }
+   recuperar(id:string): Observable<any>
+   {
+     let params = new HttpParams();
+     params = params.append('id', id);    
+     return this.http.get(this.base + id  + "/recuperar");
+   }
    
    TipoFactura(entity:Factura):string
     {

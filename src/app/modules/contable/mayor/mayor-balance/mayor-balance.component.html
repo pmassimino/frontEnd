@@ -4,48 +4,58 @@
       </app-toolbar>
     </div>
     <div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
       <label>Balance Mayor </label>     
       <label>Fecha</label>      
-      <input type="date"  [ngModel]="fecha | date:'yyyy-MM-dd'"   (ngModelChange)="parseFecha($event);onGetAll()">        
+      <input type="date"  id="Fecha" formControlName = "Fecha" required name="Fecha" [ngModel]="param.Fecha | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">        
       <label>Fecha Hasta</label>
-      <input type="date"  [ngModel]="fechaHasta | date:'yyyy-MM-dd'"   (ngModelChange)="parseFechaHasta($event);onGetAll()">        
+      <input type="date"   id="FechaHasta" formControlName = "FechaHasta" required name="Fecha" [ngModel]="param.FechaHasta | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">        
+    </form>
     </div>
-    <div><input type="text" class="form-control"  [readonly]></div>
-      <table class="table table-hover table-responsive-sm">
-          <thead>
-            <tr>
-              <th class="th-sm">Codigo</th>
-              <th class="th-sm">Nombre</th>
-              <th class="text-right">Saldo Anterior</th>     
-              <th class="text-right">Debitos</th> 
-              <th class="text-right">Creditos       </th> 
-              <th class="text-right">Saldo Periodo</th>     
-              <th class="text-right">Saldo</th> 
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of entityFiltredList">
-              <td><a href="contable/mayor/listview?idCuentaMayor={{item.IdCuentaMayor}}">{{item.IdCuentaMayor}}</a></td>
-              <td>{{item.Nombre  }}</td>  
-              <td class="text-right">{{item.SaldoAnterior | number : '1.2-2' }}</td>
-              <td class="text-right">{{item.Debitos | number : '1.2-2' }}</td>
-              <td class="text-right">{{item.Creditos | number : '1.2-2' }}</td>
-              <td class="text-right">{{item.SaldoPeriodo | number : '1.2-2' }}</td>
-              <td class="text-right">{{item.Saldo | number : '1.2-2' }}</td>
-              <td><a><i class="material-icons btn">print</i></a></td>
-              <td></td>
-            </tr>
-            <tr>
-              <th class="th-sm"></th>
-              <th class="th-sm">Totales</th>
-              <th class="text-right">{{totalSaldoAnterior | number : '1.2-2'}}</th>     
-              <th class="text-right">{{totalDebitos | number : '1.2-2'}}</th> 
-              <th class="text-right">{{totalCreditos | number : '1.2-2'}}</th> 
-              <th class="text-right"></th>                   
-              <th></th>
-            </tr>                     
-          </tbody>
-        </table>
+    <div>
+      <mat-table  class="table-compact" [dataSource]="dataSource" matSort>           
+        <!-- Codigo Column -->
+        <ng-container matColumnDef="Codigo">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Codigo </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"><a href="contable/mayor/listview?idCuentaMayor={{item.IdCuentaMayor}}">{{item.IdCuentaMayor}}</a></mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+        <!-- Nombre Column -->
+        <ng-container matColumnDef="Nombre">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Nombre  }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
+        </ng-container>    
+        <!-- Saldo Anterior -->
+        <ng-container matColumnDef="SaldoAnterior">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Saldo Anterior </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.SaldoAnterior | number : '1.2-2'}}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{totalSaldoAnterior| number : '1.2-2'}}</mat-footer-cell>
+        </ng-container>    
+        <!-- Debe Column -->
+        <ng-container matColumnDef="Debitos">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Debitos </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Debitos | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ totalDebitos | number : '1.2-2' }}</mat-footer-cell>
+        </ng-container>
+         <!-- Haber Column -->
+         <ng-container matColumnDef="Creditos">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Creditos </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Creditos | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ totalCreditos | number : '1.2-2' }}</mat-footer-cell>
+        </ng-container>  
+         <!-- Saldo Column -->
+         <ng-container matColumnDef="Saldo">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Saldo </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Saldo | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{totalSaldo | number : '1.2-2'}}</mat-footer-cell>
+        </ng-container>                
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>  
+        <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row> 
+      </mat-table>  
+      <mat-paginator [pageSizeOptions]="[15, 25, 50, 100]"></mat-paginator>
+    </div>
+      
    </app-layout>
 

@@ -13,17 +13,17 @@ export class MayorService extends CrudService<Mayor,string> {
   constructor(protected http: HttpClient, protected config: ConfigService) {
     super(http, config.data.apiUrl + '/contable/mayor/');
   }
-  balance(fecha:Date,fechaHasta:Date): Observable<BalanceMayorView[]> {
+  balance(fecha:string,fechaHasta:string): Observable<BalanceMayorView[]> {
     let params = new HttpParams();        
-    params = params.append('fecha', fecha.toDateString());
-    params = params.append('fechaHasta',fechaHasta.toDateString());     
+    params = params.append('fecha', fecha);
+    params = params.append('fechaHasta',fechaHasta);     
     return this.http.get<BalanceMayorView[]>(this.base + "balance",{params: params});
   }
-  listView(idCuentaMayor:string,fecha:Date,fechaHasta:Date): Observable<MayorView[]> {
+  listView(idCuentaMayor:string,fecha:string,fechaHasta:string): Observable<MayorView[]> {
     let params = new HttpParams();        
     params = params.append('idCuentaMayor', idCuentaMayor);
-    params = params.append('fecha', fecha.toDateString());
-    params = params.append('fechaHasta',fechaHasta.toDateString());     
+    params = params.append('fecha', fecha);
+    params = params.append('fechaHasta',fechaHasta);     
     return this.http.get<MayorView[]>(this.base + "listview",{params: params});
   }
 }

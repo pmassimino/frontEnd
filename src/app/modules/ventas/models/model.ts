@@ -9,6 +9,7 @@ export class Factura {
     IdSeccion: string;
     IdTransaccion: string;
     Tipo: string;
+    Origen: string;
     Letra: string;
     Pe: number;
     Numero: number;
@@ -34,6 +35,7 @@ export class Factura {
     Iva: DetalleIva[]=[];
     Tributos: DetalleTributos[]=[];
     MedioPago: MedioPago[]=[];
+    ComprobanteAsociado: ComprobanteAsociado[]=[];
     Sujeto: Sujeto;
 }
 
@@ -84,4 +86,9 @@ export class MedioPago {
     Concepto: string;
     Importe: number;
     FechaVenc: string;
+}
+export class ComprobanteAsociado {
+    Id: string;
+    Item: number;
+    IdFactura: string;    
 }

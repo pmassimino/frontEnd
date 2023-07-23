@@ -14,28 +14,28 @@ export class LibroIvaService extends CrudService<LibroIva,string> {
     super(http, config.data.apiUrl + '/contable/libroiva/');
   }
 
-  ventas(fecha:Date,fechaHasta:Date,filtrarAuto:boolean=true,autorizado:boolean=true): Observable<LibroIvaView[]> {
+  ventas(fecha:string,fechaHasta:string,filtrarAuto:boolean=true,autorizado:boolean=true): Observable<LibroIvaView[]> {
     let params = new HttpParams();        
-    params = params.append('fecha', fecha.toDateString());
-    params = params.append('fechaHasta',fechaHasta.toDateString()); 
+    params = params.append('fecha', fecha);
+    params = params.append('fechaHasta',fechaHasta); 
     params = params.append('filtrarAuto',filtrarAuto);    
     params = params.append('autorizado',autorizado);    
     return this.http.get<LibroIvaView[]>(this.base + "ventas/",{params: params});
   }
 
-  compras(fecha:Date,fechaHasta:Date,filtrarAuto:boolean=true,autorizado:boolean=true): Observable<LibroIvaView[]> {
+  compras(fecha:string,fechaHasta:string,filtrarAuto:boolean=true,autorizado:boolean=true): Observable<LibroIvaView[]> {
     let params = new HttpParams();        
-    params = params.append('fecha', fecha.toDateString());
-    params = params.append('fechaHasta',fechaHasta.toDateString()); 
+    params = params.append('fecha', fecha);
+    params = params.append('fechaHasta',fechaHasta); 
     params = params.append('filtrarAuto',filtrarAuto);    
     params = params.append('autorizado',autorizado);    
     return this.http.get<LibroIvaView[]>(this.base + "compras/",{params: params});
   }
-  print(tipo:string,fecha:Date,fechaHasta:Date,filtrarAuto:boolean=true,autorizado:boolean=true): Observable<any> {
+  print(tipo:string,fecha:string,fechaHasta:string,filtrarAuto:boolean=true,autorizado:boolean=true): Observable<any> {
     let params = new HttpParams();        
     params = params.append('tipo', tipo);
-    params = params.append('fecha', fecha.toDateString());
-    params = params.append('fechaHasta',fechaHasta.toDateString()); 
+    params = params.append('fecha', fecha);
+    params = params.append('fechaHasta',fechaHasta); 
     params = params.append('filtrarAuto',filtrarAuto);    
     params = params.append('autorizado',autorizado);    
     return this.http.get(this.base + "print/",{params: params,responseType: "blob" });

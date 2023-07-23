@@ -59,6 +59,13 @@ export class FacturaAFIPComponent implements OnInit {
     error => {console.log(error);for(var tKey in error.error) this.errors.push({name: tKey, value: error.error[tKey]});});
 
   }
+  Recuperar():void
+  {
+    this.errors = [];
+    this.service.recuperar(this.entity.Id).subscribe(data => {this.goEdit(this.id);}, 
+    error => {console.log(error);for(var tKey in error.error) this.errors.push({name: tKey, value: error.error[tKey]});});
+
+  }
   createForm():void
       {
         this.form = this.formBuilder.group({

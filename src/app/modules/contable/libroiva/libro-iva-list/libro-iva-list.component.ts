@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { TransaccionService } from '../../../comun/services/transaccion.service';
 import { LibroIvaView } from '../../models/model';
 import { LibroIvaService } from '../../services/libro-iva.service';
 import { CommonModule } from '@angular/common';
+import { ParamBase } from '../../../../core/models/common';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-libro-iva-list',
@@ -11,14 +15,17 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./libro-iva-list.component.css']
 })
 export class LibroIvaListComponent implements OnInit {  
-  paramForm:LibroIvaParam;
-  form :  UntypedFormGroup;
-  fecha:Date;
-  fechaHasta:Date;
-  tipo:string="V";
-  filtraAutorizado: boolean=true;
-  autorizado:boolean=true;
-  entityList:LibroIvaView[]=[];
+  param:LibroIvaParam;
+  form :  UntypedFormGroup;  
+  //Paginacion
+  pageSize = 14; // Número de elementos por página
+  currentPage = 1; 
+  totalItems = 0;
+  dataSource: MatTableDataSource<LibroIvaView>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  displayedColumns = ['Fecha','Numero','NumeroDoc','Nombre','Gravado','NoGravado','Exento','Iva105','Iva21'
+  ,'Iva27','IvaOtro','OtrosTributos','Total','Imprimir'];
   totalGravado:number=0;
   totalNoGravado:number=0;
   totalExento:number=0;
@@ -28,49 +35,51 @@ export class LibroIvaListComponent implements OnInit {
   totalIvaOtro:number=0;
   totalOtrosTributos:number=0;
   total:number=0;
+  items:number=0;
  
   constructor(private libroIvaService:LibroIvaService,private transaccionService:TransaccionService,private formBuilder: UntypedFormBuilder) 
   {
-    var today:Date= new Date;
-    var month = today.getMonth()
-    var year = today.getFullYear()
-    this.fecha = new Date(year,month,1)
-    this.fechaHasta = new Date(year,month + 1,0);
-    this.paramForm = new LibroIvaParam();
-    this.paramForm.Fecha = this.fecha.toDateString();
-    this.paramForm.FechaHasta = this.fechaHasta.toDateString();    
+    
+    this.param = new LibroIvaParam();   
+    this.createForm(); 
   }
 
   createForm():void
   {
     this.form = this.formBuilder.group({
-      Tipo: new UntypedFormControl(this.paramForm.Tipo,Validators.required),
-      Fecha: new UntypedFormControl(this.paramForm.Fecha,Validators.required),
-      FechaHasta: new UntypedFormControl(this.paramForm.FechaHasta,Validators.required),
-      FiltrarAutorizado: new UntypedFormControl(this.paramForm.FiltrarAutorizado),
-      Autorizado: new UntypedFormControl(this.paramForm.Autorizado)});
+      Tipo: new UntypedFormControl(this.param.Tipo,Validators.required),
+      Fecha: new UntypedFormControl(this.param.Fecha,Validators.required),
+      FechaHasta: new UntypedFormControl(this.param.FechaHasta,Validators.required),
+      FiltrarAutorizado: new UntypedFormControl(this.param.FiltrarAutorizado),
+      Autorizado: new UntypedFormControl(this.param.Autorizado)});
+  }
+
+  configTable() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   ngOnInit(): void {
-    this.onGetAll();
+    this.onSubmit();
   }
-  onGetAll():void
+  onSubmit():void
   {
-    if(this.tipo=="V")
+    this.param = this.form.value;   
+    if(this.param.Tipo=="V")
     {
-      this.libroIvaService.ventas(this.fecha,this.fechaHasta,this.filtraAutorizado,this.autorizado)
-      .subscribe(res=>{this.entityList=res;this.calcular();})
+      this.libroIvaService.ventas(this.param.Fecha,this.param.FechaHasta,this.param.FiltrarAutorizado,this.param.Autorizado)
+      .subscribe(res=>{this.dataSource = new MatTableDataSource(res);this.configTable();this.calcular();})
     }
-    if(this.tipo=="C")
+    if(this.param.Tipo=="C")
     {
-      this.libroIvaService.compras(this.fecha,this.fechaHasta,this.filtraAutorizado,this.autorizado)
-      .subscribe(res=>{this.entityList=res;this.calcular();})
+      this.libroIvaService.compras(this.param.Fecha,this.param.FechaHasta,this.param.FiltrarAutorizado,this.param.Autorizado)
+      .subscribe(res=>{this.dataSource = new MatTableDataSource(res);this.configTable();this.calcular();})
     }
     
   }
   onPrint():void
   {
-    this.libroIvaService.print(this.tipo,this.fecha,this.fechaHasta,this.filtraAutorizado,this.autorizado).subscribe((resultBlob: Blob) => {
+    this.libroIvaService.print(this.param.Tipo,this.param.Fecha,this.param.FechaHasta,this.param.FiltrarAutorizado,this.param.Autorizado).subscribe((resultBlob: Blob) => {
       var downloadURL = URL.createObjectURL(resultBlob);
       window.open(downloadURL);});
   }
@@ -79,6 +88,10 @@ export class LibroIvaListComponent implements OnInit {
     this.transaccionService.print(item.IdTransaccion).subscribe((resultBlob: Blob) => {
       var downloadURL = URL.createObjectURL(resultBlob);
       window.open(downloadURL);});
+  }
+  findByName(name): void {       
+    this.dataSource.filter = name.trim().toLowerCase();
+    this.calcular();    
   }
   calcular():void
   {
@@ -91,43 +104,22 @@ export class LibroIvaListComponent implements OnInit {
     this.totalIvaOtro = 0;
     this.totalOtrosTributos = 0;
     this.total = 0;
-    this.entityList.map(a=>this.totalGravado += a.Gravado );
-    this.entityList.map(a=>this.totalNoGravado += a.NoGravado );
-    this.entityList.map(a=>this.totalExento += a.Exento );
-    this.entityList.map(a=>this.totalIva105 += a.Iva105 );
-    this.entityList.map(a=>this.totalIva21 += a.Iva21 );
-    this.entityList.map(a=>this.totalIva27 += a.Iva27 );
-    this.entityList.map(a=>this.totalIvaOtro += a.IvaOtro );
-    this.entityList.map(a=>this.totalOtrosTributos += a.OtrosTributos );
-    this.entityList.map(a=>this.total += a.Total);
+    this.totalGravado = this.dataSource.filteredData.reduce((total, item) => total + item.Gravado, 0);
+    this.totalNoGravado = this.dataSource.filteredData.reduce((total, item) => total + item.NoGravado, 0);
+    this.totalExento = this.dataSource.filteredData.reduce((total, item) => total + item.Exento, 0);
+    this.totalIva105= this.dataSource.filteredData.reduce((total, item) => total + item.Iva105, 0);
+    this.totalIva21 = this.dataSource.filteredData.reduce((total, item) => total + item.Iva21, 0);
+    this.totalIva27 = this.dataSource.filteredData.reduce((total, item) => total + item.Iva27, 0);
+    this.totalIvaOtro = this.dataSource.filteredData.reduce((total, item) => total + item.IvaOtro, 0);
+    this.totalOtrosTributos = this.dataSource.filteredData.reduce((total, item) => total + item.OtrosTributos, 0);
+    this.total = this.dataSource.filteredData.reduce((total, item) => total + item.Total, 0);    
+    this.items = this.dataSource.filteredData.reduce((total, item) => total + 1, 0);
   }
-  parseFecha(dateString: string): void 
-  {
-    if (dateString) {
-        dateString.replace("-","/");
-        this.fecha =  new Date(dateString);
-    }    
-  }
-  parseFechaHasta(dateString: string): void
-  {
-  if (dateString) {
-      dateString = this.replaceAll(dateString,"-","/");
-      this.fechaHasta =  new Date(dateString);
-  }    
 }
-
-replaceAll(str, find, replace):string {
-  var escapedFind=find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
-  return str.replace(new RegExp(escapedFind, 'g'), replace);
-}
-
-}
-export class LibroIvaParam
+export class LibroIvaParam extends ParamBase 
 {
-  Tipo:String="V";
-  Fecha: string;
-  FechaHasta:string;
+  Tipo:string="V";  
   FiltrarAutorizado:boolean=true;
-  Autorizado:Boolean=true;
+  Autorizado:boolean=true;
 }
 
