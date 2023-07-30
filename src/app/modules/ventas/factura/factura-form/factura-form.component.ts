@@ -402,7 +402,19 @@ export class FacturaFormComponent implements OnInit {
     }
     goEdit(id)
     {
-      this.router.navigate(['ventas/factura/',id]);
+     this.router.navigate(['ventas/factura/',id]);
+    }
+    onDelete(){
+      if (confirm("Desea borrar el actual asiento ? ")) {
+        
+        this.entityService.delete(this.entity.Id)
+          .subscribe(res=>this.goBack(),
+            err => {
+              alert("El asiento no se puede eliminar.");
+              // Revert the view back to its original state
+              
+            });
+      }
     }
 
     openDialog() {

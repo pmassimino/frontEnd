@@ -52,8 +52,7 @@ onSubmit():void
 {
     this.param =   this.form.value;    
     this.service.balance(this.param.Fecha,this.param.FechaHasta)
-    .subscribe(res=>{this.dataSource = new MatTableDataSource(res);this.configTable();this.calcular();})
-  
+    .subscribe(res=>{this.dataSource = new MatTableDataSource(res);this.configTable();this.calcular();})  
 }
 onPrint():void
 {

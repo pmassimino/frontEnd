@@ -2,37 +2,65 @@
     <div toolbar >
       <app-toolbar (addNew)="addNew()" (exportToExcel)="exportToExcel()" (findByName)="findByName($event)"></app-toolbar>
     </div>
-      <table class="table table-hover table-responsive-sm">
-          <thead>
-            <tr>
-              <th class="th-sm">Fecha</th>
-              <th class="th-sm">Tipo</th>
-              <th>Numero</th>            
-              <th>Cliente</th>
-              <th>Total</th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of data">
-              <td>{{item.Fecha | date:'dd-MM-yyyy'}}</td>
-              <td><span>{{getTipoFactura(item)}}</span></td>
-              <td>{{item.Pe.toString().padStart(4 ,"0")}}-{{item.Numero.toString().padStart(8 ,"0")  }}</td>
-              <td>{{item.Sujeto.Nombre}}</td>
-              <td>{{item.Total}}</td>            
-              <td>
-                <a [routerLink]="['/ventas/factura', item.Id]">
-                  <i class="material-icons">mode_edit</i>
-                </a>
-              </td>
-              <td><a (click)="print(item.Id)"><i class="material-icons btn">print</i></a></td>
-              <td> <a *ngIf="item.Cae == 0" (click)="delete(item)" >
-                <i class="material-icons btn">delete</i>
-              </a></td>
-            </tr>
-          </tbody>
-        </table>
+    <div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
+      <label>Facturas Ventas </label>     
+      <label>Fecha</label>      
+      <input type="date"  id="Fecha" formControlName = "Fecha" required name="Fecha" [ngModel]="param.Fecha | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">        
+      <label>Fecha Hasta</label>
+      <input type="date"   id="FechaHasta" formControlName = "FechaHasta" required name="Fecha" [ngModel]="param.FechaHasta | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">        
+    </form>
+    </div>
+    <div>
+      <mat-table  class="table-compact" [dataSource]="dataSource" matSort>                   
+        <ng-container matColumnDef="Fecha">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item">{{item.Fecha | date:'dd-MM-yyyy'}}</mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="Tipo">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"><span>{{getTipoFactura(item)}}</span></mat-cell>
+          <mat-footer-cell *matFooterCellDef>Cantidad</mat-footer-cell>
+        </ng-container>            
+        <ng-container matColumnDef="Numero">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Numero </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item">{{item.Pe.toString().padStart(4 ,"0")}}-{{item.Numero.toString().padStart(8 ,"0")  }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{totalItems| number : '1.0-0'}}</mat-footer-cell>
+        </ng-container>            
+        <ng-container matColumnDef="Cliente">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item">{{item.Sujeto.Nombre}}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
+        </ng-container>     
+         <ng-container matColumnDef="Total">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Total </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Total | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ total| number : '1.2-2' }}</mat-footer-cell>
+        </ng-container>           
+         <ng-container matColumnDef="Edit">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"><a [routerLink]="['/ventas/factura', item.Id]">
+            <i class="material-icons">mode_edit</i></a></mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="Print">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"><a (click)="print(item.Id)"><i class="material-icons btn">print</i></a></mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+        <ng-container matColumnDef="Delete">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"><a *ngIf="item.Cae == 0" (click)="delete(item)" >
+            <i class="material-icons btn">delete</i>
+          </a></mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>                
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>  
+        <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row> 
+      </mat-table>  
+      <mat-paginator [pageSizeOptions]="[15, 25, 50, 100]"></mat-paginator>
+    </div>
    </app-layout>
   

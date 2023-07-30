@@ -45,6 +45,12 @@ export class FacturaService extends CrudService<Factura,string> {
      params = params.append('id', id);    
      return this.http.get(this.base + id  + "/recuperar");
    }
+   listView(fecha:string,fechaHasta:string): Observable<Factura[]> {
+    let params = new HttpParams();            
+    params = params.append('fecha', fecha);
+    params = params.append('fechaHasta',fechaHasta);     
+    return this.http.get<Factura[]>(this.base + "listview",{params: params});
+  }
    
    TipoFactura(entity:Factura):string
     {
