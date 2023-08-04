@@ -9,8 +9,7 @@
       "@core/*": [
         "app/core/*"
       ]
-    },
-    "outDir": "./dist/out-tsc",
+    },    
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,

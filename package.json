@@ -36,11 +36,11 @@
     "popper.js": "^1.16.1",
     "rxjs": "^6.5.5",
     "tslib": "^2.0.0",
-    "xlsx": "^0.16.9",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.13.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^16.1.0",
+    "@angular-devkit/build-angular": "^0.1002.1",
     "@angular/cli": "^16.1.0",
     "@angular/compiler-cli": "^16.1.1",
     "@angular/language-service": "^16.1.1",
@@ -55,7 +55,7 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.4",
-    "protractor": "~7.0.0",
+    "protractor": "^3.3.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~5.1.3"

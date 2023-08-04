@@ -21,7 +21,7 @@ export class AuthInterceptorService implements HttpInterceptor {
     const idSeccion: string = localStorage.getItem('idSeccionSelected');
 
     let request = req;
-    //request = req.clone({ headers: req.headers.set("Content-Type","application/json")});
+    request = req.clone({ headers: req.headers.set("Content-Type","application/json")});
    
     if (token) {   
      request = req.clone({ headers: req.headers.set("Authorization", 'Bearer '+ token)});     

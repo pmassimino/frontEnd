@@ -24,7 +24,6 @@ constructor(private entityService: FamiliaService,
                             
             }
 
-
   ngOnInit(): void {
     this.popupData();    
     this._id = this.route.snapshot.params['id'];
