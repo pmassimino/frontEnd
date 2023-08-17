@@ -2,37 +2,57 @@
     <div toolbar >
       <app-toolbar (addNew)="addNew()" (exportToExcel)="exportToExcel()" (findByName)="findByName($event)"></app-toolbar>
     </div>
-      <table class="table table-hover table-responsive-sm">
-        <thead>
-            <tr>
-               <td>Fecha</td>
-               <td>Numero</td>
-               <td>Concepto</td>
-               <td>Cuenta</td>
-               <td>Nombre</td>
-               <td>Debe</td>
-               <td>Haber</td>
-              <td></td>
-            </tr>
-          </thead>
-          <tbody>
-          <ng-container *ngFor="let item of entityFiltredList"> 
-            <tr>
-              <td [attr.rowspan]="item.Detalle.length + 1">{{item.Fecha | date:'dd-MM-yyyy'}}</td>                     
-              <td [attr.rowspan]="item.Detalle.length + 1">{{item.Pe.toString().padStart(4 ,"0")}}-{{item.Numero.toString().padStart(8 ,"0")  }}</td>               
-              <td [attr.rowspan]="item.Detalle.length + 1">{{item.Concepto}}</td>     
-            </tr>             
-            <tr *ngFor="let itemD of item.Detalle">               
-              <td>{{itemD.IdCuentaMayor}}</td>                  
-              <td>{{itemD.Concepto}}</td>                  
-              <td><span *ngIf="itemD.IdTipo=='1'">{{itemD.Importe}}</span></td> 
-              <td><span *ngIf="itemD.IdTipo=='2'">{{itemD.Importe}}</span></td>
-              <td><a [routerLink]="['/contable/mayor', item.Id]">
-                <i class="material-icons">mode_edit</i>
-              </a></td>
-            </tr>          
-          </ng-container>
-          </tbody>
-        </table>
-   </app-layout>
+    <div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
+        <label>Mayor </label>     
+        <label>Fecha</label>      
+        <input type="date"  id="Fecha" formControlName = "Fecha" required name="Fecha" [ngModel]="param.Fecha | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">        
+        <label>Fecha Hasta</label>
+        <input type="date"   id="FechaHasta" formControlName = "FechaHasta" required name="Fecha" [ngModel]="param.FechaHasta | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">        
+      </form>     
+    </div>    
+    <div class="">    
+      <mat-table  class="table-compact" [dataSource]="dataSource" matSort>           
+        <!-- Fecha Column -->
+        <ng-container matColumnDef="Fecha">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Fecha | date:'dd-MM-yyyy'}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+        <!-- Concepto Column -->
+        <ng-container matColumnDef="Numero">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Numero </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Pe.toString().padStart(4 ,"0")}}-{{item.Numero.toString().padStart(8 ,"0")  }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>    
+        <!-- Concepto Column -->
+        <ng-container matColumnDef="Concepto">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Concepto </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Concepto}}</mat-cell>
+          <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
+        </ng-container>           
+        <ng-container matColumnDef="Importe">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Importe</mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item">
+            {{ calculateTotalDebe(item.Detalle) | number : '1.2-2'}}
+          </mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ total | number : '1.2-2' }}</mat-footer-cell>
+        </ng-container>  
+        <!-- Edit Column -->
+        <ng-container matColumnDef="Edit">
+          <mat-header-cell *matHeaderCellDef>  </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item">          
+            <a [routerLink]="['/contable/mayor', item.Id]">
+              <i class="material-icons">mode_edit</i>
+            </a>                
+         </mat-cell>
+         <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container> 
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>  
+        <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row> 
+      </mat-table>  
+      <mat-paginator [pageSizeOptions]="[15, 25, 50, 100]"></mat-paginator>
+    </div>
+</app-layout>
 

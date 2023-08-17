@@ -8,20 +8,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { FacturaListComponent } from './factura/factura-list/factura-list.component';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ArticuloSelectComponent } from '../almacen/articulo/articulo-select/articulo-select.component';
-import { BrowserModule } from '@angular/platform-browser';
+import { MatDialogModule } from '@angular/material/dialog';
 import { FacturaAFIPComponent } from './factura/factura-afip/factura-afip.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { NgxPaginationModule } from 'ngx-pagination';
+import { FacturaSelectComponent } from './factura/factura-select/factura-select.component';
 
 
 
 @NgModule({
-    declarations: [FacturaFormComponent, FacturaListComponent, FacturaAFIPComponent],
+    declarations: [FacturaFormComponent, FacturaListComponent, FacturaAFIPComponent, FacturaSelectComponent],
     imports: [
         CommonModule, VentasRoutingModule, SharedModule, FormsModule,
         ReactiveFormsModule,
@@ -35,8 +32,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
         MatDialogModule,
         MatPaginatorModule, 
         MatSortModule,        
-        MatTableModule,
-        NgxPaginationModule,      
+        MatTableModule,          
     ]
 })
 export class VentasModule { }

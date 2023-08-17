@@ -4,14 +4,14 @@ import { AppComponent } from './app.component';
 import { AuthService } from './core/services/auth.service';
 import { AuthGuard } from './core/services/auth.guard';
 import { ConfigService} from './core/services/config.service';
-import { NgxMaskModule, IConfig } from 'ngx-mask'
+//import { NgxMaskModule, IConfig } from 'ngx-mask'
 // Interceptors
 import { AuthInterceptorService } from './core/services/auth-interceptor.service';
 import { LoginComponent } from './modules/login/login.component';
 import { ExcelService } from './core/services/excel.service';
 import { CoreService } from './core/services/core.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxPaginationModule } from 'ngx-pagination';
+//import { NgxPaginationModule } from 'ngx-pagination';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -44,8 +44,7 @@ export function initializeApp(appConfig: ConfigService) {
     MatIconModule,
     MatSelectModule,
     MatInputModule,
-    MatDialogModule,        
-    NgxPaginationModule,        
+    MatDialogModule,                 
   ],
   providers: [AuthService,
     AuthGuard ,

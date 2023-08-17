@@ -42,11 +42,11 @@ export abstract class CrudService<T, ID> implements CrudOperations<T, ID> {
     return this.http.delete<T>(this.base +  id).pipe(catchError(this.handleError));
   }
 
-  get Current(): T {
+  get Current(): T | null {
     return this._Current.getValue();
   }
-  
-  set Current(val: T) {
+
+  set Current(val: T | null) {
     this._Current.next(val);
   }
   get CurrentList(): T[] {

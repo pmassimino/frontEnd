@@ -87,11 +87,11 @@
                         <td class="col-1"></td>
                       </tr>
                       <tr class="row" *ngFor="let item of detalle.controls; let i=index" [formGroupName]="i">
-                        <td class="col-1  d-flex"><input type="text" class="form-control" formControlName="IdCuentaMayor"><a (click)="selectCuentaMayor(i)"><i class="material-icons btn">search</i></a></td>
-                        <td class="col-4"><input type="text" class="form-control" formControlName="Concepto" ></td>
+                        <td class="col-1 d-flex"><input type="text" class="form-control mr-2" formControlName="IdCuentaMayor"><button  type="button" class="btn btn-sm" (click)="selectCuentaMayor(i)"><span class="material-icons font-size: 16px;">search</span></button></td>
+                        <td class="col-4 "><input type="text" class="form-control" formControlName="Concepto" ></td>
                         <td class="col-1"><input type="number" class="form-control" formControlName="Debe" required></td>
                         <td class="col-1"><input type="number" class="form-control" formControlName="Haber" required></td>
-                        <td class="col-1"><a (click)="removeDetalle(i)"><i class="material-icons btn">delete</i></a></td>
+                        <td class="col-1 d-flex"><button  type="button" class="btn btn-sm" (click)="removeDetalle(i)"><span class="material-icons">delete</span></button></td>
                       </tr>
                       <tr class="row">
                         <td class="col-1"></td>

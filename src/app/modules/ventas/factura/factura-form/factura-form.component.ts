@@ -18,6 +18,7 @@ import { CarritoCompraService } from '../../../almacen/services/carrito-compra.s
 import { FacturaAFIPComponent } from '../factura-afip/factura-afip.component';
 import { CondIvaOperacionService } from '../../../global/services/cond-iva-operacion.service';
 import { SessionService } from '../../../comun/services/session.service';
+import { FacturaSelectComponent } from '../factura-select/factura-select.component';
 
 const resolvedPromise = Promise.resolve(null);
 
@@ -105,7 +106,8 @@ export class FacturaFormComponent implements OnInit {
         Total: new UntypedFormControl(this.entity.Total),
         Obs: new UntypedFormControl(this.entity.Obs),
         Detalle:this.formBuilder.array([],Validators.required),
-        MedioPago:this.formBuilder.array([])
+        MedioPago:this.formBuilder.array([]),
+        ComprobanteAsociado:this.formBuilder.array([])
       }); 
       this.form.get('Letra').valueChanges.subscribe(res=>this.onNextNumber());
       this.form.get('Tipo').valueChanges.subscribe(res=>this.onNextNumber());   
@@ -116,6 +118,9 @@ export class FacturaFormComponent implements OnInit {
     }
     get mediopago(): UntypedFormArray {
       return this.form.get('MedioPago') as UntypedFormArray;
+    }
+    get comprobanteasociado(): UntypedFormArray {
+      return this.form.get('ComprobanteAsociado') as UntypedFormArray;
     }
 
     onNextNumber()
@@ -402,6 +407,7 @@ export class FacturaFormComponent implements OnInit {
     }
     goEdit(id)
     {
+     this.getById(this._id);
      this.router.navigate(['ventas/factura/',id]);
     }
     onDelete(){
@@ -432,7 +438,7 @@ export class FacturaFormComponent implements OnInit {
         this.descargaCarrito();
       });
   }
-  openDialogAfip() {
+ openDialogAfip() {
 
     const dialogConfig = new MatDialogConfig();
 
@@ -441,11 +447,26 @@ export class FacturaFormComponent implements OnInit {
     dialogConfig.panelClass="dialog-responsive";
     this.dialog.open(FacturaAFIPComponent,{data:{id:this.entity.Id},width: '50%',height: '50%'}).afterClosed()
     .subscribe(response => {
-      //alguna Accion
+      this.getById(this._id);
     });
 }
+openDialogAddFactura():void
+{
+  const dialogConfig = new MatDialogConfig();
 
-  descargaCarrito()
+dialogConfig.disableClose = false;
+dialogConfig.autoFocus = true;
+dialogConfig.panelClass="dialog-responsive";
+dialogConfig.data = {idCuenta:this.form.get("IdCuenta").value};
+dialogConfig.width="100%";
+dialogConfig.height="90%";
+
+this.dialog.open(FacturaSelectComponent, dialogConfig).afterClosed()
+.subscribe(response => {if (response.data=="ok"){  
+  alert(this.entityService.Current.Id)}});   
+}
+
+ descargaCarrito()
   {
     var articulos = this.carritoService.getAll();
     articulos.forEach(element => 
@@ -465,7 +486,7 @@ export class FacturaFormComponent implements OnInit {
     this.calculateTotal();
   }
        
-    setControlsError(validationErrors)
+ setControlsError(validationErrors)
     {    
       Object.keys(validationErrors).forEach(prop=>
         {

@@ -18,6 +18,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { AreaService } from './services/area.service';
+import { SessionService } from './services/session.service';
+import { SettingGlobalService } from '../global/services/setting-global.service';
+import { TransaccionService } from './services/transaccion.service';
 
 
 
@@ -39,7 +43,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     NgxPaginationModule,          
   ],
   providers: [
-    SujetoService
+    SujetoService,AreaService,SessionService,SettingGlobalService,TransaccionService
   ]
 })
 export class ComunModule { }

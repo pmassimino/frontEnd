@@ -18,9 +18,18 @@ export class EmpresaService extends CrudService<Empresa, string> {
     this.initValue();
   }
   
-  get Current():Empresa
-  {
-    return super.Current;
+  get Current(): Empresa {
+    var retrievedObject =  localStorage.getItem('EmpresaSelected');
+    var result:Empresa=null;
+    if (retrievedObject != null)
+    {
+      result = JSON.parse(retrievedObject) 
+      return result;     
+    }
+    else {
+      // Si no se encuentra ninguna empresa seleccionada, puedes lanzar un error o devolver un valor predeterminado.
+      throw new Error('No se ha encontrado ninguna empresa seleccionada');
+    }
   }
   set Current(entity:Empresa)
   { if (entity != null)
@@ -28,7 +37,7 @@ export class EmpresaService extends CrudService<Empresa, string> {
        localStorage.setItem('idEmpresaSelected',entity.Id);
        localStorage.setItem('EmpresaSelected', JSON.stringify(entity));   
        var idSetting:string = "idEmpresaSelected." + this.authService.currentAccount().Id ;
-       this.settingService.setValue(idSetting,entity.Id).subscribe();
+       //this.settingService.setValue(idSetting,entity.Id).subscribe();
        super.Current=entity;
       }       
   }
@@ -48,18 +57,6 @@ export class EmpresaService extends CrudService<Empresa, string> {
     {
       this.findLastOrDefault().subscribe(res=>{this.Current = res});;
     } 
-  }
-  
-  handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unknown error!';
-    
-    if (error.error instanceof ErrorEvent) {
-      // Client-side errors
-      errorMessage = `Error: ${error.error.message}`;
-    } else {
-      // Server-side errors
-      errorMessage = `Error Code: ${error.message}\nMessage: ${error.message}\Descripcion: ${error.error}`;
-    }    
-    return throwError(error);
-  }
+  } 
+
 }

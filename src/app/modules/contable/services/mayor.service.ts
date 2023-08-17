@@ -26,4 +26,10 @@ export class MayorService extends CrudService<Mayor,string> {
     params = params.append('fechaHasta',fechaHasta);     
     return this.http.get<MayorView[]>(this.base + "listview",{params: params});
   }
+  diario(fecha:string,fechaHasta:string): Observable<Mayor[]> {
+    let params = new HttpParams();            
+    params = params.append('fecha', fecha);
+    params = params.append('fechaHasta',fechaHasta);     
+    return this.http.get<Mayor[]>(this.base + "diario",{params: params});
+  }
 }

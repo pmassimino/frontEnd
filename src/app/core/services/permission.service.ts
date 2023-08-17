@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
-import { element } from 'protractor';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Rol } from '../../modules/global/models/models/model';
 import { AuthService } from './auth.service';

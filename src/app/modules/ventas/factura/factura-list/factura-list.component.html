@@ -11,7 +11,7 @@
       <input type="date"   id="FechaHasta" formControlName = "FechaHasta" required name="Fecha" [ngModel]="param.FechaHasta | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">        
     </form>
     </div>
-    <div>
+    <div class="flex">
       <mat-table  class="table-compact" [dataSource]="dataSource" matSort>                   
         <ng-container matColumnDef="Fecha">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Fecha </mat-header-cell>
@@ -46,13 +46,13 @@
         </ng-container>
         <ng-container matColumnDef="Print">
           <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
-          <mat-cell class="mat-cell-sm" *matCellDef="let item"><a (click)="print(item.Id)"><i class="material-icons btn">print</i></a></mat-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"><a (click)="print(item.Id)"><mat-icon class="align-middle">print</mat-icon></a></mat-cell>
           <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>
         <ng-container matColumnDef="Delete">
           <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
           <mat-cell class="mat-cell-sm" *matCellDef="let item"><a *ngIf="item.Cae == 0" (click)="delete(item)" >
-            <i class="material-icons btn">delete</i>
+            <mat-icon class="align-middle">delete</mat-icon>
           </a></mat-cell>
           <mat-footer-cell *matFooterCellDef></mat-footer-cell>
         </ng-container>                
