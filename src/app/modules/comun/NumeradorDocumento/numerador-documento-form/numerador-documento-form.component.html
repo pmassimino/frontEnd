@@ -1,0 +1,57 @@
+<app-layout>
+  <h3>Numerador Documento</h3>
+  <ng-template #customTabButtons>
+    <ul class="navbar-nav">
+      <li class="nav-item"><button [disabled]="mode!='edit'" (click)="delete()" class="navbar-brand btn"><mat-icon
+            class="align-middle">delete</mat-icon></button></li>
+    </ul>
+  </ng-template>
+  <div toolbar>
+    <app-toolbar-form [printDisabled]="true" [toolbarTemplate]="customTabButtons" [mode]="mode"></app-toolbar-form>
+  </div>
+  <div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+        <div class="col-xs-1 col-lg-1">
+          <label for="Id">Codigo</label>
+          <input type="text" class="form-control" formControlName="Id" required [readonly]="mode=='edit'">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-4 col-lg-4">
+          <label for="Nombre">Comprobante</label>
+          <select class="form-control" formControlName="IdComprobante">
+            <option *ngFor="let item of comprobante" [ngValue]="item.Id"
+              [selected]="entity.IdComprobante === item.Id">{{item.Nombre}} </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-4 col-lg-4">
+          <label for="Nombre">Nombre</label>
+          <input type="text" class="form-control" formControlName="Nombre" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-1 col-lg-1">
+          <label for="PuntoEmision">PuntoEmision</label>
+          <input type="number" class="form-control" formControlName="PuntoEmision" required>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-1 col-lg-1">
+          <label for="numero">Numero</label>
+          <input type="number" class="form-control" formControlName="Numero" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-1">
+          <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Aceptar</button>
+        </div>
+        <div class="col-md-1">
+          <button class="btn btn-primary" (click)="goBack()">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</app-layout>

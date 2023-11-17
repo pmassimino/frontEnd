@@ -1,0 +1,7 @@
+<div *ngFor="let control of dataSource.controls; let i = index">
+    <div *ngIf="getFacturaDetails(control.get('IdFactura').value) !=''">
+        {{ getFacturaDetails(control.get('IdFactura').value)}}
+        <a class="btn" (click)="onEliminar(control.get('IdFactura').value)"><span
+                class="material-icons">delete</span></a>
+    </div>
+</div>

@@ -23,10 +23,11 @@ totalItems = 0;
 dataSource: MatTableDataSource<BalanceMayorView>;
 @ViewChild(MatPaginator) paginator: MatPaginator;
 @ViewChild(MatSort) sort: MatSort;
-displayedColumns = ['Codigo', 'Nombre', 'SaldoAnterior','Debitos','Creditos','Saldo'];
+displayedColumns = ['Codigo', 'Nombre', 'SaldoAnterior','Debitos','Creditos','SaldoPeriodo','Saldo'];
 totalDebitos: number;
 totalCreditos:number;
 totalSaldoAnterior:number;
+totalSaldoPeriodo:number;
 totalSaldo:number;
 
 constructor(private service:MayorService,private transaccionService:TransaccionService,private formBuilder: UntypedFormBuilder) 
@@ -71,7 +72,9 @@ calcular():void
   this.totalDebitos = this.dataSource.filteredData.reduce((total, item) => total + item.Debitos, 0);
   this.totalCreditos = this.dataSource.filteredData.reduce((total, item) => total + item.Creditos, 0);
   this.totalSaldoAnterior = this.dataSource.filteredData.reduce((total, item) => total + item.SaldoAnterior, 0);  
+  this.totalSaldoPeriodo = this.dataSource.filteredData.reduce((total, item) => total + item.SaldoPeriodo, 0);  
   this.totalSaldo = this.dataSource.filteredData.reduce((total, item) => total + item.Saldo, 0);  
+
 }
 
 

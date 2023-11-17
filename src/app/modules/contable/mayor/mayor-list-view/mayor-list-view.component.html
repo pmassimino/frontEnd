@@ -1,11 +1,11 @@
 <app-layout>
+    <label>Mayor </label>
     <div toolbar >
       <app-toolbar  [addNewVisible]="false" [printVisible]="true"  (print)="onPrint()" (findByName)="findByName($event)" >        
       </app-toolbar>
     </div>
     <div>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
-        <label>Mayor </label>     
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">       
         <label>Fecha</label>      
         <input type="date"  id="Fecha" formControlName = "Fecha" required name="Fecha" [ngModel]="param.Fecha | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">        
         <label>Fecha Hasta</label>
@@ -44,6 +44,11 @@
           <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Haber | number : '1.2-2' }}</mat-cell>
           <mat-footer-cell *matFooterCellDef>{{ totalHaber | number : '1.2-2' }}</mat-footer-cell>
         </ng-container>  
+        <ng-container matColumnDef="SaldoPeriodo">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Saldo Periodo</mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.SaldoPeriodo | number : '1.2-2' }}</mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
          <!-- Saldo Column -->
          <ng-container matColumnDef="Saldo">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Saldo </mat-header-cell>

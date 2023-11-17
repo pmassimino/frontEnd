@@ -13,6 +13,7 @@ const routes: Routes = [{path: 'login', component: LoginComponent},
 { path: 'contable', loadChildren: () => import('./modules/contable/contable.module').then(m => m.ContableModule) },
 { path: 'ventas', loadChildren: () => import('./modules/ventas/ventas.module').then(m => m.VentasModule) },
 { path: 'tesoreria', loadChildren: () => import('./modules/tesoreria/tesoreria.module').then(m => m.TesoreriaModule) },
+{ path: 'mail', loadChildren: () => import('./modules/mail/mail.module').then(m => m.MailModule) },
 ];
 
 @NgModule({

@@ -1,14 +1,14 @@
 <app-layout>
-    <div toolbar >
+     <div toolbar >
       <app-toolbar (addNew)="addNew()" (exportToExcel)="exportToExcel()" (findByName)="findByName($event)"></app-toolbar>
-    </div>
-    <div>
+    </div>    
+    <div>      
       <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
-        <label>Mayor </label>     
+        <div><label>Mayor </label></div>
         <label>Fecha</label>      
         <input type="date"  id="Fecha" formControlName = "Fecha" required name="Fecha" [ngModel]="param.Fecha | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">        
         <label>Fecha Hasta</label>
-        <input type="date"   id="FechaHasta" formControlName = "FechaHasta" required name="Fecha" [ngModel]="param.FechaHasta | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">        
+        <input type="date"   id="FechaHasta" formControlName = "FechaHasta" required name="Fecha" [ngModel]="param.FechaHasta | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">              
       </form>     
     </div>    
     <div class="">    

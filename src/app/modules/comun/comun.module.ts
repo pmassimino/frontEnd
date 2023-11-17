@@ -22,11 +22,13 @@ import { AreaService } from './services/area.service';
 import { SessionService } from './services/session.service';
 import { SettingGlobalService } from '../global/services/setting-global.service';
 import { TransaccionService } from './services/transaccion.service';
+import { NumeradorDocumentoFormComponent } from './NumeradorDocumento/numerador-documento-form/numerador-documento-form.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 
 @NgModule({
-  declarations: [SujetoListComponent, SujetoFormComponent, AreaSelectComponent, NumeradorDocumentoListComponent],
+  declarations: [SujetoListComponent, SujetoFormComponent, AreaSelectComponent, NumeradorDocumentoListComponent, NumeradorDocumentoFormComponent],
   imports: [CommonModule,ComunRoutingModule,SharedModule,FormsModule,
     ReactiveFormsModule,
     MatIconModule,
@@ -40,7 +42,8 @@ import { TransaccionService } from './services/transaccion.service';
     MatPaginatorModule, 
     MatSortModule,        
     MatTableModule,
-    NgxPaginationModule,          
+    NgxPaginationModule,  
+    MatTabsModule,        
   ],
   providers: [
     SujetoService,AreaService,SessionService,SettingGlobalService,TransaccionService

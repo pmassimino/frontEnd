@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { Factura } from '../../models/model';
+import { Factura, FacturaSelectView } from '../../models/model';
 import { FacturaService } from '../../services/factura.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -21,10 +21,10 @@ export class FacturaSelectComponent  implements OnInit {
     totalItems = 0;    
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
-    displayedColumns = ['Fecha', 'Tipo', 'Numero','Cliente','Total','Print'];
+    displayedColumns = ['Fecha', 'Tipo', 'Numero','Cliente','Total','Select','Print'];
     totalItem: number;  
     total:number;
-    dataSource: MatTableDataSource<Factura>;
+    dataSource: MatTableDataSource<FacturaSelectView>;
     constructor(private service: FacturaService,
        private router: Router,private dialogRef: MatDialogRef<FacturaSelectComponent>,
        @Inject(MAT_DIALOG_DATA) data) {
@@ -49,7 +49,7 @@ export class FacturaSelectComponent  implements OnInit {
       {
         this.service.findByIdCuenta(this.idCuenta)
         .subscribe(res => {          
-          this.dataSource = new MatTableDataSource(res);
+          this.dataSource = new MatTableDataSource(res.map(factura => new FacturaSelectView(factura)));
           this.configTable();
           this.calcular();} ,
         err => {console.log(err) ; });
@@ -78,6 +78,15 @@ export class FacturaSelectComponent  implements OnInit {
         }
       });
     }
+
+    select(factura: FacturaSelectView) {      
+      factura.Select = !factura.Select; // Cambiar el estado Select      
+    }
+
+    anyItemSelected(): boolean {
+      return this.dataSource.filteredData.some(factura => factura.Select);
+    }
+
     print(id:string)
     {
       this.service.print(id).subscribe((resultBlob: Blob) => {
@@ -87,11 +96,17 @@ export class FacturaSelectComponent  implements OnInit {
   
       close():void
       {
-        this.dialogRef.close({ data: 'cancel' });
+        this.dialogRef.close({ result: 'cancel' });
+      }
+      aceptar():void
+      {
+        const selectedFacturas = this.dataSource.filteredData.filter(factura => factura.Select);       
+        
+        this.dialogRef.close({ result:"ok",selectedFacturas:selectedFacturas });
       }
       cancel():void
       {
-        this.dialogRef.close({ data: 'cancel' });
+        this.dialogRef.close({ result: 'cancel' });
       }
   
   }

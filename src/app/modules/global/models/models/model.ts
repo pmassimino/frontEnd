@@ -110,3 +110,9 @@ export class Organizacion {
     Id: string;
     Nombre: string;
 }
+
+export class Comprobante  {
+    Id: number;
+    Nombre: string;
+    CodAfip: string;  
+  }

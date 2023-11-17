@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { CrudService } from '../../../core/services/crud.service';
 import { Factura } from '../models/model';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -11,6 +11,7 @@ import { NumeradorDocumento } from '../../comun/models/model';
 })
 export class FacturaService extends CrudService<Factura,string> {
 
+  selectEvent = new EventEmitter<Factura[]>();
   constructor(protected http: HttpClient, protected config: ConfigService) {
     super(http, config.data.apiUrl + '/ventas/factura/');
   }
@@ -73,5 +74,8 @@ export class FacturaService extends CrudService<Factura,string> {
         }
         return result;
     }
+  select(data: Factura[]) {
+   this.selectEvent.emit(data);
+  }
 
 }

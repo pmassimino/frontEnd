@@ -66,7 +66,7 @@ export class FacturaListComponent implements OnInit {
   this.total = 0;   
   this.totalItems = this.dataSource.filteredData.reduce((total, item) => total + 1, 0);
   this.dataSource.filteredData.forEach(item => {
-    if (item.Tipo === "1" || item.Tipo==="3") {
+    if (item.Tipo == "1" || item.Tipo=="3") {
       // Sumar si el tipo es "1"
       this.total += item.Total;
     } else {

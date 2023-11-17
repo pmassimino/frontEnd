@@ -36,6 +36,7 @@ export class Mayor {
     Pe:number;
     Numero:number;
     Origen: string;
+    Obs: string;
     Detalle: DetalleMayor[];
 }
 
@@ -200,6 +201,7 @@ export interface MayorView {
     Numero: number
     Debe: number
     Haber: number
+    SaldoPeriodo:number
     Saldo: number
   }
   

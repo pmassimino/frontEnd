@@ -9,6 +9,8 @@ export class ToolbarFormComponent implements OnInit {
   @Input() 
   mode:string="";
   @Input() 
+  printDisabled:boolean=false;
+  @Input() 
   toolbarTemplate: TemplateRef<any>;
   //Events
   @Output()

@@ -14,11 +14,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { FacturaSelectComponent } from './factura/factura-select/factura-select.component';
+import { ComprobanteAsociadoListComponent } from './factura/comprobante-asociado-list/comprobante-asociado-list.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { PuntoEmisionListComponent } from './puntoemision/punto-emision-list/punto-emision-list.component';
+import { PuntoEmisionFormComponent } from './puntoemision/punto-emision-form/punto-emision-form.component';
+import { ConfigFacturaListComponent } from './configfactura/config-factura-list/config-factura-list.component';
+import { ConfigFacturaFormComponent } from './configfactura/config-factura-form/config-factura-form.component';
 
 
 
 @NgModule({
-    declarations: [FacturaFormComponent, FacturaListComponent, FacturaAFIPComponent, FacturaSelectComponent],
+    declarations: [FacturaFormComponent, FacturaListComponent, FacturaAFIPComponent, FacturaSelectComponent, ComprobanteAsociadoListComponent, PuntoEmisionListComponent, PuntoEmisionFormComponent, ConfigFacturaListComponent, ConfigFacturaFormComponent],
     imports: [
         CommonModule, VentasRoutingModule, SharedModule, FormsModule,
         ReactiveFormsModule,
@@ -32,7 +38,8 @@ import { FacturaSelectComponent } from './factura/factura-select/factura-select.
         MatDialogModule,
         MatPaginatorModule, 
         MatSortModule,        
-        MatTableModule,          
+        MatTableModule, 
+        MatTabsModule         
     ]
 })
 export class VentasModule { }

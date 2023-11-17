@@ -1,135 +1,147 @@
 <app-layout>
   <ng-template #customTabButtons>
     <ul class="navbar-nav">
-      <li class="nav-item"><button [disabled]="mode!='edit'"(click)="delete()"  class="navbar-brand btn"><mat-icon class="align-middle">delete</mat-icon></button></li>
+      <li class="nav-item"><button [disabled]="mode!='edit'" (click)="delete()" class="navbar-brand btn"><mat-icon
+            class="align-middle">delete</mat-icon></button></li>
     </ul>
   </ng-template>
-    <div toolbar>
-      <app-toolbar-form (print)="print()" [toolbarTemplate]="customTabButtons" [mode]="mode"></app-toolbar-form>
-    </div>
-    <h3>Asiento Contable.</h3>
-    <div>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="form-group row">
-          <div class="col-xs-12 col-lg-12" *ngFor="let error of errors" class="alert alert-warning alert-dismissible fade show" role="alert">
-            {{error.value}}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
+  <div toolbar>
+    <app-toolbar-form (print)="print()" [toolbarTemplate]="customTabButtons" [mode]="mode"></app-toolbar-form>
+  </div>
+  <h3>Asiento Contable.</h3>
+  <div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+        <div class="col-xs-12 col-lg-12" *ngFor="let error of errors"
+          class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{error.value}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-        <div>
-          <input type="hidden" formControlName="Id" [(ngModel)]="entity.Id">
-          <input type="hidden" formControlName="IdEmpresa" [(ngModel)]="entity.IdEmpresa">
-          <input type="hidden" formControlName="IdSucursal" [(ngModel)]="entity.IdSucursal">
-          <input type="hidden" formControlName="IdArea" [(ngModel)]="entity.IdArea">
-          <input type="hidden" formControlName="IdSeccion" [(ngModel)]="entity.IdSeccion">
-          <input type="hidden" formControlName="IdTransaccion" [(ngModel)]="entity.IdTransaccion">
+      </div>
+      <div>
+        <input type="hidden" formControlName="Id" [(ngModel)]="entity.Id">
+        <input type="hidden" formControlName="IdEmpresa" [(ngModel)]="entity.IdEmpresa">
+        <input type="hidden" formControlName="IdSucursal" [(ngModel)]="entity.IdSucursal">
+        <input type="hidden" formControlName="IdArea" [(ngModel)]="entity.IdArea">
+        <input type="hidden" formControlName="IdSeccion" [(ngModel)]="entity.IdSeccion">
+        <input type="hidden" formControlName="IdTransaccion" [(ngModel)]="entity.IdTransaccion">
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-2 col-lg-2">
+          <label for="fecha">Fecha</label>
+          <input type="date" class="form-control" formControlName="Fecha" required name="Fecha"
+            [ngModel]="entity.Fecha | date:'yyyy-MM-dd'">
         </div>
-        <div class="form-group row">
-          <div class="col-xs-2 col-lg-2">
-            <label for="fecha">Fecha</label>
-            <input type="date" class="form-control" formControlName="Fecha" required name="Fecha" [ngModel]="entity.Fecha | date:'yyyy-MM-dd'">
-          </div>
-          <div class="col-xs-2 col-lg-2">
-            <label for="fechaComp">Fecha</label>
-            <input type="date" class="form-control" formControlName="FechaComp" required name="FechaComp" [ngModel]="entity.FechaComp | date:'yyyy-MM-dd'">
-          </div>
-          <div class="col-xs-2 col-lg-2">
-            <label for="fechaVenc">Fecha Venc</label>
-            <input type="date" class="form-control" formControlName="FechaVenc" required name="FechaVenc" [ngModel]="entity.FechaVenc | date:'yyyy-MM-dd'">
-          </div>
-          <div class="col-xs-1 col-md-1">
-            <label for="Pe">Numero</label>
-            <input type="number" class="form-control" id="Pe" formControlName="Pe" required name="Pe">
-          </div>
-          <div class="col-xs-2 col-md-2">
-            <label>_</label>
-            <input type="number" class="form-control" id="Numero" formControlName="Numero" required name="Numero">
-          </div>
+        <div class="col-xs-2 col-lg-2">
+          <label for="fechaComp">Fecha</label>
+          <input type="date" class="form-control" formControlName="FechaComp" required name="FechaComp"
+            [ngModel]="entity.FechaComp | date:'yyyy-MM-dd'">
         </div>
-        <div class="form-group row">
-          <div class="col-xs-2 col-lg-4">
-            <label for="Concepto">Concepto</label>
-            <input type="text" class="form-control" formControlName="Concepto" required name="Concepto" [ngModel]="entity.Concepto">
-          </div>          
+        <div class="col-xs-2 col-lg-2">
+          <label for="fechaVenc">Fecha Venc</label>
+          <input type="date" class="form-control" formControlName="FechaVenc" required name="FechaVenc"
+            [ngModel]="entity.FechaVenc | date:'yyyy-MM-dd'">
         </div>
-        <div class="form-group row">
-          <div class="col-md-4">
-            <label for="IdComprobante">Comprobante</label>
-            <select class="form-control" formControlName = "IdComprobante" name="IdComprobante" >
-               <option *ngFor="let item of comprobanteMayor" [ngValue]="item.Id" >{{item.Nombre}} </option>
-             </select>   
-           </div>
+        <div class="col-xs-1 col-md-1">
+          <label for="Pe">Numero</label>
+          <input type="number" class="form-control" id="Pe" formControlName="Pe" required name="Pe">
         </div>
-          <div>
-            <ul class="nav nav-tabs" id="pills-tab" role="tablist">
-              <li class="nav-item active" role="presentation">
-                <a class="nav-link active" data-toggle="tab" data-bs-toggle="tab" data-bs-target="#detalle" role="tab" aria-controls="comprobante" aria-selected="true" href="#comprobante">Detalle</a>
-              </li>
-              <li class="nav-item" role="presentation">
-                <a class="nav-link" data-toggle="tab" data-bs-toggle="tab" data-bs-target="#otros" role="tab" aria-controls="otros" aria-selected="true" href="#detalleValores">Otros</a>
-              </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-              <div class="tab-pane fade show active" role="tabpanel" id="detalle">
-                <div class="form-group row">
-                  <div class="col-12">
-                    <table formArrayName="Detalle" class="table table-sm">
-                      <tr class="row">
-                        <th colspan="3"><button type="button" class="btn btn-sm"  [disabled]="!isValidAddComprobante()" (click)="onAdd()"><span class="material-icons">add</span></button></th>
-                      </tr>
-                      <tr class="row">
-                        <td class="col-1">Cuenta</td>
-                        <td class="col-4">Concepto</td>
-                        <td class="col-1">Debe</td>
-                        <td class="col-1">Haber</td>
-                        <td class="col-1"></td>
-                      </tr>
-                      <tr class="row" *ngFor="let item of detalle.controls; let i=index" [formGroupName]="i">
-                        <td class="col-1 d-flex"><input type="text" class="form-control mr-2" formControlName="IdCuentaMayor"><button  type="button" class="btn btn-sm" (click)="selectCuentaMayor(i)"><span class="material-icons font-size: 16px;">search</span></button></td>
-                        <td class="col-4 "><input type="text" class="form-control" formControlName="Concepto" ></td>
-                        <td class="col-1"><input type="number" class="form-control" formControlName="Debe" required></td>
-                        <td class="col-1"><input type="number" class="form-control" formControlName="Haber" required></td>
-                        <td class="col-1 d-flex"><button  type="button" class="btn btn-sm" (click)="removeDetalle(i)"><span class="material-icons">delete</span></button></td>
-                      </tr>
-                      <tr class="row">
-                        <td class="col-1"></td>
-                        <td class="col-1"></td>
-                        <td class="col-3"><label>Total </label></td>
-                        <td class="col-1">{{totalDebe}}</td>
-                        <td class="col-1">{{totalHaber}}</td>
-                      </tr>
-                      <tr class="row">
-                        <td class="col-1"></td>
-                        <td class="col-1"></td>
-                        <td class="col-3"><label>Balance </label></td>
-                        <td class="col-2">{{totalSaldo}}</td>                        
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane fade" role="tabpanel" id="otros">
-                <div class="form-group row">
-                  <div class="col-12"></div>
-                </div>
+        <div class="col-xs-2 col-md-2">
+          <label>_</label>
+          <input type="number" class="form-control" id="Numero" formControlName="Numero" required name="Numero">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-2 col-lg-4">
+          <label for="Concepto">Concepto</label>
+          <input type="text" class="form-control" formControlName="Concepto" required name="Concepto"
+            [ngModel]="entity.Concepto">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-4">
+          <label for="IdComprobante">Comprobante</label>
+          <select class="form-control" formControlName="IdComprobante" name="IdComprobante">
+            <option *ngFor="let item of comprobanteMayor" [ngValue]="item.Id">{{item.Nombre}} </option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <ul class="nav nav-tabs" id="pills-tab" role="tablist">
+          <li class="nav-item active" role="presentation">
+            <a class="nav-link active" data-toggle="tab" data-bs-toggle="tab" data-bs-target="#detalle" role="tab"
+              aria-controls="comprobante" aria-selected="true" href="#comprobante">Detalle</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" data-toggle="tab" data-bs-toggle="tab" data-bs-target="#otros" role="tab"
+              aria-controls="otros" aria-selected="true" href="#detalleValores">Otros</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" role="tabpanel" id="detalle">
+            <div class="form-group row">
+              <div class="col-12">
+                <table formArrayName="Detalle" class="table table-sm">
+                  <tr class="row">
+                    <th colspan="3"><button type="button" class="btn btn-sm" [disabled]="!isValidAddComprobante()"
+                        (click)="onAdd()"><span class="material-icons">add</span></button></th>
+                  </tr>
+                  <tr class="row">
+                    <td class="col-1">Cuenta</td>
+                    <td class="col-4">Concepto</td>
+                    <td class="col-1">Debe</td>
+                    <td class="col-1">Haber</td>
+                    <td class="col-1"></td>
+                  </tr>
+                  <tr class="row" *ngFor="let item of detalle.controls; let i=index" [formGroupName]="i">
+                    <td class="col-1 d-flex"><input type="text" class="form-control mr-2"
+                        formControlName="IdCuentaMayor"><button type="button" class="btn btn-sm"
+                        (click)="selectCuentaMayor(i)"><span
+                          class="material-icons font-size: 16px;">search</span></button></td>
+                    <td class="col-4 "><input type="text" class="form-control" formControlName="Concepto"></td>
+                    <td class="col-1"><input type="number" class="form-control" formControlName="Debe" required></td>
+                    <td class="col-1"><input type="number" class="form-control" formControlName="Haber" required></td>
+                    <td class="col-1 d-flex"><button type="button" class="btn btn-sm" (click)="removeDetalle(i)"><span
+                          class="material-icons">delete</span></button></td>
+                  </tr>
+                  <tr class="row">
+                    <td class="col-1"></td>
+                    <td class="col-1"></td>
+                    <td class="col-3"><label>Total </label></td>
+                    <td class="col-1">{{totalDebe}}</td>
+                    <td class="col-1">{{totalHaber}}</td>
+                  </tr>
+                  <tr class="row">
+                    <td class="col-1"></td>
+                    <td class="col-1"></td>
+                    <td class="col-3"><label>Balance </label></td>
+                    <td class="col-2">{{totalSaldo}}</td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
-        <div class="row">
-          <div class="col-1">
-            <button type="submit" class="btn btn-primary">Aceptar</button>
-          </div>
-          <div class="col-md-1">
-            <button type="menu" class="btn" (click)="goBack()">Cancelar</button>
+          <div class="tab-pane fade" role="tabpanel" id="otros">
+            <div class="form-group row">
+              <div class="col-xs-2 col-lg-6">
+                <label for="Observaciones">Observaciones</label>
+                <textarea type="text" class="form-control" formControlName="Obs" name="Obs"
+                  [ngModel]="entity.Obs"></textarea>
+              </div>
+            </div>
           </div>
         </div>
-      </form>
-    </div>
-  </app-layout>
-  
-  
-  
-  
-
+      </div>
+      <div class="row">
+        <div class="col-1">
+          <button type="submit" class="btn btn-primary">Aceptar</button>
+        </div>
+        <div class="col-md-1">
+          <button type="menu" class="btn" (click)="goBack()">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</app-layout>

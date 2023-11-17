@@ -1,0 +1,10 @@
+/* Alinea las pestañas a la izquierda */
+.mat-tab-labels {
+    justify-content: flex-start;
+  }
+  
+  /* Ajusta el espaciado y los márgenes */
+  .mat-tab-label {
+    margin-right: 20px; /* Espacio entre las pestañas */
+  }
+  

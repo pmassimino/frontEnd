@@ -7,11 +7,13 @@
     </ul>
   </ng-template>
   <div toolbar >
-    <app-toolbar-form (print)="print()" [toolbarTemplate]="customTabButtons"  [mode]="mode" > </app-toolbar-form>
+    <app-toolbar-form (print)="print()" [printDisabled]="mode =='new'" [toolbarTemplate]="customTabButtons"  [mode]="mode" > </app-toolbar-form>
   </div>
     <h3>Factura</h3>
-    <div>
+    <div>      
       <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
+        <mat-tab-group fitInkBarToContent mat-align-tabs="start" >
+          <mat-tab label="General">         
         <div class="form-group row">        
           <div class="col-xs-12 col-lg-12" *ngFor="let error of errors" class="alert alert-warning alert-dismissible fade show" role="alert">
               {{error.value}}
@@ -35,7 +37,7 @@
           <input type="hidden" formControlName="TotalIva" [(ngModel)]="entity.TotalIva">
           <input type="hidden" formControlName="TotalOTributos" [(ngModel)]="entity.TotalOTributos">
           
-        </div>
+        </div>        
         <div class="form-group row">
             <div class="col-xs-2 col-lg-2">
                 <label>Tipo</label>
@@ -60,6 +62,8 @@
          </div>
         <div *ngIf="form && form.get('Tipo')?.value !== '1'" >
           <a class="btn" (click)="openDialogAddFactura()" ><span class="material-icons">add</span></a>
+          <app-comprobante-asociado-list [dataSource]="comprobanteasociado" (removeEvent)="removeComprobanteAsociado($event)"
+></app-comprobante-asociado-list>
         </div> 
         <div class="form-group row">
           <div class="col-xs-2 col-lg-2">
@@ -136,7 +140,7 @@
                   
                 </td>
                 <td class="col-1"><input type="number" class="form-control" id="Total" formControlName = "Total" [readonly]="true" ></td>
-                <td class="col-1"><a (click)="removeDetalle(i)"><i class="material-icons btn">delete</i></a></td>            
+                <td class="col-1"><a (click)="removeDetalle(i)"><span class="material-icons">delete</span></a></td>            
             </tr>
             <tr class="row">
                 <td class="col-1"></td>
@@ -177,7 +181,17 @@
           </tr>         
           </table>
          </div>        
-        </div>        
+        </div> 
+      </mat-tab>
+      <mat-tab label="Otros">
+        <div class="form-group row">
+        <div class="col-xs-2 col-lg-6">
+          <label for="Observaciones">Observaciones</label>
+          <textarea type="text" class="form-control" formControlName="Obs"  name="Obs" [ngModel]="entity.Obs"></textarea>
+        </div>          
+      </div> 
+      </mat-tab>
+    </mat-tab-group>         
         <div class="row">
           <div class="col-1">   
             <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Aceptar</button>    
@@ -185,7 +199,7 @@
           <div class="col-md-1">
             <button type="menu" class="btn" (click)="goBack()">Cancelar</button>
           </div>  
-         </div>    
+         </div>        
       </form> 
     </div>
     </app-layout>

@@ -75,6 +75,7 @@ constructor(private entityService: MayorService,private sujetoService : SujetoSe
         Numero:new UntypedFormControl(this.entity.Numero),
         IdComprobante: new UntypedFormControl(this.entity.IdComprobante),
         Concepto: new UntypedFormControl(this.entity.Concepto),
+        Obs: new UntypedFormControl(this.entity.Obs),
         Fecha:new UntypedFormControl(this.entity.Fecha),
         FechaComp:new UntypedFormControl(this.entity.FechaComp),
         FechaVenc:new UntypedFormControl(this.entity.FechaVenc),
@@ -103,6 +104,7 @@ constructor(private entityService: MayorService,private sujetoService : SujetoSe
       Item: itemDetalle.Item,
       IdTipo: new UntypedFormControl(itemDetalle.IdTipo,Validators.required),      
       IdCuentaMayor: new UntypedFormControl(itemDetalle.IdCuentaMayor),
+      IdCuenta: new UntypedFormControl(itemDetalle.IdCuenta),
       Concepto: new UntypedFormControl(itemDetalle.Concepto),
       Cantidad: new UntypedFormControl(itemDetalle.Cantidad),
       Debe: new UntypedFormControl(itemDetalle.Debe),
@@ -237,7 +239,10 @@ constructor(private entityService: MayorService,private sujetoService : SujetoSe
   }
   getById(id):void
   {
-    this.entityService.findOne(id).subscribe(res=>{this.entity = res,this.createForm();this.popupEntity(res);});
+    this.entityService.findOne(id).subscribe(res=>{
+      this.entity = res;
+      this.createForm();
+      this.popupEntity(res);});
   }
   popupEntity(entity:Mayor):void
   {

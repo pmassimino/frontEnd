@@ -29,7 +29,7 @@ export class MayorListViewComponent implements OnInit {
   dataSource: MatTableDataSource<MayorView>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  displayedColumns = ['Fecha', 'Numero', 'Concepto','Debe','Haber','Saldo','Edit'];
+  displayedColumns = ['Fecha', 'Numero', 'Concepto','Debe','Haber','SaldoPeriodo','Saldo','Edit'];
   constructor(private service:MayorService,private route: ActivatedRoute,private router: Router,private transaccionService:TransaccionService,private formBuilder: UntypedFormBuilder) 
   {
      this.param.IdCuentaMayor = this.route.snapshot.queryParams['idCuentaMayor'];

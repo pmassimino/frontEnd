@@ -24,7 +24,7 @@ html {
   }
   
   #sidebar-wrapper .sidebar-heading {
-    padding: 0.875rem 1.25rem;
+    padding: 1.25rem 1.25rem;
     font-size: 1.2rem;
   }
   
@@ -51,7 +51,7 @@ html {
     }
   
     #wrapper.toggled #sidebar-wrapper {
-      margin-left: -15rem;
+      margin-left: -18rem;
     }
   }
 

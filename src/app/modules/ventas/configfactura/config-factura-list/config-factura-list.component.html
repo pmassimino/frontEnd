@@ -1,0 +1,39 @@
+<app-layout>
+    <label>Configuracion Factura</label>
+    <div toolbar >
+      <app-toolbar  [addNewVisible]="true" (addNew)="addNew()" [printVisible]="false"  (findByName)="findByName($event)" >        
+      </app-toolbar>
+    </div>    
+    <div class="">    
+      <mat-table  class="table-compact" [dataSource]="dataSource" matSort>                   
+        <ng-container matColumnDef="Id">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Id}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>        
+        <ng-container matColumnDef="Nombre">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Nombre}}</mat-cell>
+          <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
+        <!-- Editr Column -->
+        <ng-container matColumnDef="Edit">
+          <mat-header-cell *matHeaderCellDef>  </mat-header-cell>
+          <mat-cell class="mat-cell-sm" *matCellDef="let item">          
+            <a [routerLink]="['/ventas/configfactura', item.Id]">
+              <i class="material-icons">mode_edit</i>
+            </a>                
+         </mat-cell>
+         <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container> 
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>  
+        <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row> 
+      </mat-table>  
+      <mat-paginator [pageSizeOptions]="[15, 25, 50, 100]"></mat-paginator>
+    </div>
+</app-layout>
+
+
+
+

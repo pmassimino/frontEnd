@@ -112,8 +112,9 @@ export class Setting {
     Id: string;
     Value: string;
 }
-export interface NumeradorDocumento {
+export class NumeradorDocumento {
     Id: string;
+    IdComprobante: number;  
     Nombre: string;
     PuntoEmision: number;
     Numero: number;

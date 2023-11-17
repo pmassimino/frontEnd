@@ -35,7 +35,7 @@
         </ng-container>     
          <ng-container matColumnDef="Total">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Total </mat-header-cell>
-          <mat-cell class="mat-cell-sm" *matCellDef="let item"> {{item.Total | number : '1.2-2' }}</mat-cell>
+          <mat-cell class="text-right mat-cell-sm" *matCellDef="let item"> {{item.Tipo == "1" || item.Tipo=="3" ? (item.Total | number : '1.2-2') :(-item.Total | number : '1.2-2') }}</mat-cell>
           <mat-footer-cell *matFooterCellDef>{{ total| number : '1.2-2' }}</mat-footer-cell>
         </ng-container>           
          <ng-container matColumnDef="Edit">
