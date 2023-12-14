@@ -5,7 +5,15 @@
       </app-toolbar>
     </div>
     <div>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">       
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form"> 
+        <div class="form-group row">
+          <div class="col-xs-4 col-lg-4">
+              <label for="Nombre">Cuenta</label>
+              <input type="number" formControlName = "IdCuentaMayor" required [ngModel]="param.IdCuentaMayor"   (ngModelChange)="setCuentaMayor($event)">        
+              <button type="button" class="btn btn-sm"(click)="showCuentaMayor()"><span class="material-icons font-size: 16px;">search</span></button>                 
+              <label  *ngIf="currentCuenta"> {{currentCuenta.Nombre}}</label>         
+          </div>
+      </div> 
         <label>Fecha</label>      
         <input type="date"  id="Fecha" formControlName = "Fecha" required name="Fecha" [ngModel]="param.Fecha | date:'yyyy-MM-dd'"   (ngModelChange)="onSubmit()">        
         <label>Fecha Hasta</label>

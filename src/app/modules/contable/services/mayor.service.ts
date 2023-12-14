@@ -32,4 +32,11 @@ export class MayorService extends CrudService<Mayor,string> {
     params = params.append('fechaHasta',fechaHasta);     
     return this.http.get<Mayor[]>(this.base + "diario",{params: params});
   }
+  print(idCuentaMayor:string,fecha:string,fechaHasta:string): Observable<any> {
+    let params = new HttpParams();        
+    params = params.append('idcuentamayor', idCuentaMayor);
+    params = params.append('fecha', fecha);
+    params = params.append('fechaHasta',fechaHasta);     
+    return this.http.get(this.base + "print/",{params: params,responseType: "blob" });
+  }
 }

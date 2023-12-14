@@ -16,7 +16,8 @@ import { ComprobanteService } from '../../../global/services/comprobante.service
   templateUrl: './punto-emision-form.component.html',
   styleUrls: ['./punto-emision-form.component.css']
 })
-export class PuntoEmisionFormComponent {form :  UntypedFormGroup;
+export class PuntoEmisionFormComponent {
+  form :  UntypedFormGroup;
   entity: PuntoEmision = new PuntoEmision();  
   submitted = false;
   mode = "new";
@@ -93,11 +94,8 @@ export class PuntoEmisionFormComponent {form :  UntypedFormGroup;
       this.Numeradores.push(itemGrp);
       return itemGrp;
     }
-    removeNumeradores(id: string) {
-      const indexToRemove = this.Numeradores.controls.findIndex(control =>
-        control.get('IdComprobante').value === id
-      );    
-      this.Numeradores.removeAt(indexToRemove);
+    removeNumeradores(index: number) {      
+      this.Numeradores.removeAt(index);
     }  
     popupData():void
     {

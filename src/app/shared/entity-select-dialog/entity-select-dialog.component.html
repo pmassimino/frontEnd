@@ -1,0 +1,36 @@
+<mat-dialog-content>  
+    <app-toolbar (findByName)="findByName($event)"></app-toolbar> 
+    <div>
+        <mat-table  class="table-compact" [dataSource]="dataSource" matSort>                   
+          <ng-container matColumnDef="Id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Codigo </mat-header-cell>
+            <mat-cell class="mat-cell-sm" *matCellDef="let item">{{item.Id}}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+          </ng-container>          
+          <ng-container matColumnDef="Nombre">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+            <mat-cell class="mat-cell-sm" *matCellDef="let item">{{item.Nombre}}</mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+          </ng-container>
+          <ng-container matColumnDef="Select">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>  </mat-header-cell>
+            <mat-cell class="mat-cell-sm" *matCellDef="let item">
+              <a class="btn" (click)="select(item)">
+                <span class="material-icons">{{ item.Selected ? 'check_circle' : 'check' }}</span>
+              </a>
+            </mat-cell>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>  
+          <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row> 
+        </mat-table>  
+        <mat-paginator [pageSizeOptions]="[10, 20, 30, 100]"></mat-paginator>
+      </div>
+  </mat-dialog-content>
+  <mat-dialog-actions>    
+    <button class="btn btn-primary" [disabled]="!anySelected()" (click)="aceptar()">Aceptar</button>  
+    <button class="btn btn-primary mx-2"(click)="close()">Cancelar</button>  
+  </mat-dialog-actions>
+
+

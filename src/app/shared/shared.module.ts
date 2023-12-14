@@ -14,12 +14,17 @@ import { FormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
 import {MatListModule} from '@angular/material/list';
 import { ToolbarFormComponent } from './toolbar-form/toolbar-form.component';
+import { EntitySelectDialogComponent } from './entity-select-dialog/entity-select-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 
 @NgModule({
-  declarations: [LayoutComponent, NavbarComponent, FooterComponent, HeaderComponent,SidebarComponent, ToolbarComponent, ToolbarFormComponent],
-  imports: [CommonModule, RouterModule, MatIconModule, FormsModule ,MatExpansionModule,MatListModule],
+  declarations: [LayoutComponent, NavbarComponent, FooterComponent, HeaderComponent,SidebarComponent, ToolbarComponent, ToolbarFormComponent, EntitySelectDialogComponent],
+  imports: [CommonModule, RouterModule, MatIconModule, FormsModule ,
+    MatExpansionModule,MatListModule,MatDialogModule,MatTableModule,MatPaginatorModule],
   exports:[LayoutComponent,ToolbarComponent,ToolbarFormComponent]
 })
 export class SharedModule { }

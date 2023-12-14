@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CrudService } from '../../../core/services/crud.service';
 import { CuentaMayor } from '../models/model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ConfigService } from '../../../core/services/config.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -20,6 +20,8 @@ export class CuentaMayorService extends CrudService<CuentaMayor,string> {
   CuentasSubdiario(): Observable<CuentaMayor[]> {
     return this.http.get<CuentaMayor[]>(this.base + "CuentasSubdiario/");
   }
+
+  
   
   
 }

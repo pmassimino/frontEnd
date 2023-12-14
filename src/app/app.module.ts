@@ -42,7 +42,7 @@ export function initializeApp(appConfig: ConfigService) {
     MatIconModule,
     MatSelectModule,
     MatInputModule,
-    MatDialogModule,                 
+    MatDialogModule,
   ],
   providers: [AuthService,
     AuthGuard ,

@@ -10,7 +10,7 @@
         <app-toolbar-form [printDisabled]="true" [toolbarTemplate]="customTabButtons" [mode]="mode"></app-toolbar-form>
     </div>
     <div>
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">            
             <div class="form-group row">
                 <div class="col-xs-1 col-lg-1">
                     <label for="Id">Codigo</label>
@@ -22,19 +22,38 @@
                     <label for="Nombre">Nombre</label>
                     <input type="text" class="form-control" formControlName="Nombre" required maxlength="60">
                 </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-xs-4 col-lg-4">
+            </div>            
+            <mat-card class="card">
+                <mat-card-header>
+                  <mat-card-title>Impresión</mat-card-title>
+                  <mat-card-subtitle>Formularios de impresión</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                  <p>Seleccione un formulario peronalizado.</p>
+                  <div class="col-xs-4 col-lg-4">
                     <label for="Reporte">Reporte</label>
                     <input type="text" class="form-control" formControlName="Reporte"  maxlength="60">
                 </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-xs-4 col-lg-4">
+                  <div class="col-xs-4 col-lg-4">
                     <label for="ReporteFiscal">Reporte Fiscal</label>
                     <input type="text" class="form-control" formControlName="ReporteFiscal" maxlength="60">
                 </div>
-            </div>
+                </mat-card-content>                
+              </mat-card>
+            <mat-card>
+                <mat-card-header>
+                  <mat-card-title>Puntos de Ventas</mat-card-title>
+                  <mat-card-subtitle>Puntos de Ventas de Afip</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                  <p *ngIf="puntosemision.length === 0">Seleccione los puntos de ventas habilitados.</p>
+                  <p><button type ="button" class="btn btn-primary" (click)="openDialogAddPuntoEmision()">Añadir</button></p>                 
+                  <div>                    
+                    <app-punto-emision-config-list [dataSource]="puntosemision" (removeEvent)="removePuntoEmision($event)"
+          ></app-punto-emision-config-list>
+                  </div> 
+              </mat-card-content>                
+              </mat-card>
             <div class="row mt-3">
                 <div class="col-md-1">
                     <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Aceptar</button>
@@ -43,6 +62,7 @@
                     <button class="btn btn-primary" (click)="goBack()">Cancelar</button>
                 </div>
             </div>
+            
         </form>
     </div>
 </app-layout>

@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
-import { MaxLengthValidator, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { ConfigFactura } from '../../models/model';
+import { MaxLengthValidator, UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { ConfigFactura, ItemPuntoEmision, PuntoEmision } from '../../models/model';
 import { ConfigFacturaService } from '../../services/config-factura.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { EntitySelectDialogComponent } from '../../../../shared/entity-select-dialog/entity-select-dialog.component';
+import { EntitySelectView } from '../../../../shared/models/model';
+import { PuntoEmisionService } from '../../services/punto-emision.service';
 
 @Component({
   selector: 'app-config-factura-form',
@@ -16,12 +20,18 @@ export class ConfigFacturaFormComponent {
   mode = "new";
   _id: String;
   errMsg = [];
+  puntoEmision: PuntoEmision[] = [];
 
   get f() { return this.form.controls; }
 
+  get puntosemision(): UntypedFormArray {
+    return this.form.get('PuntosEmision') as UntypedFormArray;
+  }
+
   constructor(private entityService: ConfigFacturaService,
     private router: Router, private route: ActivatedRoute,
-    private formBuilder: UntypedFormBuilder) {
+    private formBuilder: UntypedFormBuilder, private dialog: MatDialog,
+    private puntoEmisionService: PuntoEmisionService) {
   }
 
   ngOnInit(): void {
@@ -44,22 +54,43 @@ export class ConfigFacturaFormComponent {
 
   createForm(): void {
     this.form = this.formBuilder.group({
-      Id: new UntypedFormControl(this.entity.Id,Validators.required),
+      Id: new UntypedFormControl(this.entity.Id, Validators.required),
       Nombre: new UntypedFormControl(this.entity.Nombre, [Validators.required, Validators.maxLength(60)]),
       Reporte: new UntypedFormControl(this.entity.Reporte),
       ReporteFiscal: new UntypedFormControl(this.entity.ReporteFiscal),
+      PuntosEmision: this.formBuilder.array([]),
     });
+  }
+  createPuntoEmision(itemPU: ItemPuntoEmision): UntypedFormGroup {
+
+    //this.entity.PuntosEmision.push(itemPU);
+    //let item = this.entity.PuntosEmision.length;
+    let itemPUG = this.formBuilder.group({
+      Id: itemPU.Id,
+      IdPuntoEmision: new UntypedFormControl(itemPU.IdPuntoEmision, Validators.required),
+    });
+    this.puntosemision.push(itemPUG);
+    return itemPUG;
   }
 
   popupData(): void {
+    this.puntoEmisionService.findAll().subscribe(res => { 
+      this.puntoEmision = res;       
+    });
 
   }
+  popupEntity(entity: ConfigFactura): void {
+    entity.PuntosEmision.forEach(item => this.createPuntoEmision(item));      
+  }
+
   setDefaultValues(): void {
     this.entityService.newDefault().subscribe(res => { this.entity = res; this.createForm(); }, err => { console.log(err); });
   }
 
   getById(id): void {
-    this.entityService.findOne(id).subscribe(res => { this.entity = res; this.createForm(); });
+    this.entityService.findOne(id).subscribe(res => {
+       this.entity = res; this.createForm();
+       this.popupEntity(res);   });
   }
   new(): void {
     this.submitted = false;
@@ -104,6 +135,49 @@ export class ConfigFacturaFormComponent {
   onSubmit() {
     this.save();
   }
+  openDialogAddPuntoEmision(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = false;
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = "dialog-responsive";
+    
+    const data: EntitySelectView[] = this.puntoEmision.map(puntoEmision =>{
+      const entitySelectView = new EntitySelectView();
+      entitySelectView.Id = puntoEmision.Id;
+      entitySelectView.Nombre = puntoEmision.Nombre;      
+      return entitySelectView;
+    });
+    const filteredIds:string[] = this.form.get('PuntosEmision').value.map(item => item.IdPuntoEmision);
+    dialogConfig.data = { entityData:data,filteredIds: filteredIds,titulo : "Seleccione los puntos de emision" };
+    dialogConfig.width = "50%";
+    dialogConfig.height = "50%";
+    this.dialog.open(EntitySelectDialogComponent, dialogConfig).afterClosed()
+      .subscribe(response => {
+        if (response.result == "ok") {
+          if (response && response.selectedEntities) {
+            const entitySelected: EntitySelectView[] = response.selectedEntities;
+            let puntoEmisionSelected: PuntoEmision[]=[];            
+            entitySelected.forEach(element => {
+              let itemPE = new ItemPuntoEmision();
+              itemPE.Id = this.entity.Id;
+              itemPE.IdPuntoEmision = element.Id;
+              //puntoEmisionSelected.push({ Id: element.Id});  // Corrección en esta línea              
+              let item = this.createPuntoEmision(itemPE);              
+            });
+            this.puntoEmisionService.select(puntoEmisionSelected);
+          }
+        }
+      });
+  }
+  removePuntoEmision(id: string) {
+    const controlToRemove = this.puntosemision.controls.find(control =>
+      control.get('IdPuntoEmision').value === id
+    );
+    if (controlToRemove) {
+      this.puntosemision.removeAt(this.puntosemision.controls.indexOf(controlToRemove));
+    }
+  }
+
 
   goBack() {
     this.router.navigate(['ventas/configfactura/list']);
