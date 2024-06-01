@@ -19,6 +19,7 @@ export class MayorService extends CrudService<Mayor,string> {
     params = params.append('fechaHasta',fechaHasta);     
     return this.http.get<BalanceMayorView[]>(this.base + "balance",{params: params});
   }
+  
   listView(idCuentaMayor:string,fecha:string,fechaHasta:string): Observable<MayorView[]> {
     let params = new HttpParams();        
     params = params.append('idCuentaMayor', idCuentaMayor);
@@ -38,5 +39,11 @@ export class MayorService extends CrudService<Mayor,string> {
     params = params.append('fecha', fecha);
     params = params.append('fechaHasta',fechaHasta);     
     return this.http.get(this.base + "print/",{params: params,responseType: "blob" });
+  }
+  printbalance(fecha:string,fechaHasta:string):Observable<any> {
+    let params = new HttpParams();        
+    params = params.append('fecha', fecha);
+    params = params.append('fechaHasta',fechaHasta);     
+    return this.http.get(this.base + "printbalance/",{params: params,responseType: "blob" });
   }
 }

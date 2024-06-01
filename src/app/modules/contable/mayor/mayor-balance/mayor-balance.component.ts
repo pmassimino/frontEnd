@@ -57,7 +57,10 @@ onSubmit():void
 }
 onPrint():void
 {
- 
+  this.service.printbalance(this.param.Fecha, this.param.FechaHasta).subscribe((resultBlob: Blob) => {
+    var downloadURL = URL.createObjectURL(resultBlob);
+    window.open(downloadURL);
+  });
 }
 findByName(name): void {       
   this.dataSource.filter = name.trim().toLowerCase();

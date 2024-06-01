@@ -181,8 +181,10 @@ export class ComprobanteMayor {
 
 export class BalanceMayorView
 {
-    IdCuentaMayor:string
+    Id:string
     Nombre:string
+    IdTipo:string
+    IdUso:string
     SaldoAnterior:number
     Debitos:number
     Creditos:number

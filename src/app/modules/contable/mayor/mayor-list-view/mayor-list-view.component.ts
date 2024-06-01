@@ -11,6 +11,7 @@ import { ParamBase } from '../../../../core/models/common';
 import { CuentaMayorService } from '../../services/cuenta-mayor.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CuentaMayorSelectComponent } from '../../cuentamayor/cuenta-mayor-select/cuenta-mayor-select.component';
+import { ExcelService } from '../../../../core/services/excel.service';
 
 
 
@@ -32,6 +33,7 @@ export class MayorListViewComponent implements OnInit {
   currentPage = 1;
   totalItems = 0;
   dataSource: MatTableDataSource<MayorView>;
+  entityList:MayorView[]=[];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   displayedColumns = ['Fecha', 'Numero', 'Concepto', 'Debe', 'Haber', 'SaldoPeriodo', 'Saldo', 'Edit'];
@@ -39,6 +41,7 @@ export class MayorListViewComponent implements OnInit {
     private router: Router, private transaccionService: TransaccionService,
     private cuentaMayorService: CuentaMayorService,
     private dialog: MatDialog,
+    private excelService: ExcelService,
     private formBuilder: UntypedFormBuilder) {
     this.param.IdCuentaMayor = this.route.snapshot.queryParams['idCuentaMayor'];
     this.createForm();
@@ -50,7 +53,7 @@ export class MayorListViewComponent implements OnInit {
   onSubmit(): void {
     this.param = this.form.value;
     this.service.listView(this.param.IdCuentaMayor, this.param.Fecha, this.param.FechaHasta)
-      .subscribe(res => { this.dataSource = new MatTableDataSource(res); this.configTable(); this.calcular(); })
+      .subscribe(res => { this.dataSource = new MatTableDataSource(res);this.entityList = res; this.configTable(); this.calcular(); })
   }
   popupData(): void {
     this, this.cuentaMayorService.findAll().subscribe(res => { this.cuentaMayor = res.filter(f => f.IdTipo = "1"); })
@@ -59,6 +62,10 @@ export class MayorListViewComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+  exportToExcel() {
+    this.excelService.exportAsExcelFile(this.entityList, 'Mayor');
+  }
+
   onPrint(): void {
     this.service.print(this.param.IdCuentaMayor, this.param.Fecha, this.param.FechaHasta).subscribe((resultBlob: Blob) => {
       var downloadURL = URL.createObjectURL(resultBlob);

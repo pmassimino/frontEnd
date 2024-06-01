@@ -11,6 +11,7 @@ export class Factura {
     Tipo: string;
     Origen: string;
     Letra: string;
+    IdPuntoEmision: string;
     Pe: number;
     Numero: number;
     Fecha: string;

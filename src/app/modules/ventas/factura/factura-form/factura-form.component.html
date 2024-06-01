@@ -1,209 +1,256 @@
 <app-layout>
   <ng-template #customTabButtons>
     <ul class="navbar-nav">
-      <li class="nav-item"><button [disabled]="mode!='edit' || entity.Cae!=0" (click)="openDialogAfip()"  class="navbar-brand btn"><mat-icon class="align-middle">check_circle_outline</mat-icon></button></li>
-      <li class="nav-item"><button [disabled]="mode!='edit'" (click)="onAddNew()"  class="navbar-brand btn"><mat-icon class="align-middle">add_circle</mat-icon></button></li>
-      <li class="nav-item"><button [disabled]="mode!='edit' || entity.Cae!=0"(click)="onDelete()"  class="navbar-brand btn"><mat-icon class="align-middle">delete</mat-icon></button></li>
+      <li class="nav-item"><button [disabled]="mode!='edit' || entity.Cae!=0" (click)="openDialogAfip()"
+          class="navbar-brand btn"><mat-icon class="align-middle">check_circle_outline</mat-icon></button></li>
+      <li class="nav-item"><button [disabled]="mode!='edit'" (click)="onAddNew()" class="navbar-brand btn"><mat-icon
+            class="align-middle">add_circle</mat-icon></button></li>
+      <li class="nav-item"><button [disabled]="mode!='edit' || entity.Cae!=0" (click)="onDelete()"
+          class="navbar-brand btn"><mat-icon class="align-middle">delete</mat-icon></button></li>
     </ul>
   </ng-template>
-  <div toolbar >
-    <app-toolbar-form (print)="print()" [printDisabled]="mode =='new'" [toolbarTemplate]="customTabButtons"  [mode]="mode" > </app-toolbar-form>
+  <div toolbar>
+    <app-toolbar-form (print)="print()" [printDisabled]="mode =='new'" [toolbarTemplate]="customTabButtons"
+      [mode]="mode"> </app-toolbar-form>
   </div>
-    <h3>Factura</h3>
-    <div>      
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
-        <mat-tab-group fitInkBarToContent mat-align-tabs="start" >
-          <mat-tab label="General">         
-        <div class="form-group row">        
-          <div class="col-xs-12 col-lg-12" *ngFor="let error of errors" class="alert alert-warning alert-dismissible fade show" role="alert">
+  <h4>Factura</h4>
+  <div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="form">
+      <mat-tab-group fitInkBarToContent mat-align-tabs="start">
+        <mat-tab label="General">
+          <div class="form-group row">
+            <div class="col-xs-12 col-lg-12" *ngFor="let error of errors"
+              class="alert alert-warning alert-dismissible fade show" role="alert">
               {{error.value}}
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
+            </div>
           </div>
-      </div>
-        <div>
-          <input type="hidden" formControlName="Id" [(ngModel)]="entity.Id">
-          <input type="hidden" formControlName="IdEmpresa" [(ngModel)]="entity.IdEmpresa">
-          <input type="hidden" formControlName="IdSucursal" [(ngModel)]="entity.IdSucursal">
-          <input type="hidden" formControlName="IdArea" [(ngModel)]="entity.IdArea">
-          <input type="hidden" formControlName="IdSeccion" [(ngModel)]="entity.IdSeccion">
-          <input type="hidden" formControlName="IdTransaccion" [(ngModel)]="entity.IdTransaccion">
-          <input type="hidden" formControlName="TotalNeto" [(ngModel)]="entity.TotalNeto">
-          <input type="hidden" formControlName="TotalDescuento" [(ngModel)]="entity.TotalDescuento">
-          <input type="hidden" formControlName="TotalGravado" [(ngModel)]="entity.TotalGravado">
-          <input type="hidden" formControlName="TotalNoGravado" [(ngModel)]="entity.TotalNoGravado">
-          <input type="hidden" formControlName="TotalExento" [(ngModel)]="entity.TotalExento">
-          <input type="hidden" formControlName="TotalIva" [(ngModel)]="entity.TotalIva">
-          <input type="hidden" formControlName="TotalOTributos" [(ngModel)]="entity.TotalOTributos">
-          
-        </div>        
-        <div class="form-group row">
+          <div>
+            <input type="hidden" formControlName="Id" [(ngModel)]="entity.Id">
+            <input type="hidden" formControlName="IdEmpresa" [(ngModel)]="entity.IdEmpresa">
+            <input type="hidden" formControlName="IdSucursal" [(ngModel)]="entity.IdSucursal">
+            <input type="hidden" formControlName="IdArea" [(ngModel)]="entity.IdArea">
+            <input type="hidden" formControlName="IdSeccion" [(ngModel)]="entity.IdSeccion">
+            <input type="hidden" formControlName="IdTransaccion" [(ngModel)]="entity.IdTransaccion">
+            <input type="hidden" formControlName="TotalNeto" [(ngModel)]="entity.TotalNeto">
+            <input type="hidden" formControlName="TotalDescuento" [(ngModel)]="entity.TotalDescuento">
+            <input type="hidden" formControlName="TotalGravado" [(ngModel)]="entity.TotalGravado">
+            <input type="hidden" formControlName="TotalNoGravado" [(ngModel)]="entity.TotalNoGravado">
+            <input type="hidden" formControlName="TotalExento" [(ngModel)]="entity.TotalExento">
+            <input type="hidden" formControlName="TotalIva" [(ngModel)]="entity.TotalIva">
+            <input type="hidden" formControlName="TotalOTributos" [(ngModel)]="entity.TotalOTributos">
+
+          </div>
+          <div class="input-group row input-group">
+            <div class="col-2 col-2">
+              <label>Seccion</label>
+              <select class="form-control-1" formControlName="IdSeccion" name="IdSeccion">
+                <option *ngFor="let item of configFactura" [ngValue]="item.Id">{{item.Nombre}} </option>
+              </select>
+            </div>
+            <div class="col-2 col-2">
+              <label>Punto Emision</label>
+              <select class="form-control-1" formControlName="IdPuntoEmision" name="IdPuntoEmision"
+                (change)="onNextNumber()">
+                <option *ngFor="let item of puntoEmision" [ngValue]="item.Id">{{item.Nombre}} </option>
+              </select>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-2">
+              <label>Tipo</label>
+              <select class="form-control-1" formControlName="Tipo" name="Tipo">
+                <option *ngFor="let item of tipoFactura" [ngValue]="item.Id">{{item.Nombre}} </option>
+              </select>
+            </div>
+            <div class="col-1">
+              <label>Letra</label>
+              <select class="form-control-1" formControlName="Letra" name="Letra">
+                <option *ngFor="let item of letras" [ngValue]="item">{{item}} </option>
+              </select>
+            </div>
+            <div class="col-1">
+              <label for="Pe">Numero</label>
+              <input type="number" class="form-control-1" id="Pe" formControlName="Pe" required name="Pe">
+            </div>
+            <div class="col-2">
+              <label for="Pe"></label>
+              <input type="number" class="form-control-1" id="Numero" formControlName="Numero" required name="Numero">
+            </div>
+          </div>
+          <div *ngIf="form && form.get('Tipo')?.value !== '1'">
+            <a class="btn" (click)="openDialogAddFactura()"><span class="material-icons">add</span></a>
+            <app-comprobante-asociado-list [dataSource]="comprobanteasociado"
+              (removeEvent)="removeComprobanteAsociado($event)"></app-comprobante-asociado-list>
+          </div>
+          <div class="input-group row">
             <div class="col-xs-2 col-lg-2">
-                <label>Tipo</label>
-                <select class="form-control" formControlName = "Tipo" name="Tipo">
-                  <option *ngFor="let item of tipoFactura" [ngValue]="item.Id"  >{{item.Nombre}} </option>
-                </select>   
-           </div>     
-                <div class="col-xs-1 col-lg-1">
-                <label>Letra</label>
-                <select class="form-control" formControlName = "Letra" name="Letra">
-                  <option *ngFor="let item of letras"  [ngValue]="item">{{item}} </option>
-               </select>    
-              </div>
-             <div class="col-xs-1 col-md-1">
-                <label for="Pe">Numero</label>
-                <input type="number" class="form-control" id="Pe" formControlName = "Pe" required name="Pe" >
-           </div>
-           <div class="col-xs-2 col-md-2"> 
-               <label>_</label>               
-               <input type="number" class="form-control" id="Numero" formControlName = "Numero" required name="Numero" >
+              <label for="fecha">Fecha</label>
+              <input type="date" class="form-control-1" id="Fecha" formControlName="FechaComp" required name="FechaComp"
+                [ngModel]="entity.FechaComp | date:'yyyy-MM-dd'">
+            </div>
+            <div class="col-xs-2 col-lg-2">
+              <label for="fechaVenc">Fecha Venc</label>
+              <input type="date" class="form-control-1" id="FechaVencimiento" formControlName="FechaVencimiento" required
+                name="Fecha" [ngModel]="entity.FechaVencimiento | date:'yyyy-MM-dd'">
+            </div>
           </div>
-         </div>
-        <div *ngIf="form && form.get('Tipo')?.value !== '1'" >
-          <a class="btn" (click)="openDialogAddFactura()" ><span class="material-icons">add</span></a>
-          <app-comprobante-asociado-list [dataSource]="comprobanteasociado" (removeEvent)="removeComprobanteAsociado($event)"
-></app-comprobante-asociado-list>
-        </div> 
-        <div class="form-group row">
-          <div class="col-xs-2 col-lg-2">
-               <label for="fecha">Fecha</label>
-               <input type="date" class="form-control" id="Fecha" formControlName = "FechaComp" required name="FechaComp" [ngModel]="entity.FechaComp | date:'yyyy-MM-dd'">
-          </div>
-          <div class="col-xs-2 col-lg-2">
-            <label for="fechaVenc">Fecha Venc</label>
-            <input type="date" class="form-control" id="FechaVencimiento" formControlName = "FechaVencimiento" required name="Fecha" [ngModel]="entity.FechaVencimiento | date:'yyyy-MM-dd'">
-       </div>
-        </div>        
-        <div class="form-group row">
+          <div class="input-group row">
             <div class="col-xs-5 col-lg-5">
-                <label >Cuenta</label>
-                <select class="form-control" formControlName = "IdCuenta" name="IdCuenta"  (change)="onCuentaChange()" >
-                   <option *ngFor="let item of sujetos" [ngValue]="item.Id" >{{item.Nombre}} </option>
-                </select>                
-               </div>  
-        </div>
-        <div class="form-group row">
-          <div class="col-6">
-          <table formArrayName="MedioPago" class="table table-sm">            
-            <tr class="row">
-              <th colspan="3">Medio de Pago<a class="btn" (click)="addMedioPago()" ><span class="material-icons">add</span></a></th>
-            </tr>            
-            <tr class="row">                
-                <th class="col-9">Nombre</th>
-                <th class="col-2">Importe</th>                
-                <th class="col-1"></th>
-            </tr>               
-            <tr class="row" *ngFor="let item of mediopago.controls; let i=index"  [formGroupName]="i">                
-                <td class="col-9"><input type="hidden" formControlName="Id"/>
-                    <select class="form-control" formControlName = "IdCuentaMayor" name="IdCuentaMayor">
-                       <option *ngFor="let item of mediosPagos" [ngValue]="item.Id" [selected]="entity.MedioPago[i].IdCuentaMayor === item.Id">{{item.Nombre}} </option>
+              <label>Cuenta</label>
+              <select class="form-control-1" formControlName="IdCuenta" name="IdCuenta" (change)="onCuentaChange()">
+                <option *ngFor="let item of sujetos" [ngValue]="item.Id">{{item.Nombre}} </option>
+              </select>
+            </div>
+          </div>
+          <div class="input-group row">
+            <div class="col-6">
+              <table formArrayName="MedioPago" class="table table-sm">                
+                <tr class="row">
+                  <th class="col-9">Medio Pago <a class="btn" (click)="addMedioPago()"><span
+                    class="material-icons">add</span></a></th>
+                  <th class="col-2">Importe</th>
+                  <th class="col-1"></th>
+                </tr>
+                <tr class="row" *ngFor="let item of mediopago.controls; let i=index" [formGroupName]="i">
+                  <td class="col-9"><input type="hidden" formControlName="Id" />
+                    <select class="form-control-1" formControlName="IdCuentaMayor" name="IdCuentaMayor">
+                      <option *ngFor="let item of mediosPagos" [ngValue]="item.Id"
+                        [selected]="entity.MedioPago[i].IdCuentaMayor === item.Id">{{item.Nombre}} </option>
                     </select>
-                    <input type="hidden" class="form-control" formControlName = "Concepto" required  ></td>
-                <td class="col-2"><input type="text" class="form-control" formControlName = "Importe" required  ></td>
-                <td class="col-1"><a *ngIf="mediopago.controls.length > 1" (click)="removeMedioPago(i)"><i class="material-icons btn">delete</i></a></td>            
-            </tr>           
-        </table> 
-         </div>
+                    <input type="hidden" class="form-control-1" formControlName="Concepto" required>
+                  </td>
+                  <td class="col-2"><input type="text" class="form-control-1" formControlName="Importe" required></td>
+                  <td class="col-1"><a *ngIf="mediopago.controls.length > 1" (click)="removeMedioPago(i)"><i
+                        class="material-icons btn">delete</i></a></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="input-group row">
+            <div class="col-1">
+              <a class="btn" (click)="addDetalle()"><span class="material-icons">add</span></a>
+            </div>
+            <div class="col-1">
+              <a class="btn" (click)="openDialog()"><span class="material-icons">search</span></a>
+            </div>
+          </div>
+          <div class="input-group row">
+            <div class="col-12">
+              <table formArrayName="Detalle" class="table table-sm">
+                <tr class="row">
+                  <th class="col-1">Codigo</th>
+                  <th class="col-1">Cantidad</th>
+                  <th class="col-6">Nombre</th>
+                  <th class="col-1">Precio</th>
+                  <th class="col-1">Bon.</th>
+                  <th class="col-1">Total</th>
+                  <th class="col-1"></th>
+                </tr>
+                <tr class="row" *ngFor="let item of detalle.controls; let i=index" [formGroupName]="i">
+                  <td class="col-1"><input type="text" class="form-control-1" formControlName="IdArticulo" required></td>
+                  <td class="col-1"><input type="number" class="form-control-1" formControlName="Cantidad" required> </td>
+                  <td class="col-6"><input type="text" class="form-control-1" formControlName="Concepto" required></td>
+                  <td class="col-1"><input type="number" class="form-control-1" formControlName="Precio" required></td>
+                  <td class="col-1"> <input type="number" class="form-control-1" formControlName="PorBonificacion">
+                    <input type="hidden" formControlName="CondIva">
+                    <input type="hidden" formControlName="Bonificacion">
+                    <input type="hidden" formControlName="Gravado">
+                    <input type="hidden" formControlName="NoGravado">
+                    <input type="hidden" formControlName="Exento">
+
+                  </td>
+                  <td class="col-1"><input type="number" class="form-control-1" id="Total" formControlName="Total"
+                      [readonly]="true"></td>
+                  <td class="col-1"><a (click)="removeDetalle(i)"><span class="material-icons">delete</span></a></td>
+                </tr>
+                <tr class="row">
+                  <td class="col-1"></td>
+                  <td class="col-1"></td>
+                  <td class="col-6"></td>
+                  <td class="col-1"></td>
+                  <td class="col-1"></td>
+                  <td class="col-1">
+                    <div [formGroup]="form"><input class="form-control-1" formControlName="TotalNeto" [readonly]="true">
+                    </div>
+                  </td>
+                  <td class="col-1"></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-sm">
+                <tr class="row">
+                  <th class="col-3"></th>
+                  <th class="col-1">Items</th>
+                  <th class="col-1">Sub Total</th>
+                  <th class="col-1">%</th>
+                  <th class="col-1">Descuento</th>
+                  <th class="col-1">Importe Neto</th>
+                  <th class="col-1">Otros.Trib.</th>
+                  <th class="col-1">Iva General</th>
+                  <th class="col-1">Total </th>
+                </tr>
+                <tr class="row">
+                  <th class="col-3"></th>
+                  <td class="col-1">
+                    <div [formGroup]="form"><input class="form-control-1" [readonly]="true" formControlName="TotalItems">
+                    </div>
+                  </td>
+                  <td class="col-1">
+                    <div [formGroup]="form"><input class="form-control-1" formControlName="TotalNeto" [readonly]="true">
+                    </div>
+                  </td>
+                  <td class="col-1">
+                    <div [formGroup]="form"><input type="number" class="form-control-1" formControlName="PorDescuento"
+                        [readonly]="true"></div>
+                  </td>
+                  <td class="col-1">
+                    <div [formGroup]="form"><input class="form-control-1" formControlName="TotalDescuento"
+                        [readonly]="true"></div>
+                  </td>
+                  <td class="col-1">
+                    <div [formGroup]="form"><input class="form-control-1" formControlName="TotalNeto" [readonly]="true">
+                    </div>
+                  </td>
+                  <td class="col-1">
+                    <div [formGroup]="form"><input class="form-control-1" formControlName="TotalOTributos"
+                        [readonly]="true"></div>
+                  </td>
+                  <td class="col-1">
+                    <div [formGroup]="form"><input class="form-control-1" formControlName="TotalIva" [readonly]="true">
+                    </div>
+                  </td>
+                  <td class="col-1">
+                    <div [formGroup]="form"><input class="form-control-1" formControlName="Total" [readonly]="true"></div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Otros">
+          <div class="input-group row">
+            <div class="col-xs-2 col-lg-6">
+              <label for="Observaciones">Observaciones</label>
+              <textarea type="text" class="form-control-1" formControlName="Obs" name="Obs"
+                [ngModel]="entity.Obs"></textarea>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+      <div class="row">
+        <div class="col-1">
+          <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Aceptar</button>
+        </div>
+        <div class="col-md-1">
+          <button type="menu" class="btn" (click)="goBack()">Cancelar</button>
+        </div>
       </div>
-        <div class="form-group row">
-            <div class="col-1">   
-                <a class="btn" (click)="addDetalle()" ><span class="material-icons">add</span></a>    
-             </div>
-             <div class="col-1">   
-              <a class="btn" (click)="openDialog()" ><span class="material-icons">search</span></a>
-            </div> 
-        </div>
-        <div class="form-group row">
-          <div class="col-12">          
-           <table formArrayName="Detalle" class="table table-sm">            
-            <tr class="row">
-                <th class="col-1">Codigo</th>
-                <th class="col-1">Cantidad</th>
-                <th class="col-6">Nombre</th>
-                <th class="col-1">Precio</th>
-                <th class="col-1">Bon.</th>
-                <th class="col-1">Total</th>
-                <th class="col-1"></th>
-            </tr>               
-            <tr class="row" *ngFor="let item of detalle.controls; let i=index"  [formGroupName]="i">          
-                <td class="col-1"><input type="text" class="form-control" formControlName = "IdArticulo" required  ></td>
-                <td class="col-1"><input type="number" class="form-control" formControlName = "Cantidad" required > </td>
-                <td class="col-6"><input type="text" class="form-control" formControlName = "Concepto" required  ></td>
-                <td class="col-1"><input type="number" class="form-control" formControlName = "Precio" required  ></td>
-                <td class="col-1"> <input type="number" class="form-control" formControlName="PorBonificacion">
-                  <input type="hidden" formControlName="CondIva" >
-                  <input type="hidden" formControlName="Bonificacion" >
-                  <input type="hidden" formControlName="Gravado" >
-                  <input type="hidden" formControlName="NoGravado">
-                  <input type="hidden" formControlName="Exento">
-                  
-                </td>
-                <td class="col-1"><input type="number" class="form-control" id="Total" formControlName = "Total" [readonly]="true" ></td>
-                <td class="col-1"><a (click)="removeDetalle(i)"><span class="material-icons">delete</span></a></td>            
-            </tr>
-            <tr class="row">
-                <td class="col-1"></td>
-                <td class="col-1"></td>
-                <td class="col-6"></td>
-                <td class="col-1"></td>
-                <td class="col-1"></td>            
-                <td class="col-1"><div [formGroup]="form"><input  class="form-control" formControlName="TotalNeto" [readonly]="true" ></div></td>
-                <td class="col-1"></td>
-              </tr>
-           </table> 
-          </div>          
-        </div>
-        <div class="row">
-         <div class="col-12">    
-          <table class="table table-sm">
-            <tr class="row">
-              <th class="col-3"></th>
-              <th class="col-1">Items</th>
-              <th class="col-1">Sub Total</th>
-              <th class="col-1">%</th>
-              <th class="col-1">Descuento</th>
-              <th class="col-1">Importe Neto</th>
-              <th class="col-1">Otros.Trib.</th>
-              <th class="col-1">Iva General</th>
-              <th class="col-1">Total </th>
-          </tr> 
-          <tr  class="row">
-            <th class="col-3"></th>
-            <td class="col-1"><div [formGroup]="form"><input class="form-control" [readonly]="true" formControlName="TotalItems"></div></td>
-            <td class="col-1"><div [formGroup]="form"><input class="form-control" formControlName="TotalNeto" [readonly]="true" ></div></td>
-            <td class="col-1"><div [formGroup]="form"><input type="number" class="form-control" formControlName="PorDescuento" [readonly]="true"></div></td>
-            <td class="col-1"><div [formGroup]="form"><input class="form-control" formControlName="TotalDescuento" [readonly]="true" ></div></td>
-            <td class="col-1"><div [formGroup]="form"><input class="form-control" formControlName="TotalNeto" [readonly]="true" ></div></td>
-            <td class="col-1"><div [formGroup]="form"><input class="form-control" formControlName="TotalOTributos" [readonly]="true" ></div></td>
-            <td class="col-1"><div [formGroup]="form"><input class="form-control" formControlName="TotalIva" [readonly]="true" ></div></td>
-            <td class="col-1"><div [formGroup]="form"><input class="form-control" formControlName="Total" [readonly]="true" ></div></td>
-          </tr>         
-          </table>
-         </div>        
-        </div> 
-      </mat-tab>
-      <mat-tab label="Otros">
-        <div class="form-group row">
-        <div class="col-xs-2 col-lg-6">
-          <label for="Observaciones">Observaciones</label>
-          <textarea type="text" class="form-control" formControlName="Obs"  name="Obs" [ngModel]="entity.Obs"></textarea>
-        </div>          
-      </div> 
-      </mat-tab>
-    </mat-tab-group>         
-        <div class="row">
-          <div class="col-1">   
-            <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Aceptar</button>    
-          </div> 
-          <div class="col-md-1">
-            <button type="menu" class="btn" (click)="goBack()">Cancelar</button>
-          </div>  
-         </div>        
-      </form> 
-    </div>
-    </app-layout>
-    
-
-
-
+    </form>
+  </div>
+</app-layout>
